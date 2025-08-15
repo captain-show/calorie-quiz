@@ -33,9 +33,12 @@ class QuizApp {
             
             // Add a small delay for better UX
             setTimeout(() => {
-                if (this.currentQuestion < this.totalQuestions) {
+                // Check if we're still on the same question (user hasn't navigated away)
+                if (this.currentQuestion < this.totalQuestions && 
+                    document.querySelector(`[data-question="${this.currentQuestion}"]`).classList.contains('active')) {
                     this.nextQuestion();
-                } else {
+                } else if (this.currentQuestion === this.totalQuestions && 
+                           document.querySelector(`[data-question="${this.currentQuestion}"]`).classList.contains('active')) {
                     // Show download section immediately on last question
                     this.showDownloadSection();
                 }
@@ -96,16 +99,192 @@ class QuizApp {
     trackQuestionAnswered(questionNumber) {
         // Send event to Mixpanel
         if (typeof mixpanel !== 'undefined') {
-            mixpanel.track('Question Answered', { 
+            mixpanel.track('question_answered', { 
                 question_number: questionNumber 
             });
         }
+        
+        // Send event to Facebook Pixel
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'CustomEvent', {
+                event_name: 'question_answered',
+                question_number: questionNumber
+            });
+        }
+        
         console.log(`Question ${questionNumber} answered`);
     }
+}
 
+// Global variables
+let selectedPlan = null;
 
+// Function to select a plan
+function selectPlan(planType) {
+    // Remove previous selection
+    document.querySelectorAll('.plan-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Select new plan
+    const selectedCard = document.querySelector(`[data-plan="${planType}"]`);
+    selectedCard.classList.add('selected');
+    selectedPlan = planType;
+    
+    // Enable subscribe button
+    document.querySelector('.subscribe-btn-main').disabled = false;
+    
+    // Track plan selection
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('plan_selected', {
+            plan_type: planType,
+            timestamp: new Date().toISOString()
+        });
+    }
+    
+    // Track plan selection in Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'CustomEvent', {
+            event_name: 'plan_selected',
+            plan_type: planType
+        });
+    }
+}
 
+// Function to open email modal
+function openEmailModal(event) {
+    // Prevent form submission and auto-advance
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    if (!selectedPlan) {
+        alert('Please select a plan first');
+        return;
+    }
+    
+    // Track subscribe button click
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('subscribe_complete', {
+            plan_type: selectedPlan,
+            timestamp: new Date().toISOString()
+        });
+    }
+    
+    // Track subscribe button click in Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'CustomEvent', {
+            event_name: 'subscribe_complete',
+            plan_type: selectedPlan
+        });
+    }
+    
+    // Update plan name in modal
+    const planNames = {
+        'annual': 'Premium Annual',
+        'monthly': 'Premium Monthly'
+    };
+    document.getElementById('selectedPlanName').textContent = planNames[selectedPlan];
+    
+    // Show modal
+    document.getElementById('emailModal').style.display = 'block';
+    
+    // Focus on email input
+    document.getElementById('emailInput').focus();
+}
 
+// Function to close email modal
+function closeEmailModal() {
+    document.getElementById('emailModal').style.display = 'none';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('emailError').textContent = '';
+}
+
+// Function to submit email
+function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const emailError = document.getElementById('emailError');
+    
+    // Validate email
+    if (!email) {
+        emailError.textContent = 'Please enter your email address';
+        return;
+    }
+    
+    if (!isValidEmail(email)) {
+        emailError.textContent = 'Please enter a valid email address';
+        return;
+    }
+    
+    // Track email submission
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('email_submitted', {
+            plan_type: selectedPlan,
+            email: email,
+            timestamp: new Date().toISOString()
+        });
+    }
+    
+    // Track email submission in Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'CustomEvent', {
+            event_name: 'email_submitted',
+            plan_type: selectedPlan
+        });
+        
+        // Track Lead event for Facebook Ads
+        fbq('track', 'Lead');
+        
+        // Track Purchase event with subscription price
+        const planPrices = {
+            'annual': 29.99,
+            'monthly': 4.99
+        };
+        
+        fbq('track', 'Purchase', {
+            value: planPrices[selectedPlan],
+            currency: 'USD',
+            content_type: 'subscription',
+            content_name: selectedPlan === 'annual' ? 'Premium Annual Plan' : 'Premium Monthly Plan'
+        });
+    }
+    
+    // Close email modal
+    closeEmailModal();
+    
+    // Show thank you modal
+    const planNames = {
+        'annual': 'Premium Annual',
+        'monthly': 'Premium Monthly'
+    };
+    document.getElementById('finalPlanName').textContent = planNames[selectedPlan];
+    document.getElementById('thankYouModal').style.display = 'block';
+}
+
+// Function to close thank you modal
+function closeThankYouModal() {
+    document.getElementById('thankYouModal').style.display = 'none';
+}
+
+// Function to validate email
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Close modals when clicking outside
+window.onclick = function(event) {
+    const emailModal = document.getElementById('emailModal');
+    const thankYouModal = document.getElementById('thankYouModal');
+    
+    if (event.target === emailModal) {
+        closeEmailModal();
+    }
+    
+    if (event.target === thankYouModal) {
+        closeThankYouModal();
+    }
 }
 
 // Initialize the quiz when the page loads
