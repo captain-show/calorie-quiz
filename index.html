@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Scanner AI - Personal Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Mixpanel -->
+    <script type="text/javascript">
+        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (staging)");return d};a.people.toString=function(){return a.toString(1)+".people (staging)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+        for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.getGroup=function(){function b(c){d[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));a.push([e,call2])}}var d={},e=["getGroup"].concat(Array.prototype.slice.call(arguments,0));for(var c=0;c<j.length;c++)b(j[c]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+        MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="quiz-header">
+            <h1>Calorie Scanner AI</h1>
+            <p>Let's personalize your nutrition journey</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </header>
+
+        <div class="quiz-container">
+            <form id="quizForm" class="quiz-form">
+                <!-- Question 1: Goal -->
+                <div class="question active" data-question="1">
+                    <h2>What's your primary goal?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="goal" value="lose-10kg">
+                            <span class="option-content">
+                                <div class="option-icon">🎯</div>
+                                <div class="option-text">
+                                    <h3>Lose 10+ kg</h3>
+                                    <p>Significant weight loss journey</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="goal" value="lose-5kg">
+                            <span class="option-content">
+                                <div class="option-icon">⚖️</div>
+                                <div class="option-text">
+                                    <h3>Lose 5-10 kg</h3>
+                                    <p>Moderate weight loss</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="goal" value="lose-2kg">
+                            <span class="option-content">
+                                <div class="option-icon">📏</div>
+                                <div class="option-text">
+                                    <h3>Lose 2-5 kg</h3>
+                                    <p>Light weight loss</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="goal" value="maintain">
+                            <span class="option-content">
+                                <div class="option-icon">🔄</div>
+                                <div class="option-text">
+                                    <h3>Maintain weight</h3>
+                                    <p>Keep current weight stable</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="goal" value="gain">
+                            <span class="option-content">
+                                <div class="option-icon">💪</div>
+                                <div class="option-text">
+                                    <h3>Gain weight</h3>
+                                    <p>Build muscle and gain weight</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2: Gender -->
+                <div class="question" data-question="2">
+                    <h2>What's your gender?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="gender" value="male">
+                            <span class="option-content">
+                                <div class="option-icon">👨</div>
+                                <div class="option-text">
+                                    <h3>Male</h3>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="gender" value="female">
+                            <span class="option-content">
+                                <div class="option-icon">👩</div>
+                                <div class="option-text">
+                                    <h3>Female</h3>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="gender" value="other">
+                            <span class="option-content">
+                                <div class="option-icon">🌈</div>
+                                <div class="option-text">
+                                    <h3>Other</h3>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3: Body Type -->
+                <div class="question" data-question="3">
+                    <h2>What's your body type?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="bodyType" value="ectomorph">
+                            <span class="option-content">
+                                <div class="option-icon">📐</div>
+                                <div class="option-text">
+                                    <h3>Ectomorph</h3>
+                                    <p>Naturally thin, hard to gain weight</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="bodyType" value="mesomorph">
+                            <span class="option-content">
+                                <div class="option-icon">🏋️</div>
+                                <div class="option-text">
+                                    <h3>Mesomorph</h3>
+                                    <p>Athletic build, gains muscle easily</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="bodyType" value="endomorph">
+                            <span class="option-content">
+                                <div class="option-icon">🔴</div>
+                                <div class="option-text">
+                                    <h3>Endomorph</h3>
+                                    <p>Gains weight easily, harder to lose</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="bodyType" value="mixed">
+                            <span class="option-content">
+                                <div class="option-icon">🔄</div>
+                                <div class="option-text">
+                                    <h3>Mixed</h3>
+                                    <p>Combination of body types</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4: Activity Level -->
+                <div class="question" data-question="4">
+                    <h2>How active are you?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="activityLevel" value="sedentary">
+                            <span class="option-content">
+                                <div class="option-icon">🛋️</div>
+                                <div class="option-text">
+                                    <h3>Sedentary</h3>
+                                    <p>Little to no exercise</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="activityLevel" value="light">
+                            <span class="option-content">
+                                <div class="option-icon">🚶</div>
+                                <div class="option-text">
+                                    <h3>Lightly Active</h3>
+                                    <p>Light exercise 1-3 days/week</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="activityLevel" value="moderate">
+                            <span class="option-content">
+                                <div class="option-icon">🏃</div>
+                                <div class="option-text">
+                                    <h3>Moderately Active</h3>
+                                    <p>Moderate exercise 3-5 days/week</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="activityLevel" value="very">
+                            <span class="option-content">
+                                <div class="option-icon">🏃‍♂️</div>
+                                <div class="option-text">
+                                    <h3>Very Active</h3>
+                                    <p>Hard exercise 6-7 days/week</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="activityLevel" value="extreme">
+                            <span class="option-content">
+                                <div class="option-icon">🔥</div>
+                                <div class="option-text">
+                                    <h3>Extremely Active</h3>
+                                    <p>Very hard exercise, physical job</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5: Target Body Part -->
+                <div class="question" data-question="5">
+                    <h2>Which body part do you want to focus on?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="targetBodyPart" value="belly">
+                            <span class="option-content">
+                                <div class="option-icon">🍎</div>
+                                <div class="option-text">
+                                    <h3>Belly/Stomach</h3>
+                                    <p>Reduce belly fat</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="targetBodyPart" value="arms">
+                            <span class="option-content">
+                                <div class="option-icon">💪</div>
+                                <div class="option-text">
+                                    <h3>Arms</h3>
+                                    <p>Tone and strengthen arms</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="targetBodyPart" value="legs">
+                            <span class="option-content">
+                                <div class="option-icon">🦵</div>
+                                <div class="option-text">
+                                    <h3>Legs</h3>
+                                    <p>Slim and tone legs</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="targetBodyPart" value="overall">
+                            <span class="option-content">
+                                <div class="option-icon">🎯</div>
+                                <div class="option-text">
+                                    <h3>Overall</h3>
+                                    <p>Full body transformation</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 6: Eating Habits -->
+                <div class="question" data-question="6">
+                    <h2>How would you describe your eating habits?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="eatingHabits" value="emotional">
+                            <span class="option-content">
+                                <div class="option-icon">😢</div>
+                                <div class="option-text">
+                                    <h3>Emotional Eater</h3>
+                                    <p>Eat when stressed or emotional</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="eatingHabits" value="mindless">
+                            <span class="option-content">
+                                <div class="option-icon">🤔</div>
+                                <div class="option-text">
+                                    <h3>Mindless Eater</h3>
+                                    <p>Eat without thinking</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="eatingHabits" value="controlled">
+                            <span class="option-content">
+                                <div class="option-icon">🎯</div>
+                                <div class="option-text">
+                                    <h3>Controlled Eater</h3>
+                                    <p>Usually mindful about food</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="eatingHabits" value="healthy">
+                            <span class="option-content">
+                                <div class="option-icon">🥗</div>
+                                <div class="option-text">
+                                    <h3>Health Conscious</h3>
+                                    <p>Already eat healthy</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 7: Food Preferences -->
+                <div class="question" data-question="7">
+                    <h2>What are your food preferences?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="foodPreferences" value="vegetarian">
+                            <span class="option-content">
+                                <div class="option-icon">🥬</div>
+                                <div class="option-text">
+                                    <h3>Vegetarian</h3>
+                                    <p>No meat, includes dairy/eggs</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="foodPreferences" value="vegan">
+                            <span class="option-content">
+                                <div class="option-icon">🌱</div>
+                                <div class="option-text">
+                                    <h3>Vegan</h3>
+                                    <p>No animal products</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="foodPreferences" value="omnivore">
+                            <span class="option-content">
+                                <div class="option-icon">🍖</div>
+                                <div class="option-text">
+                                    <h3>Omnivore</h3>
+                                    <p>Eat everything</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="foodPreferences" value="keto">
+                            <span class="option-content">
+                                <div class="option-icon">🥑</div>
+                                <div class="option-text">
+                                    <h3>Keto/Low-Carb</h3>
+                                    <p>High fat, low carb</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 8: Cooking Skills -->
+                <div class="question" data-question="8">
+                    <h2>How would you rate your cooking skills?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="cookingSkills" value="beginner">
+                            <span class="option-content">
+                                <div class="option-icon">🍳</div>
+                                <div class="option-text">
+                                    <h3>Beginner</h3>
+                                    <p>Basic cooking skills</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="cookingSkills" value="intermediate">
+                            <span class="option-content">
+                                <div class="option-icon">👨‍🍳</div>
+                                <div class="option-text">
+                                    <h3>Intermediate</h3>
+                                    <p>Can follow recipes well</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="cookingSkills" value="advanced">
+                            <span class="option-content">
+                                <div class="option-icon">👩‍🍳</div>
+                                <div class="option-text">
+                                    <h3>Advanced</h3>
+                                    <p>Experienced cook</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="cookingSkills" value="expert">
+                            <span class="option-content">
+                                <div class="option-icon">🌟</div>
+                                <div class="option-text">
+                                    <h3>Expert</h3>
+                                    <p>Professional level</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 9: Time Commitment -->
+                <div class="question" data-question="9">
+                    <h2>How much time can you commit to meal prep?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="timeCommitment" value="15min">
+                            <span class="option-content">
+                                <div class="option-icon">⏰</div>
+                                <div class="option-text">
+                                    <h3>15 minutes/day</h3>
+                                    <p>Quick and simple meals</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="timeCommitment" value="30min">
+                            <span class="option-content">
+                                <div class="option-icon">⏱️</div>
+                                <div class="option-text">
+                                    <h3>30 minutes/day</h3>
+                                    <p>Moderate meal prep</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="timeCommitment" value="1hour">
+                            <span class="option-content">
+                                <div class="option-icon">🕐</div>
+                                <div class="option-text">
+                                    <h3>1 hour/day</h3>
+                                    <p>Dedicated cooking time</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="timeCommitment" value="batch">
+                            <span class="option-content">
+                                <div class="option-icon">📦</div>
+                                <div class="option-text">
+                                    <h3>Batch cooking</h3>
+                                    <p>Weekly meal prep</p>
+                                </div>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 10: Motivation -->
+                <div class="question" data-question="10">
+                    <h2>What motivates you most?</h2>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="motivation" value="health">
+                            <span class="option-content">
+                                <div class="option-icon">❤️</div>
+                                <div class="option-text">
+                                    <h3>Health Benefits</h3>
+                                    <p>Feeling better and healthier</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="motivation" value="appearance">
+                            <span class="option-content">
+                                <div class="option-icon">👗</div>
+                                <div class="option-text">
+                                    <h3>Appearance</h3>
+                                    <p>Looking better in clothes</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="motivation" value="confidence">
+                            <span class="option-content">
+                                <div class="option-icon">💪</div>
+                                <div class="option-text">
+                                    <h3>Confidence</h3>
+                                    <p>Feeling more confident</p>
+                                </div>
+                            </span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="motivation" value="performance">
+                                <span class="option-content">
+                                    <div class="option-icon">🏆</div>
+                                    <div class="option-text">
+                                        <h3>Performance</h3>
+                                        <p>Athletic performance</p>
+                                    </div>
+                                </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="question results" data-question="11">
+                    <div class="results-content">
+                        <div class="download-section">
+                            <div class="app-info">
+                                <h3>AI Calorie Counter & Meal Plan</h3>
+                                <p class="app-description">Achieve your health and fitness goals effortlessly with our AI-powered calorie tracking app. Get personalized meal plans, instant food scanning, and smart nutrition insights.</p>
+                                <div class="app-features">
+                                    <span class="feature">🔥 AI Food Scanner</span>
+                                    <span class="feature">📊 Smart Analytics</span>
+                                    <span class="feature">🥗 Personalized Plans</span>
+                                    <span class="feature">⚡ Instant Results</span>
+                                </div>
+                                <div class="rating">
+                                    <span class="stars">⭐⭐⭐⭐⭐</span>
+                                    <span class="rating-text">4.4 • 500K+ Downloads</span>
+                                </div>
+                            </div>
+                            <div class="download-buttons">
+                                <a href="https://play.google.com/store/apps/details?id=ai.calory.tracker.counter.diet&pcampaignid=web_share" target="_blank" class="download-btn">
+                                    <span class="download-icon">📱</span>
+                                    <span class="download-text">Download on Google Play</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="next-steps">
+                            <h3>Next Steps:</h3>
+                            <ul>
+                                <li>📱 Download Calorie Scanner AI app</li>
+                                <li>🔐 Create your account</li>
+                                <li>📊 Start tracking your nutrition</li>
+                                <li>🎯 Follow your personalized plan</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="navigation">
+                <button type="button" id="prevBtn" class="nav-btn prev-btn" disabled>
+                    <span>← Previous</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- Initialize Mixpanel -->
+    <script type="text/javascript">
+        // Initialize Mixpanel with your project token
+        // Replace 'YOUR_PROJECT_TOKEN' with your actual Mixpanel project token
+        mixpanel.init('YOUR_PROJECT_TOKEN', {
+            debug: true,
+            track_pageview: true,
+            persistence: 'localStorage'
+        });
+    </script>
+</body>
+</html> 
