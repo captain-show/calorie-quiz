@@ -1,7 +1,7 @@
 class QuizApp {
     constructor() {
         this.currentQuestion = 1;
-        this.totalQuestions = 10;
+        this.totalQuestions = 15;
         this.answers = {};
         this.init();
     }
@@ -92,7 +92,7 @@ class QuizApp {
 
     showDownloadSection() {
         // Show download section page
-        this.showQuestion(11, 'right');
+        this.showQuestion(16, 'right');
     }
     
     // Simple event tracking for question number
