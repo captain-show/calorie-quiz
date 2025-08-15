@@ -159,15 +159,13 @@ function openEmailModal(event) {
         event.stopPropagation();
     }
     
-    if (!selectedPlan) {
-        alert('Please select a plan first');
-        return;
-    }
+    // Use selected plan or default to monthly
+    const planToUse = selectedPlan || 'monthly';
     
     // Track subscribe button click
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('subscribe_complete', {
-            plan_type: selectedPlan,
+            plan_type: planToUse,
             timestamp: new Date().toISOString()
         });
     }
@@ -176,7 +174,7 @@ function openEmailModal(event) {
     if (typeof fbq !== 'undefined') {
         fbq('track', 'CustomEvent', {
             event_name: 'subscribe_complete',
-            plan_type: selectedPlan
+            plan_type: planToUse
         });
     }
     
@@ -185,7 +183,7 @@ function openEmailModal(event) {
         'annual': 'Premium Annual',
         'monthly': 'Premium Monthly'
     };
-    document.getElementById('selectedPlanName').textContent = planNames[selectedPlan];
+    document.getElementById('selectedPlanName').textContent = planNames[planToUse];
     
     // Show modal
     document.getElementById('emailModal').style.display = 'block';
@@ -217,10 +215,13 @@ function submitEmail() {
         return;
     }
     
+    // Use selected plan or default to monthly
+    const planToUse = selectedPlan || 'monthly';
+    
     // Track email submission
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('email_submitted', {
-            plan_type: selectedPlan,
+            plan_type: planToUse,
             email: email,
             timestamp: new Date().toISOString()
         });
@@ -230,7 +231,7 @@ function submitEmail() {
     if (typeof fbq !== 'undefined') {
         fbq('track', 'CustomEvent', {
             event_name: 'email_submitted',
-            plan_type: selectedPlan
+            plan_type: planToUse
         });
         
         // Track Lead event for Facebook Ads
@@ -243,10 +244,10 @@ function submitEmail() {
         };
         
         fbq('track', 'Purchase', {
-            value: planPrices[selectedPlan],
+            value: planPrices[planToUse],
             currency: 'USD',
             content_type: 'subscription',
-            content_name: selectedPlan === 'annual' ? 'Premium Annual Plan' : 'Premium Monthly Plan'
+            content_name: planToUse === 'annual' ? 'Premium Annual Plan' : 'Premium Monthly Plan'
         });
     }
     
@@ -258,7 +259,7 @@ function submitEmail() {
         'annual': 'Premium Annual',
         'monthly': 'Premium Monthly'
     };
-    document.getElementById('finalPlanName').textContent = planNames[selectedPlan];
+    document.getElementById('finalPlanName').textContent = planNames[planToUse];
     document.getElementById('thankYouModal').style.display = 'block';
 }
 
