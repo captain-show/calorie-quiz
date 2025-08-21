@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Counter - Your Personalized Path to Better Health</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Mixpanel -->
+    <script type="text/javascript">
+    (function(c,a){if(!a.__SV){var b=window;try{var d,m,j,k=b.location,f=k.hash;d=function(a,b){return(m=a.match(RegExp(b+"=([^&]*)")))?m[1]:null};f&&d(f,"state")&&(j=JSON.parse(decodeURIComponent(d(f,"state"))),"mpeditor"===j.action&&(b.sessionStorage.setItem("_mpcehash",f),history.replaceState(j.desiredHash||"",c.title,k.pathname+k.search)))}catch(n){}var l,h;window.mixpanel=a;a._i=[];a.init=function(b,d,g){function c(b,i){var a=i.split(".");2==a.length&&(b=b[a[0]],i=a[1]);b[i]=function(){b.push([i].concat(Array.prototype.slice.call(arguments,0)))}}var e=a;"undefined"!==typeof g?e=a[g]=[]:g="mixpanel";e.people=e.people||[];e.toString=function(b){var a="mixpanel";"mixpanel"!==g&&(a+="."+g);b||(a+=" (stub)");return a};e.people.toString=function(){return e.toString(1)+".people (stub)"};l="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");for(h=0;h<l.length;h++)c(e,l[h]);var f="set set_once union unset remove delete".split(" ");e.get_group=function(){function a(c){b[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));e.push([d,call2])}}for(var b={},d=["get_group"].concat(Array.prototype.slice.call(arguments,0)),c=0;c<f.length;c++)a(f[c]);return b};a._i.push([b,d,g])};a.__SV=1.2;b=c.createElement("script");b.type="text/javascript";b.async=!0;b.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===c.location.protocol&&"//cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn4.mxpnl.com/libs/mixpanel-2-latest.min.js";d=c.getElementsByTagName("script")[0];d.parentNode.insertBefore(b,d)}})(document,window.mixpanel||[]);
+    </script>
+    
+    <!-- Facebook Pixel -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '635306689626890');
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=635306689626890&ev=PageView&noscript=1"/>
+    </noscript>
+</head>
+<body>
+    <div class="container">
+        <!-- Quiz Questions -->
+        <div class="screen active" id="quiz">
+            <div class="app-header">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <h1>Calorie Counter</h1>
+                </div>
+                <p class="tagline">Your Personalized Path to Better Health</p>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="question-container">
+                <!-- Question 1: Main Goal -->
+                <div class="question active" data-step="1">
+                    <h3>What's your main goal?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('mainGoal', 'lose')">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Lose Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('mainGoal', 'gain')">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Gain Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('mainGoal', 'maintain')">
+                            <i class="fas fa-balance-scale"></i>
+                            <span>Maintain Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('mainGoal', 'tone')">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Tone & Build Muscle</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('mainGoal', 'health')">
+                            <i class="fas fa-heart"></i>
+                            <span>Improve Health</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Question 2: Build Description -->
+                <div class="question" data-step="2">
+                    <h3>How would you describe your build?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('build', 'slim')">
+                            <i class="fas fa-user"></i>
+                            <span>Slim</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('build', 'athletic')">
+                            <i class="fas fa-running"></i>
+                            <span>Athletic</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('build', 'average')">
+                            <i class="fas fa-user"></i>
+                            <span>Average</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('build', 'stocky')">
+                            <i class="fas fa-user"></i>
+                            <span>Stocky</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('build', 'large')">
+                            <i class="fas fa-user"></i>
+                            <span>Large</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3: Body Goal -->
+                <div class="question" data-step="3">
+                    <h3>What's your body goal?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('bodyGoal', 'lean')">
+                            <i class="fas fa-fire"></i>
+                            <span>Lean & Toned</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('bodyGoal', 'muscular')">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Muscular & Strong</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('bodyGoal', 'fit')">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Fit & Healthy</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('bodyGoal', 'slim')">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>Slim Down</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('bodyGoal', 'maintain')">
+                            <i class="fas fa-balance-scale"></i>
+                            <span>Maintain Current</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4: Target Zones -->
+                <div class="question" data-step="4">
+                    <h3>What are your target zones?</h3>
+                    <div class="checkbox-grid">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_abs" value="abs" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_abs">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Abs & Core</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_arms" value="arms" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_arms">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Arms & Shoulders</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_chest" value="chest" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_chest">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Chest</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_back" value="back" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_back">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Back</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_legs" value="legs" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_legs">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Legs & Glutes</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="zone_full" value="full" onchange="selectCheckboxes('targetZones')">
+                            <label for="zone_full">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Full Body</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="nextQuestion()">Continue</button>
+                </div>
+
+                <!-- Question 5: Muscle Building Experience -->
+                <div class="question" data-step="5">
+                    <h3>What experience do you have with building muscle?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('muscleExperience', 'none')">
+                            <i class="fas fa-baby"></i>
+                            <span>Complete Beginner</span>
+                            <small>No experience</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('muscleExperience', 'some')">
+                            <i class="fas fa-child"></i>
+                            <span>Some Experience</span>
+                            <small>Basic knowledge</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('muscleExperience', 'intermediate')">
+                            <i class="fas fa-user"></i>
+                            <span>Intermediate</span>
+                            <small>Regular training</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('muscleExperience', 'advanced')">
+                            <i class="fas fa-crown"></i>
+                            <span>Advanced</span>
+                            <small>Years of experience</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 6: Age -->
+                <div class="question" data-step="6">
+                    <h3>What's your age?</h3>
+                    <div class="input-group">
+                        <input type="number" id="age" placeholder="Enter your age" min="13" max="100">
+                    </div>
+                    <button class="btn-primary" onclick="nextQuestion()">Continue</button>
+                </div>
+
+                <!-- Question 7: Gender -->
+                <div class="question" data-step="7">
+                    <h3>What's your gender?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('gender', 'male')">
+                            <i class="fas fa-mars"></i>
+                            <span>Male</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('gender', 'female')">
+                            <i class="fas fa-venus"></i>
+                            <span>Female</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('gender', 'other')">
+                            <i class="fas fa-genderless"></i>
+                            <span>Other</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 8: Height -->
+                <div class="question" data-step="8">
+                    <h3>What's your height?</h3>
+                    <div class="input-group">
+                        <input type="number" id="height" placeholder="Enter your height" min="100" max="250">
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" data-unit="cm">cm</button>
+                            <button class="unit-btn" data-unit="in">in</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="nextQuestion()">Continue</button>
+                </div>
+
+                <!-- Question 9: Weight -->
+                <div class="question" data-step="9">
+                    <h3>What's your current weight?</h3>
+                    <div class="input-group">
+                        <input type="number" id="weight" placeholder="Enter your weight" min="30" max="300" step="0.1">
+                        <div class="unit-toggle">
+                            <button class="unit-btn active" data-unit="kg">kg</button>
+                            <button class="unit-btn" data-unit="lbs">lbs</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="nextQuestion()">Continue</button>
+                </div>
+
+                <!-- Info Section 1 -->
+                <div class="info-section" data-step="10">
+                    <h3>Why This Matters</h3>
+                    <div class="info-content">
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <p>Your height and weight help us calculate your BMI and determine the most effective approach for your health goals.</p>
+                        <div class="bmi-info">
+                            <div class="bmi-category">
+                                <span class="bmi-label">Underweight</span>
+                                <span class="bmi-range">BMI < 18.5</span>
+                            </div>
+                            <div class="bmi-category">
+                                <span class="bmi-label">Normal</span>
+                                <span class="bmi-range">BMI 18.5-24.9</span>
+                            </div>
+                            <div class="bmi-category">
+                                <span class="bmi-label">Overweight</span>
+                                <span class="bmi-range">BMI 25-29.9</span>
+                            </div>
+                            <div class="bmi-category">
+                                <span class="bmi-label">Obese</span>
+                                <span class="bmi-range">BMI ≥ 30</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="nextQuestion()">Continue</button>
+                </div>
+
+                <!-- Question 11: Fitness Goals -->
+                <div class="question" data-step="11">
+                    <h3>What are your primary fitness goals?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('goals', 'lose')">
+                            <i class="fas fa-weight-scale"></i>
+                            <span>Lose Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('goals', 'gain')">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>Gain Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('goals', 'maintain')">
+                            <i class="fas fa-balance-scale"></i>
+                            <span>Maintain Weight</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('goals', 'tone')">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Tone & Build Muscle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 12: Dietary Habits -->
+                <div class="question" data-step="12">
+                    <h3>What best describes your current eating habits?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('diet', 'regular')">
+                            <i class="fas fa-clock"></i>
+                            <span>Regular Meals</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('diet', 'irregular')">
+                            <i class="fas fa-random"></i>
+                            <span>Irregular Meals</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('diet', 'vegetarian')">
+                            <i class="fas fa-seedling"></i>
+                            <span>Vegetarian</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('diet', 'keto')">
+                            <i class="fas fa-fire"></i>
+                            <span>Keto/Low-Carb</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('diet', 'none')">
+                            <i class="fas fa-utensils"></i>
+                            <span>No Specific Diet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 13: Activity Level -->
+                <div class="question" data-step="13">
+                    <h3>How active are you on a typical week?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('activity', 'sedentary')">
+                            <i class="fas fa-couch"></i>
+                            <span>Sedentary</span>
+                            <small>Little to no exercise</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('activity', 'light')">
+                            <i class="fas fa-walking"></i>
+                            <span>Lightly Active</span>
+                            <small>1-3 days/week</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('activity', 'moderate')">
+                            <i class="fas fa-running"></i>
+                            <span>Moderately Active</span>
+                            <small>3-5 days/week</small>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('activity', 'very')">
+                            <i class="fas fa-bicycle"></i>
+                            <span>Very Active</span>
+                            <small>6-7 days/week</small>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Question 14: Sleep Patterns -->
+                <div class="question" data-step="14">
+                    <h3>How many hours do you typically sleep per night?</h3>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('sleep', 'less6')">
+                            <i class="fas fa-moon"></i>
+                            <span>Less than 6 hours</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('sleep', '6-7')">
+                            <i class="fas fa-moon"></i>
+                            <span>6-7 hours</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('sleep', '7-8')">
+                            <i class="fas fa-moon"></i>
+                            <span>7-8 hours</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('sleep', 'more8')">
+                            <i class="fas fa-moon"></i>
+                            <span>More than 8 hours</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 15: Stress Levels -->
+                <div class="question" data-step="15">
+                    <h3>How would you rate your stress level?</h3>
+                    <div class="stress-scale">
+                        <div class="stress-option" onclick="selectChoice('stress', 'low')">
+                            <span class="stress-label">Low</span>
+                            <div class="stress-bar low"></div>
+                        </div>
+                        <div class="stress-option" onclick="selectChoice('stress', 'moderate')">
+                            <span class="stress-label">Moderate</span>
+                            <div class="stress-bar moderate"></div>
+                        </div>
+                        <div class="stress-option" onclick="selectChoice('stress', 'high')">
+                            <span class="stress-label">High</span>
+                            <div class="stress-bar high"></div>
+                            </div>
+                    </div>
+                </div>
+
+                <!-- Question 16: Medical Conditions -->
+                <div class="question" data-step="16">
+                    <h3>Do you have any medical conditions we should know about?</h3>
+                    <p class="subtitle">This helps us provide safer, more personalized recommendations</p>
+                    <div class="choice-grid">
+                        <div class="choice-card" onclick="selectChoice('medical', 'none')">
+                            <i class="fas fa-heart"></i>
+                            <span>None</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('medical', 'diabetes')">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Diabetes</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('medical', 'heart')">
+                            <i class="fas fa-heart-pulse"></i>
+                            <span>Heart Condition</span>
+                        </div>
+                        <div class="choice-card" onclick="selectChoice('medical', 'other')">
+                            <i class="fas fa-ellipsis-h"></i>
+                            <span>Other</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Summary Screen -->
+        <div class="screen" id="summary">
+            <div class="app-header">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <h1>Calorie Counter</h1>
+                </div>
+                <p class="tagline">Your Personalized Path to Better Health</p>
+            </div>
+            
+            <h2>Your Health Profile</h2>
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3 id="profileName">Your Profile</h3>
+                        <p id="profileAge">Age: --</p>
+                    </div>
+                </div>
+                
+                <div class="health-metrics">
+                    <div class="metric">
+                        <span class="metric-label">BMI</span>
+                        <span class="metric-value" id="bmiValue">--</span>
+                        <span class="metric-category" id="bmiCategory">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Health Risk</span>
+                        <span class="metric-value" id="healthRisk">--</span>
+                    </div>
+                </div>
+
+                <div class="health-risks">
+                    <h4>Health Risk Assessment</h4>
+                    <div class="risk-details" id="riskDetails">
+                        <div class="risk-item">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Current Assessment:</strong>
+                                <span id="riskAssessment">Based on your BMI and lifestyle factors, we'll provide a detailed risk analysis.</span>
+                            </div>
+                        </div>
+                        <div class="risk-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>Potential Risks:</strong>
+                                <span id="potentialRisks">Detailed risk factors will be calculated based on your responses.</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Your Personalized Plan</h4>
+                    <div class="recommendation-item">
+                        <i class="fas fa-utensils"></i>
+                        <div>
+                            <strong>Nutrition Strategy:</strong>
+                            <span id="nutritionStrategy">--</span>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <i class="fas fa-dumbbell"></i>
+                        <div>
+                            <strong>Fitness Approach:</strong>
+                            <span id="fitnessApproach">--</span>
+                        </div>
+                    </div>
+                    <div class="recommendation-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Weekly Goals:</strong>
+                            <span id="weeklyGoals">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-primary" onclick="showPlans()">Get Your Plan</button>
+        </div>
+
+        <!-- Subscription Plans Screen -->
+        <div class="screen" id="plans">
+            <div class="app-header">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <h1>Calorie Counter</h1>
+                </div>
+                <p class="tagline">Your Personalized Path to Better Health</p>
+            </div>
+            
+            <h2>Choose Your Plan</h2>
+            <p class="subtitle">Start your journey to better health today</p>
+            
+            <div class="countdown-timer">
+                <div class="timer-label">Special Offer Expires In:</div>
+                <div class="timer" id="countdown">
+                    <span id="minutes">5</span>:<span id="seconds">00</span>
+                </div>
+                <div class="offer-badge">50% OFF</div>
+            </div>
+
+            <div class="plans-container">
+                <div class="plan-card" data-plan="weekly">
+                    <div class="plan-header">
+                        <h3>Weekly</h3>
+                        <div class="plan-price">
+                            <span class="price">$2.99</span>
+                            <span class="period">/week</span>
+                        </div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Personalized meal plans</li>
+                        <li><i class="fas fa-check"></i> Progress tracking</li>
+                        <li><i class="fas fa-check"></i> Expert support</li>
+                    </ul>
+                    <button class="btn-plan" onclick="selectPlan('weekly')">Choose Weekly</button>
+                </div>
+
+                <div class="plan-card popular selected" data-plan="monthly">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3>Monthly</h3>
+                        <div class="plan-price">
+                            <span class="price">$9.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <div class="savings">Save 25%</div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Everything in Weekly</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <button class="btn-plan selected" onclick="selectPlan('monthly')">Selected</button>
+                </div>
+
+                <div class="plan-card" data-plan="yearly">
+                    <div class="plan-header">
+                        <h3>Yearly</h3>
+                        <div class="plan-price">
+                            <span class="price">$59.99</span>
+                            <span class="period">/year</span>
+                        </div>
+                        <div class="savings">Save 50%</div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Everything in Monthly</li>
+                        <li><i class="fas fa-check"></i> 1-on-1 coaching</li>
+                        <li><i class="fas fa-check"></i> Exclusive content</li>
+                    </ul>
+                    <button class="btn-plan" onclick="selectPlan('yearly')">Choose Yearly</button>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="showEmailCapture()">Subscribe Now</button>
+        </div>
+
+        <!-- Email Capture Screen -->
+        <div class="screen" id="emailCapture">
+            <div class="app-header">
+                <div class="logo">
+                    <i class="fas fa-dumbbell"></i>
+                    <h1>Calorie Counter</h1>
+                </div>
+                <p class="tagline">Your Personalized Path to Better Health</p>
+            </div>
+            
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h2>Your Personalized Plan is Ready!</h2>
+                <p>Enter your email to receive your customized fitness and nutrition plan, plus exclusive tips to help you reach your goals faster.</p>
+            </div>
+            
+            <form class="email-form" onsubmit="submitEmail(event)">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                    <label for="email">Email Address</label>
+                </div>
+                <button type="submit" class="btn-primary">Get My Plan</button>
+            </form>
+
+            <div class="bonus-offer">
+                <h4>🎁 Bonus: Free 7-Day Meal Plan</h4>
+                <p>Get started immediately with a week of delicious, calorie-controlled meals designed just for you.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
