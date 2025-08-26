@@ -760,6 +760,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Переход к пятнадцатому вопросу
                 question14.style.display = 'none';
                 question15.style.display = 'block';
+                
+                // Запускаем автоматическую загрузку
+                startLoading15();
             }, 300);
         });
     });
@@ -1037,10 +1040,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Сбрасываем полосу загрузки
         loadingFill15.style.width = '0%';
         
-        // Запускаем анимацию загрузки
+        // Запускаем анимацию загрузки с небольшой задержкой для плавности
         setTimeout(() => {
             loadingFill15.style.width = '100%';
-        }, 100);
+        }, 200);
         
         // Через 3 секунды переходим к следующему экрану
         setTimeout(() => {
@@ -1048,29 +1051,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Переход к шестнадцатому экрану
             question15.style.display = 'none';
             question16.style.display = 'block';
-            
-            // Автоматически запускаем загрузку в шестнадцатом экране
-            startLoading16();
         }, 3000);
     }
     
-    // Функция автоматической загрузки для шестнадцатого экрана
-    function startLoading16() {
-        // Сбрасываем полосу загрузки
-        loadingFill16.style.width = '0%';
-        
-        // Запускаем анимацию загрузки
-        setTimeout(() => {
-            loadingFill16.style.width = '100%';
-        }, 100);
-        
-        // Через 3 секунды завершаем квиз
-        setTimeout(() => {
-            console.log('Loading 16 completed, quiz finished');
-            // Здесь можно добавить логику для завершения квиза
-            alert('Quiz completed! Your personalized nutrition plan is ready.');
-        }, 3000);
-    }
+
 
     // Обработчики для двадцать первого вопроса (возраст)
     continueBtn21.addEventListener('click', function() {

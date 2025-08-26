@@ -1167,7 +1167,7 @@ body {
     background: #007bff;
     border-radius: 4px;
     width: 0%;
-    transition: width 3s linear;
+    transition: width 3s ease-in-out;
 }
 
 .loading-text {
