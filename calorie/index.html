@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Scanner AI - Your Personalized Nutrition Plan</title>
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '4190060777949083');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=4190060777949083&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-container">
+
+
+            <!-- Первый вопрос -->
+            <div class="quiz-card" id="question1" style="display: block;">
+                <div class="welcome-section">
+                    <img src="img/favicon.ico" alt="Calorie Scanner AI" class="welcome-icon">
+                    <h2 class="welcome-text">Welcome to Calorie Scanner AI</h2>
+                </div>
+                
+                <div class="header">
+                    <button class="back-btn" id="backBtn1">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill1"></div>
+                        </div>
+                        <span class="progress-text">1 of 5</span>
+                    </div>
+                </div>
+                
+                <h1 class="question">What's your main goal?</h1>
+                
+                <div class="options">
+                    <div class="option" data-value="lose-1-10">
+                        <div class="option-icon">⚖️</div>
+                        <span class="option-text">Lose 1-10 kg</span>
+                    </div>
+                    
+                    <div class="option" data-value="lose-11-20">
+                        <div class="option-icon">📉</div>
+                        <span class="option-text">Lose 11-20 kg</span>
+                    </div>
+                    
+                    <div class="option" data-value="lose-20-plus">
+                        <div class="option-icon">🎯</div>
+                        <span class="option-text">Lose 20+ kg</span>
+                    </div>
+                    
+                    <div class="option" data-value="gain-muscle">
+                        <div class="option-icon">💪</div>
+                        <span class="option-text">Gain muscle</span>
+                    </div>
+                    
+                    <div class="option" data-value="maintain">
+                        <div class="option-icon">🔄</div>
+                        <span class="option-text">Maintain current weight</span>
+                    </div>
+                    
+                    <div class="option" data-value="undecided">
+                        <div class="option-icon">🤔</div>
+                        <span class="option-text">I haven't decided yet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Второй вопрос -->
+            <div class="quiz-card" id="question2" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn2">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill2"></div>
+                        </div>
+                        <span class="progress-text">2 of 5</span>
+                    </div>
+                </div>
+                
+                <h1 class="question">What's your sex?</h1>
+                
+                <div class="options">
+                    <img src="img/woman.png" alt="Female" class="person-image" data-value="female">
+                    <img src="img/man.png" alt="Male" class="person-image" data-value="male">
+                </div>
+            </div>
+
+            <!-- Третий информационный экран -->
+            <div class="quiz-card" id="question3" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn3">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill3"></div>
+                        </div>
+                        <span class="progress-text">3 of 5</span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h2 class="info-title">5+ million users</h2>
+                    <p class="info-subtitle">have joined us</p>
+                    
+                    <div class="info-image-container">
+                        <img src="img/company.png" alt="Company" class="info-image">
+                    </div>
+                    
+                    <button class="continue-btn" id="continueBtn3">Continue</button>
+                </div>
+            </div>
+
+            <!-- Четвертый вопрос -->
+            <div class="quiz-card" id="question4" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn4">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill4"></div>
+                        </div>
+                        <span class="progress-text">4 of 5</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What are you focusing on?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="losing-weight">
+                        <div class="option-icon">👍</div>
+                        <div class="option-text">Losing weight</div>
+                    </div>
+                    
+                    <div class="option" data-value="building-muscle">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">Building muscle</div>
+                    </div>
+                    
+                    <div class="option" data-value="keeping-fit">
+                        <div class="option-icon">🤟</div>
+                        <div class="option-text">Keeping fit</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пятый вопрос -->
+            <div class="quiz-card" id="question5" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn5">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill5"></div>
+                        </div>
+                        <span class="progress-text">5 of 6</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How would you describe your build?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="slender">
+                        <div class="option-icon">🦴</div>
+                        <div class="option-text">Slender</div>
+                    </div>
+                    
+                    <div class="option" data-value="medium-build">
+                        <div class="option-icon">⚖️</div>
+                        <div class="option-text">Medium build</div>
+                    </div>
+                    
+                    <div class="option" data-value="chubby">
+                        <div class="option-icon">🍎</div>
+                        <div class="option-text">Chubby</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Шестой вопрос -->
+            <div class="quiz-card" id="question6" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn6">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill6"></div>
+                        </div>
+                        <span class="progress-text">6 of 7</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your body goal?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="few-sizes-smaller">
+                        <div class="option-icon">📏</div>
+                        <div class="option-text">A few sizes smaller</div>
+                    </div>
+                    
+                    <div class="option" data-value="athletic">
+                        <div class="option-icon">🏃</div>
+                        <div class="option-text">Athletic</div>
+                    </div>
+                    
+                    <div class="option" data-value="shredded">
+                        <div class="option-icon">🔥</div>
+                        <div class="option-text">Shredded</div>
+                    </div>
+                    
+                    <div class="option" data-value="swole">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">Swole</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Седьмой вопрос -->
+            <div class="quiz-card" id="question7" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn7">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill7"></div>
+                        </div>
+                        <span class="progress-text">7 of 8</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What are your target zones?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="arms">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">Arms</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-arms">
+                            <label for="checkbox-arms"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="option" data-value="belly">
+                        <div class="option-icon">🍎</div>
+                        <div class="option-text">Belly</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-belly">
+                            <label for="checkbox-belly"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="option" data-value="legs">
+                        <div class="option-icon">🦵</div>
+                        <div class="option-text">Legs</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-legs">
+                            <label for="checkbox-legs"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="option" data-value="butt">
+                        <div class="option-icon">🍑</div>
+                        <div class="option-text">Butt</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-butt">
+                            <label for="checkbox-butt"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="option" data-value="face-and-neck">
+                        <div class="option-icon">👤</div>
+                        <div class="option-text">Face and neck</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-face-neck">
+                            <label for="checkbox-face-neck"></label>
+                        </div>
+                    </div>
+                    
+                    <div class="option" data-value="full-body">
+                        <div class="option-icon">🏃‍♂️</div>
+                        <div class="option-text">Full body</div>
+                        <div class="checkbox">
+                            <input type="checkbox" id="checkbox-full-body">
+                            <label for="checkbox-full-body"></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="continue-btn" id="continueBtn7">Continue</button>
+            </div>
+
+            <!-- Восьмой вопрос -->
+            <div class="quiz-card" id="question8" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn8">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill8"></div>
+                        </div>
+                        <span class="progress-text">8 of 9</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What experience do you have with losing weight?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="lost-weight-want-more">
+                        <div class="option-icon">⬇️</div>
+                        <div class="option-text">I've lost weight before and want to lose more</div>
+                    </div>
+                    
+                    <div class="option" data-value="tried-unsuccessful">
+                        <div class="option-icon">➡️</div>
+                        <div class="option-text">I've tried to lose weight before but was unsuccessful</div>
+                    </div>
+                    
+                    <div class="option" data-value="lost-weight-couldnt-maintain">
+                        <div class="option-icon">🔄</div>
+                        <div class="option-text">I've lost weight before, but I didn't manage to maintain a stable weight</div>
+                    </div>
+                    
+                    <div class="option" data-value="never-tried">
+                        <div class="option-icon">💡</div>
+                        <div class="option-text">I've never tried to lose weight before</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Девятый информационный экран -->
+            <div class="quiz-card" id="question9" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn9">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill9"></div>
+                        </div>
+                        <span class="progress-text">9 of 14</span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h2 class="info-title">Trusted by 5 million+ users</h2>
+                    
+                    <div class="info-image-container">
+                        <img src="img/review.png" alt="Review" class="info-image">
+                    </div>
+                    
+                    <p class="info-subtitle">Best nutrition app!</p>
+                    
+                    <div class="loading-container">
+                        <div class="loading-bar">
+                            <div class="loading-fill" id="loadingFill"></div>
+                        </div>
+                        <p class="loading-text">Loading your personalized plan...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Десятый вопрос -->
+            <div class="quiz-card" id="question10" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn10">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill10"></div>
+                        </div>
+                        <span class="progress-text">10 of 14</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How long ago were you in the best shape of your life?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="cant-remember">
+                        <div class="option-icon">🤔</div>
+                        <div class="option-text">I can't really remember</div>
+                    </div>
+                    
+                    <div class="option" data-value="1-2-years">
+                        <div class="option-icon">😔</div>
+                        <div class="option-text">1 to 2 years ago</div>
+                    </div>
+                    
+                    <div class="option" data-value="more-than-3-years">
+                        <div class="option-icon">😩</div>
+                        <div class="option-text">More than 3 years ago</div>
+                    </div>
+                    
+                    <div class="option" data-value="never">
+                        <div class="option-icon">❌</div>
+                        <div class="option-text">Never</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Одиннадцатый вопрос -->
+            <div class="quiz-card" id="question11" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn11">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill11"></div>
+                        </div>
+                        <span class="progress-text">11 of 14</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What are your food preferences?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="traditional">
+                        <div class="option-icon">🍗</div>
+                        <div class="option-text">Traditional</div>
+                    </div>
+                    
+                    <div class="option" data-value="vegetarian">
+                        <div class="option-icon">🥦</div>
+                        <div class="option-text">Vegetarian</div>
+                    </div>
+                    
+                    <div class="option" data-value="vegan">
+                        <div class="option-icon">🥑</div>
+                        <div class="option-text">Vegan</div>
+                    </div>
+                    
+                    <div class="option" data-value="keto">
+                        <div class="option-icon">🧀</div>
+                        <div class="option-text">Keto</div>
+                    </div>
+                    
+                    <div class="option" data-value="budget-friendly">
+                        <div class="option-icon">🍲</div>
+                        <div class="option-text">Budget-friendly</div>
+                    </div>
+                    
+                    <div class="option" data-value="protein-rich">
+                        <div class="option-icon">🥜</div>
+                        <div class="option-text">Protein-rich</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Двенадцатый вопрос -->
+            <div class="quiz-card" id="question12" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn12">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill12"></div>
+                        </div>
+                        <span class="progress-text">12 of 14</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">Do you prefer cooking, dining out, or ordering in?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="cooking-at-home">
+                        <div class="option-icon">🍲</div>
+                        <div class="option-text">Cooking at home for me</div>
+                    </div>
+                    
+                    <div class="option" data-value="restaurant">
+                        <div class="option-icon">🍴</div>
+                        <div class="option-text">I'd rather go to a restaurant</div>
+                    </div>
+                    
+                    <div class="option" data-value="takeout">
+                        <div class="option-icon">🥡</div>
+                        <div class="option-text">I'm a big fan of takeout food</div>
+                    </div>
+                    
+                    <div class="option" data-value="everything">
+                        <div class="option-icon">😊</div>
+                        <div class="option-text">I do a little bit of everything</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Тринадцатый вопрос -->
+            <div class="quiz-card" id="question13" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn13">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill13"></div>
+                            </div>
+                        </div>
+                        <span class="progress-text">13 of 14</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How much water do you drink daily?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="only-coffee-tea-soda">
+                        <div class="option-icon">☕️</div>
+                        <div class="option-text">Only coffee, tea, or soda</div>
+                    </div>
+                    
+                    <div class="option" data-value="about-2-glasses">
+                        <div class="option-icon">✌️</div>
+                        <div class="option-text">About 2 glasses (16 oz)</div>
+                    </div>
+                    
+                    <div class="option" data-value="2-to-6-glasses">
+                        <div class="option-icon">👌</div>
+                        <div class="option-text">2 to 6 glasses (16-48 oz)</div>
+                    </div>
+                    
+                    <div class="option" data-value="more-than-6-glasses">
+                        <div class="option-icon">🤟</div>
+                        <div class="option-text">More than 6 glasses</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Четырнадцатый вопрос -->
+            <div class="quiz-card" id="question14" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn14">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill14"></div>
+                        </div>
+                        <span class="progress-text">14 of 16</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How often do you go for walks?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="almost-every-day">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">Almost every day</div>
+                    </div>
+                    
+                    <div class="option" data-value="3-4-times-week">
+                        <div class="option-icon">😎</div>
+                        <div class="option-text">3-4 times per week</div>
+                    </div>
+                    
+                    <div class="option" data-value="1-2-times-week">
+                        <div class="option-icon">🙂</div>
+                        <div class="option-text">1-2 times per week</div>
+                    </div>
+                    
+                    <div class="option" data-value="once-month">
+                        <div class="option-icon">😟</div>
+                        <div class="option-text">Maybe once a month</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Пятнадцатый информационный экран -->
+            <div class="quiz-card" id="question15" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn15">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill15"></div>
+                        </div>
+                        <span class="progress-text">15 of 22</span>
+                    </div>
+                </div>
+                
+                <div class="info-section">
+                    <h2 class="info-title">Studies show that nutrition is 80% of your results</h2>
+                    
+                    <div class="info-image-container">
+                        <img src="img/food.png" alt="Food" class="info-image">
+                    </div>
+                    
+                    <div class="loading-container">
+                        <div class="loading-bar">
+                            <div class="loading-fill" id="loadingFill15"></div>
+                        </div>
+                        <p class="loading-text">Analyzing your preferences...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Шестнадцатый вопрос -->
+            <div class="quiz-card" id="question16" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn16">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill16"></div>
+                        </div>
+                        <span class="progress-text">16 of 22</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What is your work schedule like?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="9-to-5">
+                        <div class="option-icon">☀️</div>
+                        <div class="option-text">9 to 5</div>
+                    </div>
+                    
+                    <div class="option" data-value="night-shifts">
+                        <div class="option-icon">🌒</div>
+                        <div class="option-text">Night shifts</div>
+                    </div>
+                    
+                    <div class="option" data-value="flexible">
+                        <div class="option-icon">💁‍♂️</div>
+                        <div class="option-text">My hours are flexible</div>
+                    </div>
+                    
+                    <div class="option" data-value="retired">
+                        <div class="option-icon">👴</div>
+                        <div class="option-text">I'm retired</div>
+                    </div>
+                    
+                    <div class="option" data-value="not-working">
+                        <div class="option-icon">🏖️</div>
+                        <div class="option-text">I'm not working</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Семнадцатый вопрос -->
+            <div class="quiz-card" id="question17" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn17">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill17"></div>
+                        </div>
+                        <span class="progress-text">17 of 22</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How often do you work out?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="almost-every-day">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">Almost every day</div>
+                    </div>
+                    
+                    <div class="option" data-value="several-times-week">
+                        <div class="option-icon">👍</div>
+                        <div class="option-text">Several times a week</div>
+                    </div>
+                    
+                    <div class="option" data-value="several-times-month">
+                        <div class="option-icon">🤨</div>
+                        <div class="option-text">Several times a month</div>
+                    </div>
+                    
+                    <div class="option" data-value="never">
+                        <div class="option-icon">❌</div>
+                        <div class="option-text">Never</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Восемнадцатый вопрос -->
+            <div class="quiz-card" id="question18" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn18">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill18"></div>
+                        </div>
+                        <span class="progress-text">18 of 22</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How many hours do you sleep per night?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="less-than-5">
+                        <div class="option-icon">😵‍💫</div>
+                        <div class="option-text">Less than 5 hours</div>
+                    </div>
+                    
+                    <div class="option" data-value="5-6-hours">
+                        <div class="option-icon">🖐️</div>
+                        <div class="option-text">5-6 hours</div>
+                    </div>
+                    
+                    <div class="option" data-value="7-8-hours">
+                        <div class="option-icon">👌</div>
+                        <div class="option-text">7-8 hours</div>
+                    </div>
+                    
+                    <div class="option" data-value="more-than-8">
+                        <div class="option-icon">🥹</div>
+                        <div class="option-text">More than 8 hours</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Девятнадцатый вопрос -->
+            <div class="quiz-card" id="question19" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn19">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill19"></div>
+                        </div>
+                        <span class="progress-text">19 of 22</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">Do you have any of these habits?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="casual-drinker">
+                        <div class="option-icon">🍺</div>
+                        <div class="option-text">I'm a casual drinker</div>
+                    </div>
+                    
+                    <div class="option" data-value="sweet-tooth">
+                        <div class="option-icon">🍫</div>
+                        <div class="option-text">I have a raging sweet tooth</div>
+                    </div>
+                    
+                    <div class="option" data-value="soda">
+                        <div class="option-icon">🥤</div>
+                        <div class="option-text">I can't live without soda</div>
+                    </div>
+                    
+                    <div class="option" data-value="salty-crispy">
+                        <div class="option-icon">🧂</div>
+                        <div class="option-text">I like all things salty & crispy</div>
+                    </div>
+                    
+                    <div class="option" data-value="screen-time">
+                        <div class="option-icon">🍕</div>
+                        <div class="option-text">I mix screen time with meal time</div>
+                    </div>
+                    
+                    <div class="option" data-value="none">
+                        <div class="option-icon">❌</div>
+                        <div class="option-text">I have none of these</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Двадцатый вопрос -->
+            <div class="quiz-card" id="question20" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn20">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill20"></div>
+                        </div>
+                        <span class="progress-text">20 of 22</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">Have any of these events led you to gain weight in the last few years?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="marriage-relationship">
+                        <div class="option-icon">🤵‍♂️</div>
+                        <div class="option-text">Marriage or relationship</div>
+                    </div>
+                    
+                    <div class="option" data-value="busy-life">
+                        <div class="option-icon">😓</div>
+                        <div class="option-text">Busy work or family life</div>
+                    </div>
+                    
+                    <div class="option" data-value="financial-struggles">
+                        <div class="option-icon">💰</div>
+                        <div class="option-text">Financial struggles</div>
+                    </div>
+                    
+                    <div class="option" data-value="injury-disability">
+                        <div class="option-icon">🏥</div>
+                        <div class="option-text">Injury or disability</div>
+                    </div>
+                    
+                    <div class="option" data-value="stress-mental-health">
+                        <div class="option-icon">😣</div>
+                        <div class="option-text">Stress or mental health issues</div>
+                    </div>
+                    
+                    <div class="option" data-value="none-above">
+                        <div class="option-icon">❌</div>
+                        <div class="option-text">None of the above</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Двадцать первый вопрос -->
+            <div class="quiz-card" id="question21" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn21">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill21"></div>
+                        </div>
+                        <span class="progress-text">21 of 25</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What is your age?</h2>
+                
+                <div class="info-text">
+                    <p>💡 We ask your age to personalize your plan</p>
+                    <p>As you grow older, you need about 50% more protein than when you were younger to keep your muscles strong and healthy.</p>
+                </div>
+                
+                <div class="input-container">
+                    <input type="number" id="ageInput" class="age-input" placeholder="Enter your age" min="13" max="120">
+                </div>
+                
+                <button class="continue-btn" id="continueBtn21">Continue</button>
+            </div>
+
+            <!-- Двадцать второй вопрос (рост) -->
+            <div class="quiz-card" id="question22" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn22">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill22"></div>
+                        </div>
+                        <span class="progress-text">22 of 25</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your height?</h2>
+                
+                <div class="info-text">
+                    <p>Please, enter a value between 140 cm and 220 cm</p>
+                </div>
+                
+                <div class="input-container">
+                    <input type="number" id="heightInput" class="height-input" placeholder="Enter your height (cm)" min="140" max="220">
+                </div>
+                
+                <button class="continue-btn" id="continueBtn22">Continue</button>
+            </div>
+
+            <!-- Двадцать третий вопрос (текущий вес) -->
+            <div class="quiz-card" id="question23" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn23">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill23"></div>
+                        </div>
+                        <span class="progress-text">23 of 25</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your current weight?</h2>
+                
+                <div class="info-text">
+                    <p>Please, enter a value between 35 kg and 190 kg</p>
+                </div>
+                
+                <div class="input-container">
+                    <input type="number" id="currentWeightInput" class="current-weight-input" placeholder="Enter your current weight (kg)" min="35" max="190">
+                </div>
+                
+                <button class="continue-btn" id="continueBtn23">Continue</button>
+            </div>
+
+            <!-- Двадцать четвертый вопрос (целевой вес) -->
+            <div class="quiz-card" id="question24" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn24">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill24"></div>
+                        </div>
+                        <span class="progress-text">24 of 25</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your target weight?</h2>
+                
+                <div class="info-text">
+                    <p>Please, enter a value between 35 kg and 190 kg</p>
+                </div>
+                
+                <div class="input-container">
+                    <input type="number" id="weightInput" class="weight-input" placeholder="Enter target weight (kg)" min="35" max="190">
+                </div>
+                
+                <button class="continue-btn" id="continueBtn24">Continue</button>
+            </div>
+
+            <!-- Двадцать пятый вопрос (имя) -->
+            <div class="quiz-card" id="question25" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn25">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill25"></div>
+                        </div>
+                        <span class="progress-text">25 of 25</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your first name?</h2>
+                
+                <div class="input-container">
+                    <input type="text" id="nameInput" class="name-input" placeholder="Enter your first name">
+                </div>
+                
+                <button class="continue-btn" id="continueBtn25">Continue</button>
+            </div>
+
+            <!-- Экран профиля пользователя -->
+            <div class="quiz-card" id="profile-screen" style="display: none;">
+                <div class="profile-header">
+                    <h2 class="profile-title">Here's your wellness profile</h2>
+                </div>
+                
+                <div class="bmi-section">
+                    <div class="bmi-calculator">
+                        <div class="bmi-left">
+                            <h3 class="bmi-title">Body Mass Index (BMI)</h3>
+                            <div class="bmi-value" id="bmiValue">24.8</div>
+                        </div>
+                        <div class="bmi-right">
+                            <img src="img/woman.png" alt="Person" class="bmi-person-image">
+                        </div>
+                    </div>
+                    
+                    <div class="bmi-scale">
+                        <div class="scale-labels">
+                            <span class="scale-label">Underweight</span>
+                            <span class="scale-label">Normal</span>
+                            <span class="scale-label">Overweight</span>
+                            <span class="scale-label">Obese</span>
+                        </div>
+                        <div class="scale-bar">
+                            <div class="scale-fill">
+                                <div class="scale-marker" id="bmiMarker" style="left: 45%;"></div>
+                            </div>
+                        </div>
+                        <div class="scale-numbers">
+                            <span>18.5</span>
+                            <span>25</span>
+                            <span>30</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risks-section">
+                    <h3 class="risks-title">Health Risks</h3>
+                    <p class="risk-text optimal">Optimal health range. Maintain current lifestyle.</p>
+                </div>
+                
+                <div class="profile-panels">
+                    <div class="profile-panel">
+                        <h4 class="panel-title">🏃‍♂️ Lifestyle</h4>
+                        <p class="panel-text" id="lifestyleText">Active lifestyle with moderate drinking</p>
+                    </div>
+                    
+                    <div class="profile-panel">
+                        <h4 class="panel-title">💪 Fitness Level</h4>
+                        <p class="panel-text" id="fitnessText">Intermediate</p>
+                    </div>
+                    
+                    <div class="profile-panel">
+                        <h4 class="panel-title">🎯 Goal</h4>
+                        <p class="panel-text" id="goalText">Moderate weight loss</p>
+                    </div>
+                </div>
+                
+                <button class="continue-btn" id="continueProfileBtn">Continue</button>
+            </div>
+
+            <!-- Вопрос об уровне активности -->
+            <div class="quiz-card" id="question26" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn26">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill26"></div>
+                        </div>
+                        <span class="progress-text">26 of 28</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What's your activity level?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="low">
+                        <div class="option-icon">🧑🏻‍💻</div>
+                        <div class="option-text">Low</div>
+                    </div>
+                    
+                    <div class="option" data-value="moderate">
+                        <div class="option-icon">🚶🏻</div>
+                        <div class="option-text">Moderate</div>
+                    </div>
+                    
+                    <div class="option" data-value="high">
+                        <div class="option-icon">🕺</div>
+                        <div class="option-text">High</div>
+                    </div>
+                    
+                    <div class="option" data-value="extremely-high">
+                        <div class="option-icon">🦸🏼‍♂️</div>
+                        <div class="option-text">Extremely High</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос о скорости достижения цели -->
+            <div class="quiz-card" id="question27" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn27">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill27"></div>
+                        </div>
+                        <span class="progress-text">27 of 28</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">How quickly do you want to move towards your goal?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="slow-steady">
+                        <div class="option-icon">🐌</div>
+                        <div class="option-text">Slow and steady</div>
+                    </div>
+                    
+                    <div class="option" data-value="moderate-tempo">
+                        <div class="option-icon">⏱️</div>
+                        <div class="option-text">Moderate tempo</div>
+                    </div>
+                    
+                    <div class="option" data-value="as-quickly-possible">
+                        <div class="option-icon">🔥</div>
+                        <div class="option-text">As quickly as possible</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос о дополнительных целях -->
+            <div class="quiz-card" id="question28" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn28">
+                        <span class="back-arrow">←</span>
+                    </button>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill28"></div>
+                        </div>
+                        <span class="progress-text">28 of 29</span>
+                    </div>
+                </div>
+                
+                <h2 class="question">What else do you hope to achieve with HitMeal?</h2>
+                
+                <div class="options">
+                    <div class="option" data-value="fit-clothes">
+                        <div class="option-icon">👖</div>
+                        <div class="option-text">I want to fit into my clothes better</div>
+                    </div>
+                    
+                    <div class="option" data-value="feel-confident">
+                        <div class="option-icon">😎</div>
+                        <div class="option-text">I want to feel more comfortable and confident in my body</div>
+                    </div>
+                    
+                    <div class="option" data-value="feel-healthier">
+                        <div class="option-icon">💪</div>
+                        <div class="option-text">I want to feel healthier</div>
+                    </div>
+                    
+                    <div class="option" data-value="other">
+                        <div class="option-icon">😊</div>
+                        <div class="option-text">Other</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вопрос о Calorie Scanner AI -->
+            <div class="quiz-card" id="question29" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn29">
+                        <span class="back-arrow">←</span>
+                    </button>
+                </div>
+                
+                <div class="calorie-scanner-info">
+                    <h2 class="calorie-scanner-title">Calorie Scanner AI = Building Muscle in a Healthy Way</h2>
+                    
+                    <p class="calorie-scanner-description">
+                        With Calorie Scanner AI, you'll reach and maintain your target weight more easily by following a personalized nutrition plan.
+                    </p>
+                    
+                    <div class="calorie-scanner-image-container">
+                        <img src="img/charts.png" alt="Calorie Scanner AI" class="calorie-scanner-image">
+                    </div>
+                    
+                    <p class="calorie-scanner-reminder">
+                        Busy schedule? We can remind you when to start and end your fasts, helping you build consistency and stick to your new habits.
+                    </p>
+                    
+                    <button class="continue-btn" id="continueBtn29">Continue</button>
+                </div>
+            </div>
+
+            <!-- Экран загрузки диаграммы -->
+            <div class="quiz-card" id="question30" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn30">
+                        <span class="back-arrow">←</span>
+                    </button>
+                </div>
+                
+                <div class="chart-loading-section">
+                    <h2 class="chart-loading-title">Analyzing your answers...</h2>
+                    
+                    <p class="chart-loading-subtitle">We're analyzing your responses and creating your personalized plan</p>
+                    
+                    <div class="chart-loading-container">
+                        <div class="chart-loading-bar">
+                            <div class="chart-loading-fill" id="chartLoadingFill"></div>
+                        </div>
+                        <div class="chart-loading-percentage" id="chartLoadingPercentage">0%</div>
+                    </div>
+                    
+                    <p class="chart-loading-people">5 million people have chosen Calorie Scanner AI</p>
+                    
+                    <div class="review-section">
+                        <div class="stars-container">
+                            <span class="star">⭐</span>
+                            <span class="star">⭐</span>
+                            <span class="star">⭐</span>
+                            <span class="star">⭐</span>
+                            <span class="star">⭐</span>
+                        </div>
+                        
+                        <div class="review-content">
+                            <h3 class="review-title">Easy to use</h3>
+                            <p class="review-text">
+                                It helps me boost muscle and track my progress! I go to the gym regularly, and this app makes it easy to track my food, protein, and other macros.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Экран поздравления -->
+            <div class="quiz-card" id="question31" style="display: none;">
+                <div class="header">
+                    <button class="back-btn" id="backBtn31">
+                        <span class="back-arrow">←</span>
+                    </button>
+                </div>
+                
+                <div class="congratulations-section">
+                    <h2 class="congratulations-title">🎉 Congratulations!</h2>
+                    
+                    <p class="congratulations-subtitle">Your personalized plan is ready!</p>
+                    
+                    <p class="congratulations-message">You're just one step away from amazing changes. Your journey to a healthier, stronger you starts now!</p>
+                    
+                    <div class="congratulations-image-container">
+                        <img src="img/food.png" alt="Your Plan" class="congratulations-image">
+                    </div>
+                    
+                    <button class="continue-btn" id="continueBtn31">Continue</button>
+                </div>
+            </div>
+
+            <!-- Экран с планами питания -->
+            <div class="quiz-card" id="question32" style="display: none;">
+                <div class="nutrition-plans-section">
+                    <!-- Информация о пользователе -->
+                    <div class="user-info-section">
+                        <div class="user-info-item">
+                            <span class="info-label">Age:</span>
+                            <span class="info-value" id="userAgeDisplay">-</span>
+                        </div>
+                        <div class="user-info-item">
+                            <span class="info-label">Height:</span>
+                            <span class="info-value" id="userHeightDisplay">-</span>
+                        </div>
+                        <div class="user-info-item">
+                            <span class="info-label">Target Weight:</span>
+                            <span class="info-value" id="userTargetWeightDisplay">-</span>
+                        </div>
+                        <div class="user-info-item">
+                            <span class="info-label">BMI:</span>
+                            <span class="info-value" id="userBMIDisplay">-</span>
+                        </div>
+                    </div>
+                    
+                    <h2 class="nutrition-plans-title">Your Nutrition Plan is ready!</h2>
+                    
+                    <p class="plans-benefit">People using Calorie Scanner for 12-week achieve goals twice as fast as in 4-week</p>
+                    
+                    <div class="result-image-container">
+                        <img src="img/result.webp" alt="Your Results" class="result-image">
+                    </div>
+                    
+                    <div class="plans-container">
+                        <div class="plan-card popular selected" data-value="1-week">
+                            <div class="plan-content">
+                                <div class="plan-info">
+                                    <h3 class="plan-name">1-WEEK PLAN</h3>
+                                    <span class="popular-badge">Most Popular 🔥</span>
+                                </div>
+                                <div class="plan-pricing">
+                                    <div class="price-old">$9.99</div>
+                                    <div class="price-new">$4.99</div>
+                                    <div class="price-per-day">$0.71 per day</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="plan-card" data-value="4-week">
+                            <div class="plan-content">
+                                <div class="plan-info">
+                                    <h3 class="plan-name">4-WEEK PLAN</h3>
+                                </div>
+                                <div class="plan-pricing">
+                                    <div class="price-old">$29.99</div>
+                                    <div class="price-new">$14.99</div>
+                                    <div class="price-per-day">$0.49 per day</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="plan-card" data-value="12-week">
+                            <div class="plan-content">
+                                <div class="plan-info">
+                                    <h3 class="plan-name">12-WEEK PLAN</h3>
+                                </div>
+                                <div class="plan-pricing">
+                                    <div class="price-old">$59.99</div>
+                                    <div class="price-new">$14.99</div>
+                                    <div class="price-per-day">$0.33 per day</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="subscribe-btn" id="subscribeBtn">Subscribe</button>
+                    
+                    <!-- Дополнительные изображения -->
+                    <div class="additional-images">
+                        <img src="img/stars.webp" alt="Stars" class="additional-image">
+                        <img src="img/ava.webp" alt="Avatar" class="additional-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для подписки -->
+            <div class="modal-overlay" id="subscribeModal" style="display: none;">
+                <div class="modal-content">
+                    <h3 class="modal-title">Enter your email to receive your nutrition plan</h3>
+                    
+                    <div class="email-input-container">
+                        <input type="email" id="emailInput" class="email-input" placeholder="Enter your email address">
+                    </div>
+                    
+                    <div class="modal-buttons">
+                        <button class="modal-cancel-btn" id="cancelSubscribeBtn">Cancel</button>
+                        <button class="modal-submit-btn" id="submitSubscribeBtn">Send Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mixpanel -->
+    <script>
+        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (stub)");return d};a.people.toString=function(){return a.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+        for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call2_args=arguments;call2=[c].concat(Array.prototype.slice.call(call2_args,0));a.push([e,call2])}}var d={},e=["get_group"].concat(Array.prototype.slice.call(arguments,0));for(var c=0;c<j.length;c++)b(j[c])};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+        MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
+        
+        // Initialize Mixpanel
+        mixpanel.init('c16e068de694c8881d8c1f1531c19be9');
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
+

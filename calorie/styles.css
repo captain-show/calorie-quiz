@@ -1,0 +1,1424 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: white;
+    color: #2c3e50;
+    line-height: 1.4;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 0;
+}
+
+.quiz-container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.quiz-card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Фиксируем ширину контента внутри карточек */
+.quiz-card > * {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Фиксированная ширина для всех основных секций */
+.welcome-section,
+.info-section,
+.options,
+.info-text,
+.input-container,
+.header {
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Фиксированная ширина для заголовков */
+.question {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    color: #1e3a5f;
+    width: 100%;
+    max-width: 400px;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Фиксированная ширина для прогресс-бара */
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 400px;
+    height: 6px;
+    background: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #007bff;
+    border-radius: 3px;
+    width: 20%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    display: none;
+}
+
+.options {
+    margin-bottom: 0;
+}
+
+.option {
+    background: #f8f9fa;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.option:hover {
+    background: #f0f8ff;
+}
+
+.option.selected {
+    background: #f8f9fa;
+    color: #2c3e50;
+    border: 2px solid #007bff;
+}
+
+.option-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.option-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* Стили для второго вопроса (горизонтальное расположение) */
+#question2 .options {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Стили для фотографий во втором вопросе */
+#question2 .person-image {
+    width: 240px;
+    height: 320px;
+    border-radius: 12px;
+    object-fit: contain;
+    border: 3px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: #f8f9fa;
+}
+
+/* Делаем поле ответа размером с картинку */
+#question2 .option {
+    width: 240px;
+    height: 320px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 3px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+#question2 .option:hover {
+    background: #f0f8ff;
+}
+
+#question2 .option.selected {
+    background: #f0f8ff;
+    border-color: #007bff;
+}
+
+#question2 .person-image:hover {
+    background: #f0f8ff;
+}
+
+#question2 .person-image.selected {
+    border-color: #007bff;
+}
+
+/* Стили для третьего информационного экрана */
+.info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.info-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+}
+
+.info-subtitle {
+    font-size: 22px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0;
+    margin-top: -5px;
+}
+
+.info-image-container {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Ограничиваем ширину изображений */
+.info-image {
+    width: 100%;
+    max-width: 400px;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Специальные стили для девятого экрана */
+#question9 .info-image {
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.continue-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+.continue-btn:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Восстанавливаем удаленные стили */
+.welcome-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 12px;
+    padding-top: 20px;
+}
+
+.welcome-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.welcome-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1e3a5f;
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+}
+
+.back-btn:hover {
+    background: #f0f8ff;
+}
+
+.back-arrow {
+    font-size: 20px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+/* Скрываем стрелку на первом вопросе */
+#question1 .back-btn {
+    display: none;
+}
+
+/* Скрываем кнопку Continue в седьмом вопросе по умолчанию */
+#question7 .continue-btn {
+    display: none;
+}
+
+/* Стили для информационного текста */
+.info-text {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #6c757d;
+}
+
+.info-text p {
+    margin: 8px 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Стили для контейнера ввода */
+.input-container {
+    margin: 25px 0;
+    width: 100%;
+}
+
+/* Стили для полей ввода */
+.age-input,
+.height-input,
+.weight-input,
+.current-weight-input,
+.name-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    background: white;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.age-input:focus,
+.height-input:focus,
+.weight-input:focus,
+.current-weight-input:focus,
+.name-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.age-input::placeholder,
+.height-input::placeholder,
+.weight-input::placeholder,
+.current-weight-input::placeholder,
+.name-input::placeholder {
+    color: #adb5bd;
+}
+
+/* Стили для кнопки Continue в вопросах с вводом */
+#question21 .continue-btn,
+#question22 .continue-btn,
+#question23 .continue-btn,
+#question24 .continue-btn,
+#question25 .continue-btn,
+#question29 .continue-btn,
+#profile-screen .continue-btn {
+    display: block;
+    margin-top: 20px;
+}
+
+/* Стили для экрана загрузки диаграммы */
+.chart-loading-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.chart-loading-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+    animation: blink 2s infinite;
+}
+
+.chart-loading-subtitle {
+    font-size: 18px;
+    color: #1e3a5f;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+    animation: blink 2s infinite;
+}
+
+.chart-loading-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px 0;
+}
+
+.chart-loading-bar {
+    width: 100%;
+    height: 12px;
+    background: #e9ecef;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.chart-loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    border-radius: 6px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.chart-loading-percentage {
+    font-size: 24px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+}
+
+.chart-loading-people {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Стили для отзыва внутри экрана загрузки */
+.chart-loading-section .review-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    width: 100%;
+    max-width: 400px;
+}
+
+.chart-loading-section .stars-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.chart-loading-section .star {
+    font-size: 28px;
+    color: #ffc107;
+    animation: starGlow 2s infinite;
+}
+
+.chart-loading-section .review-content {
+    max-width: 100%;
+}
+
+.chart-loading-section .review-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0 0 10px 0;
+}
+
+.chart-loading-section .review-text {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Стили для экрана поздравления */
+.congratulations-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.congratulations-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #28a745;
+    margin: 0;
+    animation: bounce 1s infinite;
+}
+
+.congratulations-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0;
+}
+
+.congratulations-message {
+    font-size: 18px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+}
+
+.congratulations-image-container {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.congratulations-image {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Анимация мигания */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.7; }
+}
+
+/* Анимация мерцания звезд */
+@keyframes starGlow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Анимация подпрыгивания */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* Стили для экрана с планами питания */
+.nutrition-plans-section {
+    text-align: center;
+    padding: 20px;
+}
+
+.nutrition-plans-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.plans-benefit {
+    font-size: 16px;
+    color: #6b7280;
+    text-align: center;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Информация о пользователе */
+.user-info-section {
+    background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid #e0e0e0;
+}
+
+.user-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.user-info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.info-value {
+    font-weight: bold;
+    color: #007bff;
+    font-size: 14px;
+}
+
+/* Компактные изображения */
+.result-image-container {
+    margin: 20px 0;
+}
+
+.result-image {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Дополнительные изображения */
+.additional-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.additional-image {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Стили для карточек планов */
+.plans-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+}
+
+.plan-card {
+    background: transparent;
+    border: 2px solid #007bff;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    color: #333;
+}
+
+.plan-card:hover {
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
+    background: rgba(0, 123, 255, 0.05);
+}
+
+.plan-card.selected {
+    border-color: #0056b3;
+    background: rgba(0, 123, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.plan-card.selected::before {
+    content: '✓';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #28a745;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.plan-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.plan-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.plan-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.popular-badge {
+    background: #ffc107;
+    color: #856404;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    align-self: flex-start;
+}
+
+.plan-pricing {
+    text-align: right;
+}
+
+.price-old {
+    font-size: 16px;
+    color: #6c757d;
+    text-decoration: line-through;
+    margin-bottom: 4px;
+}
+
+.price-new {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 4px;
+}
+
+.price-per-day {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.plans-benefit {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+    font-style: italic;
+}
+
+.subscribe-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    animation: blink 2s infinite;
+}
+
+.subscribe-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    animation: none;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    25%, 75% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Стили для модального окна */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0 0 25px 0;
+    line-height: 1.4;
+}
+
+.email-input-container {
+    margin-bottom: 25px;
+}
+
+.email-input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    background: white;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.email-input::placeholder {
+    color: #adb5bd;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.modal-cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-cancel-btn:hover {
+    background: #5a6268;
+}
+
+.modal-submit-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-submit-btn:hover {
+    background: #0056b3;
+}
+
+/* Стили для вопроса о Calorie Scanner AI */
+.calorie-scanner-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.calorie-scanner-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.calorie-scanner-description {
+    font-size: 18px;
+    color: #1e3a5f;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+}
+
+.calorie-scanner-image-container {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.calorie-scanner-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.calorie-scanner-reminder {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+    max-width: 400px;
+    font-style: italic;
+}
+
+/* Стили для экрана профиля пользователя */
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e3a5f;
+    margin: 0;
+}
+
+/* Секция ИМТ */
+.bmi-section {
+    margin-bottom: 30px;
+}
+
+/* BMI калькулятор */
+.bmi-calculator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+}
+
+.bmi-left {
+    flex: 1;
+    text-align: left;
+}
+
+.bmi-right {
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.bmi-person-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 8px;
+    transform: scale(2.5) translateY(20px);
+}
+
+/* Заголовок BMI */
+.bmi-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0 0 8px 0;
+    text-align: left;
+}
+
+/* Значение BMI */
+.bmi-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: #007bff;
+    margin: 0;
+    text-align: left;
+}
+
+.bmi-category {
+    font-size: 18px;
+    font-weight: 600;
+    color: #28a745;
+    margin: 5px 0;
+}
+
+/* Шкала ИМТ */
+.bmi-scale {
+    margin: 20px 0;
+}
+
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.scale-bar {
+    background: #e9ecef;
+    height: 8px;
+    border-radius: 4px;
+    position: relative;
+    margin: 15px 0;
+}
+
+.scale-fill {
+    background: linear-gradient(90deg, #28a745 0%, #ffc107 50%, #dc3545 100%);
+    height: 100%;
+    border-radius: 4px;
+    position: relative;
+}
+
+.scale-marker {
+    position: absolute;
+    top: -6px;
+    width: 20px;
+    height: 20px;
+    background: #007bff;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transform: translateX(-50%);
+    transition: left 0.5s ease;
+}
+
+.scale-numbers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+/* Секция рисков */
+.risks-section {
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.risks-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 15px 0;
+}
+
+/* Риски здоровья */
+.risk-text {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+}
+
+/* Цвета фона для разных состояний здоровья */
+.risk-text.optimal {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.risk-text.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.risk-text.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Панельки профиля */
+.profile-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.profile-panel {
+    background: #f8f9fa;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 20px;
+    text-align: left;
+    width: 100%;
+}
+
+.panel-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin: 0 0 3px 0;
+}
+
+.panel-text {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Изображение профиля */
+.profile-image {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #007bff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Стили для полосы загрузки */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.loading-fill {
+    height: 100%;
+    background: #007bff;
+    border-radius: 4px;
+    width: 0%;
+    transition: width 3s linear;
+}
+
+.loading-text {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+    text-align: center;
+}
+
+/* Стили для чекбоксов в вопросах с множественным выбором */
+.checkbox {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox label {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.checkbox label:hover {
+    background: #f0f8ff;
+}
+
+.checkbox input[type="checkbox"]:checked + label {
+    background: #007bff;
+}
+
+.checkbox input[type="checkbox"]:checked + label::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Обновляем стили для опций с чекбоксами */
+#question7 .option {
+    justify-content: space-between;
+}
+
+#question7 .option .option-text {
+    flex: 1;
+    margin-right: 15px;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 480px) {
+    .container {
+        padding: 16px;
+        padding-top: 0;
+    }
+    
+    .welcome-section {
+        margin-bottom: 20px;
+        gap: 10px;
+        padding-top: 15px;
+    }
+    
+    .welcome-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+    }
+    
+    .welcome-text {
+        font-size: 16px;
+    }
+    
+    .header {
+        margin-bottom: 15px;
+        gap: 12px;
+    }
+    
+    .question {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .option {
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        gap: 16px;
+    }
+    
+    .option-icon {
+        font-size: 26px;
+    }
+    
+    .option-text {
+        font-size: 17px;
+    }
+    
+    #question2 .options {
+        gap: 10px;
+    }
+    
+    #question2 .person-image {
+        width: 180px;
+        height: 240px;
+    }
+    
+    /* Мобильная адаптация для поля ответа во втором вопросе */
+    #question2 .option {
+        width: 180px;
+        height: 240px;
+    }
+    
+    .info-title {
+        font-size: 24px;
+    }
+    
+    .info-subtitle {
+        font-size: 20px;
+        margin-top: -3px;
+    }
+    
+    .continue-btn {
+        padding: 14px 28px;
+        font-size: 14px;
+    }
+    
+    .risks-section {
+        padding: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .risk-text {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+    
+    .calorie-scanner-title {
+        font-size: 22px;
+    }
+    
+    .calorie-scanner-description {
+        font-size: 16px;
+    }
+    
+    .calorie-scanner-reminder {
+        font-size: 15px;
+    }
+    
+    .chart-loading-title {
+        font-size: 24px;
+    }
+    
+    .chart-loading-subtitle {
+        font-size: 16px;
+    }
+    
+    .chart-loading-percentage {
+        font-size: 20px;
+    }
+    
+    .congratulations-title {
+        font-size: 28px;
+    }
+    
+    .congratulations-subtitle {
+        font-size: 22px;
+    }
+    
+    .congratulations-message {
+        font-size: 16px;
+    }
+    
+    .congratulations-image {
+        max-width: 250px;
+    }
+    
+    .nutrition-plans-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .plans-benefit {
+        font-size: 14px;
+        margin-bottom: 20px;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+    
+    .subscribe-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+        animation: blink 1.5s infinite;
+    }
+    
+    .user-info-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .user-info-item {
+        padding: 6px 0;
+    }
+    
+    .info-label, .info-value {
+        font-size: 13px;
+    }
+    
+    .result-image {
+        max-width: 280px;
+    }
+    
+    .additional-image {
+        max-width: 280px;
+    }
+    
+    .plan-card {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .plan-card.selected {
+        transform: translateY(-1px);
+    }
+    
+    .plan-card.selected::before {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        top: -6px;
+        right: -6px;
+    }
+    
+    .plan-name {
+        font-size: 18px;
+    }
+    
+    .price-old, .price-new {
+        font-size: 14px;
+    }
+    
+    .price-per-day {
+        font-size: 12px;
+    }
+}
