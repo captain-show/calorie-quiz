@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palmistry - Palm Reading</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1865249980720857');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1865249980720857&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Facebook Pixel Code -->
+    
+    <!-- Mixpanel -->
+    <script type="text/javascript">
+        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]||[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (staging)");return d};a.people.toString=function(){return a.toString(1)+".people (staging)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+        for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call(c,arguments)}}var d={},c=[c];for(var e=0;e<j.length;e++)b(j[e]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
+        MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
+        mixpanel.init("88810edec9d23513051040afbd2ab86e");
+    </script>
+</head>
+<body>
+    <div class="container">
+                <div class="quiz-card">
+            <!-- Welcome Section -->
+            <div id="welcome-section">
+                <div class="logo">
+                    <div class="logo-symbol">🔮</div>
+                    <h1 class="logo-text">Palmistry</h1>
+                </div>
+                
+                <div class="welcome-content">
+                    <h2 class="welcome-title">Welcome to the World of Palmistry</h2>
+                    <p class="welcome-description">
+                        Unlock the secrets of your destiny through the lines on your palm. 
+                        We will help you understand the meaning of each feature and predict your future.
+                    </p>
+                    
+                    <div class="mystical-elements">
+                        <div class="element">⭐</div>
+                        <div class="element">🌙</div>
+                        <div class="element">✨</div>
+                    </div>
+                    
+                    <button class="start-btn" onclick="startQuiz()">
+                        <span class="btn-text">Let's begin</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                
+                <div class="footer">
+                    <p>Trust the ancient wisdom of palmistry</p>
+                </div>
+            </div>
+            
+            <!-- Gender Selection Question -->
+            <div id="gender-section" class="gender-question" style="display: none;">
+                <h3 class="question-title">What's your gender?</h3>
+                <p class="question-description">
+                    In Palmistry, everyone is a blend of masculine and feminine, so it helps to know yours.
+                </p>
+                
+                <div class="gender-options">
+                    <div class="gender-option" onclick="selectGender('male')">
+                        <div class="gender-icon">👨</div>
+                        <span class="gender-label">Male</span>
+                    </div>
+                    <div class="gender-option" onclick="selectGender('female')">
+                        <div class="gender-icon">👩</div>
+                        <span class="gender-label">Female</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Date of Birth Question -->
+            <div id="birthdate-section" class="birthdate-question" style="display: none;">
+                <h3 class="question-title">What's your date of birth?</h3>
+                <p class="question-description">
+                    Your birth date reveals your core personality traits, needs and desires.
+                </p>
+                
+                <div class="birthdate-input">
+                    <input type="date" id="birthdateInput" class="date-picker" onchange="selectBirthdate()">
+                    <div class="date-placeholder" onclick="focusDateInput()">
+                        <span class="calendar-icon">📅</span>
+                        <span class="placeholder-text">Select your birth date</span>
+                    </div>
+                </div>
+                
+                <div class="selected-date" id="selectedDate" style="display: none;">
+                    <span class="date-label">Selected:</span>
+                    <span class="date-value" id="dateValue"></span>
+                </div>
+            </div>
+            
+            <!-- Palms Information Question -->
+            <div id="palms-section" class="palms-question" style="display: none;">
+                <h3 class="question-title">Your palms hold a wealth of information about your fate and personality</h3>
+                <p class="question-description">
+                    Let's explore what your hands can reveal about your future.
+                </p>
+                
+                <div class="palms-illustration">
+                    <div class="hand-symbol">🤲</div>
+                </div>
+                
+                <button class="continue-btn" onclick="continueToNext()">
+                    <span class="btn-text">Continue</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+            
+            <!-- Life Aspects Question -->
+            <div id="aspects-section" class="aspects-question" style="display: none;">
+                <h3 class="question-title">What aspects of your life do you wish to gain insight into through palmistry?</h3>
+                
+                <div class="aspects-options">
+                    <div class="aspect-option" onclick="selectAspect('love')">
+                        <div class="aspect-icon">💕</div>
+                        <span class="aspect-label">Love & Relationship</span>
+                    </div>
+                    <div class="aspect-option" onclick="selectAspect('health')">
+                        <div class="aspect-icon">🌿</div>
+                        <span class="aspect-label">Health & Vitality</span>
+                    </div>
+                    <div class="aspect-option" onclick="selectAspect('career')">
+                        <div class="aspect-icon">⭐</div>
+                        <span class="aspect-label">Career & Destiny</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Relationship Status Question -->
+            <div id="relationship-section" class="relationship-question" style="display: none;">
+                <h3 class="question-title">So we can get to know you better, please tell us your relationship status.</h3>
+                
+                <div class="relationship-options">
+                    <div class="relationship-option" onclick="selectRelationship('single')">
+                        <div class="relationship-icon">💔</div>
+                        <span class="relationship-label">Single</span>
+                    </div>
+                    <div class="relationship-option" onclick="selectRelationship('in-relationship')">
+                        <div class="relationship-icon">💕</div>
+                        <span class="relationship-label">In a relationship</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Element Question -->
+            <div id="element-section" class="element-question" style="display: none;">
+                <h3 class="question-title">Which element resonates with you the most?</h3>
+                
+                <div class="element-options">
+                    <div class="element-option" onclick="selectElement('earth')">
+                        <div class="element-icon">🌍</div>
+                        <span class="element-label">Earth</span>
+                    </div>
+                    <div class="element-option" onclick="selectElement('water')">
+                        <div class="element-icon">💧</div>
+                        <span class="element-label">Water</span>
+                    </div>
+                    <div class="element-option" onclick="selectElement('fire')">
+                        <div class="element-icon">🔥</div>
+                        <span class="element-label">Fire</span>
+                    </div>
+                    <div class="element-option" onclick="selectElement('air')">
+                        <div class="element-icon">💨</div>
+                        <span class="element-label">Air</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Color Question -->
+            <div id="color-section" class="color-question" style="display: none;">
+                <h3 class="question-title">Which color do you like the most?</h3>
+                
+                <div class="color-options">
+                    <div class="color-option" onclick="selectColor('red')">
+                        <div class="color-icon">🔴</div>
+                        <span class="color-label">Red</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('yellow')">
+                        <div class="color-icon">🟡</div>
+                        <span class="color-label">Yellow</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('blue')">
+                        <div class="color-icon">🔵</div>
+                        <span class="color-label">Blue</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('orange')">
+                        <div class="color-icon">🟠</div>
+                        <span class="color-label">Orange</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('green')">
+                        <div class="color-icon">🟢</div>
+                        <span class="color-label">Green</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('violet')">
+                        <div class="color-icon">🟣</div>
+                        <span class="color-label">Violet</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decision Making Question -->
+            <div id="decision-section" class="decision-question" style="display: none;">
+                <h3 class="question-title">Do you make decisions with your head or your heart?</h3>
+                
+                <div class="decision-options">
+                    <div class="decision-option" onclick="selectDecision('heart')">
+                        <div class="decision-icon">💖</div>
+                        <span class="decision-label">Heart</span>
+                    </div>
+                    <div class="decision-option" onclick="selectDecision('head')">
+                        <div class="decision-icon">🧠</div>
+                        <span class="decision-label">Head</span>
+                    </div>
+                    <div class="decision-option" onclick="selectDecision('both')">
+                        <div class="decision-icon">⚖️</div>
+                        <span class="decision-label">Both</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Palmistry Information Section -->
+            <div id="palmistry-info-section" class="palmistry-info-question" style="display: none;">
+                <h3 class="question-title">People who are passionate about palmistry are skilled at noticing subtle details, connecting them to a person's life story, and drawing conclusions that resemble a psychological profile.</h3>
+                
+                <div class="palmistry-illustration">
+                    <div class="palmistry-symbol">🔮</div>
+                </div>
+                
+                <button class="continue-btn" onclick="continueToResults()">
+                    <span class="btn-text">Continue</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+            
+            <!-- Hand Scanning Section -->
+            <div id="scanning-section" class="scanning-question" style="display: none;">
+                <h3 class="question-title">To provide you with personalized insights about your personality and future, we first need to scan your hand</h3>
+                
+                <div class="scanning-illustration">
+                    <div class="hand-scan-symbol">🤲</div>
+                    <div class="scanning-text">Reading the lines of destiny...</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+            
+            <!-- Start Scanning Section -->
+            <div id="start-scanning-section" class="start-scanning-question" style="display: none;">
+                <h3 class="question-title">Let’s unlock the mysteries of who you are!</h3>
+                
+                <div class="start-scanning-illustration">
+                    <div class="start-scan-symbol">✨</div>
+                </div>
+                
+                <button class="continue-btn" onclick="startActualScanning()">
+                    <span class="btn-text">Continue</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+            
+            <!-- Subscription Section -->
+            <div id="subscription-section" class="subscription-question" style="display: none;">
+                <div class="subscription-header">
+                    <h3 class="subscription-title">Unlock Your Complete Palmistry Reading</h3>
+                    <p class="subscription-description">Get detailed insights about your personality, relationships, career, and future through the ancient art of palmistry.</p>
+                    
+                    <div class="discount-badge">
+                        <span class="discount-text">50% OFF</span>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <div class="timer-label">Limited Time Offer</div>
+                        <div class="timer" id="subscriptionTimer">05:00</div>
+                    </div>
+                </div>
+                
+                <div class="subscription-plans">
+                    <div class="plan-option" onclick="selectPlan('weekly')">
+                        <div class="plan-header">
+                            <div class="plan-name">Weekly Plan</div>
+                            <div class="plan-price">
+                                <span class="original-price">$10</span>
+                                <span class="current-price">$5</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <span class="feature">✓ Complete palm reading</span>
+                            <span class="feature">✓ Daily insights</span>
+                            <span class="feature">✓ Relationship guidance</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-option popular" onclick="selectPlan('monthly')">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="plan-header">
+                            <div class="plan-name">Monthly Plan</div>
+                            <div class="plan-price">
+                                <span class="original-price">$30</span>
+                                <span class="current-price">$15</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <span class="feature">✓ Everything in Weekly</span>
+                            <span class="feature">✓ Career predictions</span>
+                            <span class="feature">✓ Health insights</span>
+                        </div>
+                    </div>
+                    
+                    <div class="plan-option" onclick="selectPlan('yearly')">
+                        <div class="plan-header">
+                            <div class="plan-name">Yearly Plan</div>
+                            <div class="plan-price">
+                                <span class="original-price">$100</span>
+                                <span class="current-price">$50</span>
+                            </div>
+                        </div>
+                        <div class="plan-features">
+                            <span class="feature">✓ Everything in Monthly</span>
+                            <span class="feature">✓ Life path analysis</span>
+                            <span class="feature">✓ Priority support</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="subscribe-btn" onclick="subscribeToPlan()">
+                    <span class="btn-text">Subscribe Now</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <div class="subscription-footer">
+                    <p class="footer-text">Cancel anytime • Secure payment • 30-day money-back guarantee</p>
+                </div>
+            </div>
+            
+            <!-- Email Modal -->
+            <div id="emailModal" class="email-modal" style="display: none;">
+                <div class="modal-overlay" onclick="closeEmailModal()"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Almost Done!</h3>
+                        <p class="modal-subtitle">Just one more step to unlock your palmistry reading</p>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="email-input-container">
+                            <label for="emailInput" class="email-label">Enter your email address</label>
+                            <input type="email" id="emailInput" class="email-input" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="send-btn" onclick="sendEmail()">
+                            <span class="btn-text">Send</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
