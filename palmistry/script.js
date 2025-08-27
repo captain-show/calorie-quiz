@@ -200,10 +200,8 @@ function selectDecision(decision) {
     console.log('Decision:', localStorage.getItem('selectedDecision'));
     
     // Переходим к информационному разделу о хиромантии
-    setTimeout(() => {
-        showSection('palmistry-info-section');
-        window.history.pushState({}, '', '#palmistry-info');
-    }, 1000);
+    showSection('palmistry-info-section');
+    window.history.pushState({}, '', '#palmistry-info');
 }
 
 // Функция перехода к результатам
@@ -294,12 +292,14 @@ function selectPlan(plan) {
 function subscribeToPlan() {
     console.log('subscribeToPlan function called!');
     
-    const selectedPlan = localStorage.getItem('selectedPlan');
+    let selectedPlan = localStorage.getItem('selectedPlan');
     console.log('Selected plan:', selectedPlan);
     
+    // Если план не выбран, автоматически устанавливаем месячный
     if (!selectedPlan) {
-        alert('Please select a plan first');
-        return;
+        selectedPlan = 'monthly';
+        localStorage.setItem('selectedPlan', selectedPlan);
+        console.log('Auto-selected monthly plan');
     }
     
     console.log('Subscribing to plan:', selectedPlan);
@@ -387,19 +387,22 @@ function sendEmail() {
     console.log('Email submitted:', email);
     console.log('Selected plan:', localStorage.getItem('selectedPlan'));
     
+    // Получаем план (если не выбран, будет месячный)
+    const plan = localStorage.getItem('selectedPlan') || 'monthly';
+    
     // Отправляем события в Facebook Pixel и Mixpanel
     if (typeof fbq !== 'undefined') {
         fbq('track', 'email_submitted', {
             email: email,
-            plan: localStorage.getItem('selectedPlan'),
-            plan_price: getPlanPrice(localStorage.getItem('selectedPlan'))
+            plan: plan,
+            plan_price: getPlanPrice(plan)
         });
         
         // Отправляем событие purchase для Facebook Pixel
         fbq('track', 'Purchase', {
-            value: getPlanPrice(localStorage.getItem('selectedPlan')),
+            value: getPlanPrice(plan),
             currency: 'USD',
-            content_name: localStorage.getItem('selectedPlan') + ' plan',
+            content_name: plan + ' plan',
             content_category: 'palmistry_subscription'
         });
     }
@@ -407,8 +410,8 @@ function sendEmail() {
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('email_submitted', {
             email: email,
-            plan: localStorage.getItem('selectedPlan'),
-            plan_price: getPlanPrice(localStorage.getItem('selectedPlan'))
+            plan: plan,
+            plan_price: getPlanPrice(plan)
         });
     }
     
@@ -468,10 +471,8 @@ function selectBirthdate() {
         }
         
         // Переходим к следующему вопросу о ладонях
-        setTimeout(() => {
-            showSection('palms-section');
-            window.history.pushState({}, '', '#palms');
-        }, 1500);
+        showSection('palms-section');
+        window.history.pushState({}, '', '#palms');
     }
 }
 
