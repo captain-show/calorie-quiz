@@ -575,6 +575,27 @@ document.addEventListener('DOMContentLoaded', function() {
             element.style.transform = 'translateY(0)';
         }, index * 200);
     });
+    
+    // Предотвращаем скролл при открытии календаря на iOS
+    const dateInput = document.getElementById('birthdateInput');
+    if (dateInput && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        dateInput.addEventListener('focus', function() {
+            // Сохраняем текущую позицию
+            const currentScroll = window.scrollY;
+            
+            // Восстанавливаем позицию после фокуса
+            setTimeout(() => {
+                window.scrollTo(0, currentScroll);
+            }, 50);
+        });
+        
+        dateInput.addEventListener('blur', function() {
+            // Восстанавливаем позицию после закрытия календаря
+            setTimeout(() => {
+                window.scrollTo(0, currentScroll);
+            }, 100);
+        });
+    }
 });
 
 // Функция создания эффекта частиц
@@ -637,5 +658,27 @@ document.addEventListener('mousemove', (e) => {
     document.body.style.setProperty('--move-x', moveX + 'px');
     document.body.style.setProperty('--move-y', moveY + 'px');
 });
+
+// Функция фокуса на поле даты с предотвращением скролла на iOS
+function focusDateInput() {
+    const dateInput = document.getElementById('birthdateInput');
+    if (dateInput) {
+        // Предотвращаем скролл на iOS
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            // Сохраняем текущую позицию скролла
+            const scrollY = window.scrollY;
+            
+            // Фокусируемся на поле
+            dateInput.focus();
+            
+            // Восстанавливаем позицию скролла
+            setTimeout(() => {
+                window.scrollTo(0, scrollY);
+            }, 100);
+        } else {
+            dateInput.focus();
+        }
+    }
+}
 
 
