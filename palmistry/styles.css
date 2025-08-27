@@ -6,6 +6,8 @@
 
 body {
     font-family: 'Crimson Text', serif;
+    background: #0f0f23; /* Fallback для iOS */
+    background: -webkit-linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
     background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
     min-height: 100vh;
     display: flex;
@@ -1208,5 +1210,48 @@ body::before {
     
     .welcome-description {
         font-size: 16px;
+    }
+}
+
+/* iOS Safari fixes */
+@supports (-webkit-touch-callout: none) {
+    body {
+        background: #0f0f23 !important;
+        background: -webkit-linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%) !important;
+    }
+    
+    .quiz-card {
+        background: rgba(26, 26, 46, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .logo-text {
+        background: #ff77c6 !important;
+        -webkit-background-clip: unset !important;
+        -webkit-text-fill-color: unset !important;
+        background-clip: unset !important;
+        color: #ff77c6 !important;
+    }
+    
+    .start-btn, .continue-btn, .subscribe-btn, .send-btn {
+        background: #7b68ee !important;
+        background: -webkit-linear-gradient(45deg, #7b68ee, #ff77c6) !important;
+    }
+    
+    .plan-option {
+        background: rgba(26, 26, 46, 0.95) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .modal-content {
+        background: #1a1a2e !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+    
+    .email-input {
+        background: #2a2a3e !important;
     }
 }
