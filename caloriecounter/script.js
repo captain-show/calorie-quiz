@@ -1885,8 +1885,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Инициализация Stripe
     function initializeStripe() {
+        console.log('Initializing Stripe...');
+        console.log('Stripe key:', 'pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2');
+        
         // Live ключ Stripe
         stripe = Stripe('pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2');
+        
+        console.log('Stripe object created:', stripe);
         
         const elements = stripe.elements();
         cardElement = elements.create('card', {
@@ -1944,6 +1949,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Обработчик кнопки Pay
     payBtn.addEventListener('click', function() {
+        console.log('Pay button clicked');
+        console.log('Stripe object:', stripe);
+        console.log('Card element:', cardElement);
+        
         if (!stripe || !cardElement) {
             console.error('Stripe not initialized');
             return;
@@ -1954,6 +1963,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Здесь должна быть логика создания payment intent на сервере
         // Для демонстрации используем тестовый токен
+        console.log('Creating token...');
         stripe.createToken(cardElement).then(function(result) {
             if (result.error) {
                 const errorElement = document.getElementById('card-errors');
