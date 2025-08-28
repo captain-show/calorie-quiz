@@ -87,28 +87,21 @@
                 </div>
             </div>
             
-            <!-- Date of Birth Question -->
+            <!-- Age Question -->
             <div id="birthdate-section" class="birthdate-question" style="display: none;">
-                <h3 class="question-title">What's your date of birth?</h3>
+                <h3 class="question-title">What's your age?</h3>
                 <p class="question-description">
-                    Your birth date reveals your core personality traits, needs and desires.
+                    Your age reveals your core personality traits, needs and desires.
                 </p>
                 
-                <div class="birthdate-input" id="birthdateInputContainer">
-                    <input type="date" id="birthdateInput" class="date-picker" onchange="handleDateChange()">
-                    <div class="date-placeholder" onclick="focusDateInput()">
-                        <span class="calendar-icon">📅</span>
-                        <span class="placeholder-text">Select your birth date</span>
-                    </div>
+                <div class="age-input" id="ageInputContainer">
+                    <input type="number" id="ageInput" class="age-picker" placeholder="Enter your age" min="1" max="120" oninput="handleAgeChange()" onchange="handleAgeChange()">
                 </div>
                 
-                <div class="selected-date" id="selectedDate" style="display: none;">
-                    <span class="date-label">Selected:</span>
-                    <span class="date-value" id="dateValue"></span>
-                </div>
+
                 
-                <div class="birthdate-button-container">
-                    <button class="continue-btn" onclick="selectBirthdate()" id="birthdateContinueBtn" style="display: none;">
+                <div class="age-button-container">
+                    <button class="continue-btn" onclick="selectAge()" id="ageContinueBtn">
                         <span class="btn-text">Continue</span>
                         <div class="btn-glow"></div>
                     </button>

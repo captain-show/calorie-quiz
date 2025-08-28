@@ -431,78 +431,63 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Функция фокусировки на поле даты
-function selectBirthdate() {
-    const dateInput = document.getElementById('birthdateInput');
-    const selectedDateDiv = document.getElementById('selectedDate');
-    const dateValueSpan = document.getElementById('dateValue');
+// Функция для перехода после выбора возраста
+function selectAge() {
+    const ageInput = document.getElementById('ageInput');
     
-    if (dateInput.value) {
-        const selectedDate = new Date(dateInput.value);
-        const formattedDate = selectedDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+    if (ageInput.value && ageInput.value >= 1 && ageInput.value <= 120) {
+        const age = parseInt(ageInput.value);
         
-        dateValueSpan.textContent = formattedDate;
-        selectedDateDiv.style.display = 'flex';
+        console.log('Selected age:', age);
         
-        // Сохраняем выбранную дату
-        localStorage.setItem('selectedBirthdate', dateInput.value);
-        
-        console.log('Selected birthdate:', formattedDate);
+        // Сохраняем выбранный возраст
+        localStorage.setItem('selectedAge', age);
         
         // Отправляем события в Facebook Pixel и Mixpanel
         if (typeof fbq !== 'undefined') {
             fbq('track', 'question_answered', {
                 question_number: 2,
-                question_type: 'birthdate',
-                answer: dateInput.value
+                question_type: 'age',
+                answer: age
             });
         }
         
         if (typeof mixpanel !== 'undefined') {
             mixpanel.track('question_answered', {
                 question_number: 2,
-                question_type: 'birthdate',
-                answer: dateInput.value
+                question_type: 'age',
+                answer: age
             });
         }
         
         // Переходим к следующему вопросу о ладонях
         showSection('palms-section');
         window.history.pushState({}, '', '#palms');
+    } else {
+        // Показываем сообщение об ошибке если возраст не введен
+        alert('Please enter a valid age between 1 and 120 years.');
     }
 }
 
-// Функция для обработки изменения даты (без перехода)
-function handleDateChange() {
-    const dateInput = document.getElementById('birthdateInput');
-    const selectedDateDiv = document.getElementById('selectedDate');
-    const dateValueSpan = document.getElementById('dateValue');
-    const continueBtn = document.getElementById('birthdateContinueBtn');
-    const inputContainer = document.getElementById('birthdateInputContainer');
+// Функция для обработки изменения возраста (без перехода)
+function handleAgeChange() {
+    const ageInput = document.getElementById('ageInput');
+    const continueBtn = document.getElementById('ageContinueBtn');
     
-    if (dateInput.value) {
-        const selectedDate = new Date(dateInput.value);
-        const formattedDate = selectedDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+    if (ageInput.value && ageInput.value >= 1 && ageInput.value <= 120) {
+        const age = parseInt(ageInput.value);
         
-        dateValueSpan.textContent = formattedDate;
-        selectedDateDiv.style.display = 'flex';
-        continueBtn.style.display = 'block';
+        // Активируем кнопку
+        continueBtn.disabled = false;
+        continueBtn.style.opacity = '1';
+        continueBtn.style.cursor = 'pointer';
         
-        // Скрываем поле ввода даты
-        inputContainer.style.display = 'none';
-        
-        // Сохраняем выбранную дату
-        localStorage.setItem('selectedBirthdate', dateInput.value);
-        
-        console.log('Date changed to:', formattedDate);
+        console.log('Valid age entered:', age);
+    } else {
+        // Деактивируем кнопку если возраст невалидный
+        continueBtn.disabled = true;
+        continueBtn.style.opacity = '0.5';
+        continueBtn.style.cursor = 'not-allowed';
     }
 }
 
@@ -538,7 +523,7 @@ function navigateToAnchor(anchor) {
         case 'gender':
             showSection('gender-section');
             break;
-        case 'birthdate':
+        case 'age':
             showSection('birthdate-section');
             break;
         case 'palms':
@@ -606,35 +591,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, index * 200);
     });
     
-    // Предотвращаем скролл при открытии календаря на iOS
-    const dateInput = document.getElementById('birthdateInput');
-    if (dateInput && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        let savedScrollPosition = 0;
-        
-        dateInput.addEventListener('focus', function() {
-            // Сохраняем текущую позицию скролла
-            savedScrollPosition = window.scrollY;
-            
-            // Предотвращаем автоматический скролл
-            setTimeout(() => {
-                window.scrollTo(0, savedScrollPosition);
-            }, 10);
-        });
-        
-        dateInput.addEventListener('blur', function() {
-            // Восстанавливаем позицию после закрытия календаря
-            setTimeout(() => {
-                window.scrollTo(0, savedScrollPosition);
-            }, 100);
-        });
-        
-        // Предотвращаем скролл при изменении даты
-        dateInput.addEventListener('change', function() {
-            setTimeout(() => {
-                window.scrollTo(0, savedScrollPosition);
-            }, 50);
-        });
-    }
+    // Код для работы с возрастом (убрали старый код для даты)
 });
 
 // Функция создания эффекта частиц
@@ -698,26 +655,6 @@ document.addEventListener('mousemove', (e) => {
     document.body.style.setProperty('--move-y', moveY + 'px');
 });
 
-// Функция фокуса на поле даты с предотвращением скролла на iOS
-function focusDateInput() {
-    const dateInput = document.getElementById('birthdateInput');
-    if (dateInput) {
-        // Предотвращаем скролл на iOS
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            // Сохраняем текущую позицию скролла
-            const scrollY = window.scrollY;
-            
-            // Фокусируемся на поле
-            dateInput.focus();
-            
-            // Восстанавливаем позицию скролла
-            setTimeout(() => {
-                window.scrollTo(0, scrollY);
-            }, 100);
-        } else {
-            dateInput.focus();
-        }
-    }
-}
+
 
 

@@ -1265,13 +1265,9 @@ body::before {
         background: #2a2a3e !important;
     }
     
-    /* Предотвращаем скролл при открытии календаря */
-    .birthdate-input {
+    /* Стили для поля ввода возраста на iOS */
+    .age-input {
         -webkit-appearance: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-    
-    .birthdate-input::-webkit-calendar-picker-indicator {
         -webkit-tap-highlight-color: transparent;
     }
     
@@ -1303,25 +1299,19 @@ body::before {
         color: transparent !important;
     }
     
-    /* Предотвращаем скролл при открытии календаря */
+    /* Стили для секции возраста на iOS */
     .birthdate-section {
         position: relative;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
     }
     
-    /* Дополнительные исправления для календаря */
-    input[type="date"] {
+    /* Стили для поля ввода возраста на iOS */
+    input[type="number"] {
         -webkit-appearance: none;
         -webkit-tap-highlight-color: transparent;
         position: relative;
         z-index: 10;
-    }
-    
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        -webkit-tap-highlight-color: transparent;
-        position: relative;
-        z-index: 11;
     }
     
     /* Предотвращаем скролл страницы */
@@ -1332,8 +1322,47 @@ body::before {
     }
 }
 
-/* Стили для центрирования кнопки в вопросе о дате рождения */
-.birthdate-button-container {
+/* Стили для поля ввода возраста */
+.age-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    width: 100%;
+}
+
+.age-picker {
+    width: 200px;
+    height: 50px;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-family: 'Crimson Text', serif;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.age-picker:focus {
+    border-color: #7b68ee;
+    box-shadow: 0 0 20px rgba(123, 104, 238, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.age-picker::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+
+
+/* Стили для центрирования кнопки в вопросе о возрасте */
+.age-button-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1341,6 +1370,19 @@ body::before {
     width: 100%;
 }
 
-.birthdate-button-container .continue-btn {
+.age-button-container .continue-btn {
     margin: 0 auto;
+    opacity: 0.5;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+}
+
+.age-button-container .continue-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.age-button-container .continue-btn:not(:disabled) {
+    opacity: 1;
+    cursor: pointer;
 }
