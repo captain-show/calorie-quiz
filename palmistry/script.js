@@ -476,6 +476,36 @@ function selectBirthdate() {
     }
 }
 
+// Функция для обработки изменения даты (без перехода)
+function handleDateChange() {
+    const dateInput = document.getElementById('birthdateInput');
+    const selectedDateDiv = document.getElementById('selectedDate');
+    const dateValueSpan = document.getElementById('dateValue');
+    const continueBtn = document.getElementById('birthdateContinueBtn');
+    const inputContainer = document.getElementById('birthdateInputContainer');
+    
+    if (dateInput.value) {
+        const selectedDate = new Date(dateInput.value);
+        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        dateValueSpan.textContent = formattedDate;
+        selectedDateDiv.style.display = 'flex';
+        continueBtn.style.display = 'block';
+        
+        // Скрываем поле ввода даты
+        inputContainer.style.display = 'none';
+        
+        // Сохраняем выбранную дату
+        localStorage.setItem('selectedBirthdate', dateInput.value);
+        
+        console.log('Date changed to:', formattedDate);
+    }
+}
+
 // Функция показа определенного раздела
 function showSection(sectionId) {
     // Скрываем все разделы
@@ -579,21 +609,30 @@ document.addEventListener('DOMContentLoaded', function() {
     // Предотвращаем скролл при открытии календаря на iOS
     const dateInput = document.getElementById('birthdateInput');
     if (dateInput && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        let savedScrollPosition = 0;
+        
         dateInput.addEventListener('focus', function() {
-            // Сохраняем текущую позицию
-            const currentScroll = window.scrollY;
+            // Сохраняем текущую позицию скролла
+            savedScrollPosition = window.scrollY;
             
-            // Восстанавливаем позицию после фокуса
+            // Предотвращаем автоматический скролл
             setTimeout(() => {
-                window.scrollTo(0, currentScroll);
-            }, 50);
+                window.scrollTo(0, savedScrollPosition);
+            }, 10);
         });
         
         dateInput.addEventListener('blur', function() {
             // Восстанавливаем позицию после закрытия календаря
             setTimeout(() => {
-                window.scrollTo(0, currentScroll);
+                window.scrollTo(0, savedScrollPosition);
             }, 100);
+        });
+        
+        // Предотвращаем скролл при изменении даты
+        dateInput.addEventListener('change', function() {
+            setTimeout(() => {
+                window.scrollTo(0, savedScrollPosition);
+            }, 50);
         });
     }
 });
