@@ -1924,6 +1924,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Создание Payment Intent (имитация серверного вызова)
+    async function createPaymentIntent(amount, plan) {
+        // В реальном приложении это должно быть на сервере
+        // Здесь мы имитируем создание Payment Intent
+        console.log('Creating Payment Intent for amount:', amount, 'plan:', plan);
+        
+        // Возвращаем mock Payment Intent
+        return {
+            clientSecret: 'pi_mock_secret_' + Date.now(),
+            amount: amount * 100, // в центах
+            currency: 'usd',
+            plan: plan
+        };
+    }
+    
     // Обновление экрана оплаты
     function updatePaymentScreen() {
         const selectedPlanCard = document.querySelector('.plan-card.selected');
@@ -1948,7 +1963,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Обработчик кнопки Pay
-    payBtn.addEventListener('click', function() {
+    payBtn.addEventListener('click', async function() {
         console.log('Pay button clicked');
         console.log('Stripe object:', stripe);
         console.log('Card element:', cardElement);
@@ -1961,24 +1976,52 @@ document.addEventListener('DOMContentLoaded', function() {
         payBtn.disabled = true;
         payBtn.innerHTML = '<span>Processing...</span>';
         
-        // Здесь должна быть логика создания payment intent на сервере
-        // Для демонстрации используем тестовый токен
-        console.log('Creating token...');
-        stripe.createToken(cardElement).then(function(result) {
+        try {
+            // Получаем сумму для оплаты
+            const amount = parseFloat(totalAmount.textContent.replace('$', ''));
+            console.log('Payment amount:', amount);
+            
+            // Создаем Payment Intent (в реальном приложении это на сервере)
+            const paymentIntent = await createPaymentIntent(amount, selectedPlan);
+            console.log('Payment Intent created:', paymentIntent);
+            
+            // Подтверждаем платеж с помощью confirmCardPayment
+            const result = await stripe.confirmCardPayment(paymentIntent.clientSecret, {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: {
+                        name: userName || 'Customer',
+                        email: 'customer@example.com'
+                    }
+                }
+            });
+            
             if (result.error) {
+                console.error('Payment failed:', result.error);
                 const errorElement = document.getElementById('card-errors');
                 errorElement.textContent = result.error.message;
                 payBtn.disabled = false;
                 payBtn.innerHTML = `<span class="pay-btn-text">Pay</span><span class="pay-btn-amount">$${totalAmount.textContent.replace('$', '')}</span>`;
             } else {
-                console.log('Payment token created:', result.token);
+                console.log('Payment successful:', result.paymentIntent);
                 
                 // Отправляем событие в Mixpanel
                 if (window.mixpanel) {
-                    mixpanel.track('payment_attempted', {
+                    mixpanel.track('payment_successful', {
                         plan: selectedPlan,
                         plan_name: selectedPlanName.textContent,
-                        amount: totalAmount.textContent
+                        amount: totalAmount.textContent,
+                        payment_intent_id: result.paymentIntent.id
+                    });
+                }
+                
+                // Отправляем событие purchase в Facebook Pixel
+                if (window.fbq) {
+                    fbq('track', 'Purchase', {
+                        value: amount,
+                        currency: 'USD',
+                        content_name: selectedPlanName.textContent,
+                        content_category: 'nutrition_plan'
                     });
                 }
                 
@@ -1988,8 +2031,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Возвращаемся к экрану с планами
                 goToPreviousQuestion(paymentScreen, question32, 'subscribe');
             }
-        });
+        } catch (error) {
+            console.error('Payment error:', error);
+            const errorElement = document.getElementById('card-errors');
+            errorElement.textContent = 'Payment failed. Please try again.';
+            payBtn.disabled = false;
+            payBtn.innerHTML = `<span class="pay-btn-text">Pay</span><span class="pay-btn-amount">$${totalAmount.textContent.replace('$', '')}</span>`;
+        }
     });
     
     // Функция валидации email
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // Инициализируем навигацию по якорям
+    initializeAnchorNavigation();
+    
+    // Инициализируем Stripe
+    initializeStripe();
 });
