@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навигация по вопросам - Calorie Scanner AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .nav-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .nav-section {
+            margin-bottom: 30px;
+        }
+        .nav-section h2 {
+            color: #666;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .nav-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .nav-link {
+            display: block;
+            padding: 10px 15px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background: #0056b3;
+        }
+        .info {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .current-url {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-container">
+        <h1>🌐 Навигация по вопросам Calorie Scanner AI</h1>
+        
+        <div class="info">
+            <h3>ℹ️ Как использовать якоря</h3>
+            <p>Теперь вы можете переходить к любому вопросу опроса, используя адресную строку браузера. Просто добавьте #якорь к URL страницы.</p>
+            <p><strong>Пример:</strong> <code>index.html#age</code> - перейдет к вопросу о возрасте</p>
+        </div>
+        
+        <div class="current-url">
+            <strong>Текущий URL:</strong> <span id="currentUrl"></span>
+        </div>
+        
+        <div class="nav-section">
+            <h2>🎯 Основные вопросы</h2>
+            <div class="nav-links">
+                <a href="index.html#goal" class="nav-link">Цель</a>
+                <a href="index.html#sex" class="nav-link">Пол</a>
+                <a href="index.html#focus" class="nav-link">Фокус</a>
+                <a href="index.html#build" class="nav-link">Телосложение</a>
+                <a href="index.html#body-goal" class="nav-link">Цель тела</a>
+                <a href="index.html#target-zones" class="nav-link">Целевые зоны</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>💪 Опыт и привычки</h2>
+            <div class="nav-links">
+                <a href="index.html#experience" class="nav-link">Опыт похудения</a>
+                <a href="index.html#workout-frequency" class="nav-link">Частота тренировок</a>
+                <a href="index.html#sleep-hours" class="nav-link">Часы сна</a>
+                <a href="index.html#habits" class="nav-link">Привычки</a>
+                <a href="index.html#weight-gain-events" class="nav-link">События набора веса</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>🍽️ Питание и образ жизни</h2>
+            <div class="nav-links">
+                <a href="index.html#food-preferences" class="nav-link">Предпочтения в еде</a>
+                <a href="index.html#cooking-style" class="nav-link">Стиль готовки</a>
+                <a href="index.html#water-intake" class="nav-link">Потребление воды</a>
+                <a href="index.html#walking-frequency" class="nav-link">Частота прогулок</a>
+                <a href="index.html#work-schedule" class="nav-link">Рабочий график</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>📊 Персональные данные</h2>
+            <div class="nav-links">
+                <a href="index.html#age" class="nav-link">Возраст</a>
+                <a href="index.html#height" class="nav-link">Рост</a>
+                <a href="index.html#current-weight" class="nav-link">Текущий вес</a>
+                <a href="index.html#target-weight" class="nav-link">Целевой вес</a>
+                <a href="index.html#name" class="nav-link">Имя</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>📈 Дополнительные вопросы</h2>
+            <div class="nav-links">
+                <a href="index.html#activity-level" class="nav-link">Уровень активности</a>
+                <a href="index.html#goal-speed" class="nav-link">Скорость достижения цели</a>
+                <a href="index.html#additional-goals" class="nav-link">Дополнительные цели</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>🎉 Результаты и планы</h2>
+            <div class="nav-links">
+                <a href="index.html#profile" class="nav-link">Профиль</a>
+                <a href="index.html#calorie-scanner-info" class="nav-link">Информация о Calorie Scanner</a>
+                <a href="index.html#chart-loading" class="nav-link">Загрузка диаграммы</a>
+                <a href="index.html#congratulations" class="nav-link">Поздравления</a>
+                <a href="index.html#subscribe" class="nav-link">Планы питания и подписка</a>
+                <a href="index.html#payment" class="nav-link">Экран оплаты</a>
+            </div>
+        </div>
+        
+        <div class="nav-section">
+            <h2>🔗 Информационные экраны</h2>
+            <div class="nav-links">
+                <a href="index.html#info-1" class="nav-link">Информация 1 (5+ млн пользователей)</a>
+                <a href="index.html#info-2" class="nav-link">Информация 2 (Доверие 5 млн+)</a>
+                <a href="index.html#info-3" class="nav-link">Информация 3 (Питание 80% результатов)</a>
+            </div>
+        </div>
+        
+        <div class="info">
+            <h3>🚀 Преимущества якорей</h3>
+            <ul>
+                <li><strong>Прямой доступ:</strong> Переходите к любому вопросу мгновенно</li>
+                <li><strong>Закладки:</strong> Сохраняйте ссылки на конкретные вопросы</li>
+                <li><strong>Поделиться:</strong> Отправляйте друзьям ссылки на определенные разделы</li>
+                <li><strong>SEO:</strong> Улучшает индексацию страницы поисковыми системами</li>
+                <li><strong>Аналитика:</strong> Отслеживайте, какие вопросы интересуют пользователей больше всего</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Показываем текущий URL
+        document.getElementById('currentUrl').textContent = window.location.href;
+        
+        // Обновляем URL при изменении
+        window.addEventListener('hashchange', function() {
+            document.getElementById('currentUrl').textContent = window.location.href;
+        });
+        
+        // Добавляем обработчики для всех ссылок
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Показываем, что ссылка работает
+                this.style.background = '#28a745';
+                setTimeout(() => {
+                    this.style.background = '#007bff';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

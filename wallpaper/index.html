@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper Style Quiz - Discover Your Perfect Aesthetic</title>
+    <meta name="description" content="Take our interactive quiz to discover your unique wallpaper style and get exclusive wallpapers!">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="neon-border">
+                <div class="welcome-content">
+                    <div class="logo">
+                        <i class="fas fa-palette neon-icon"></i>
+                        <h1 class="neon-text">Wallpaper Quiz</h1>
+                    </div>
+                    <p class="subtitle">Discover your perfect wallpaper aesthetic</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-star"></i>
+                            <span>Get your style score</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-gift"></i>
+                            <span>Exclusive wallpaper pack</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <span>Only 2 minutes</span>
+                        </div>
+                    </div>
+                    <button id="start-quiz" class="btn-neon">
+                        <span>Start Quiz</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Questions -->
+        <div id="quiz-screen" class="screen">
+            <div class="neon-border">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">Question <span id="current-question">1</span> of <span id="total-questions">8</span></div>
+                </div>
+
+                <div class="question-container">
+                    <!-- Question 1: Color Preference -->
+                    <div id="question-1" class="question active" data-question="1">
+                        <h2>Choose your color palette</h2>
+                        <p class="question-subtitle">Pick the colors that speak to your soul</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="warm">
+                                <div class="color-palette">
+                                    <div class="color-swatch" style="background: #FF6B6B"></div>
+                                    <div class="color-swatch" style="background: #FFE66D"></div>
+                                    <div class="color-swatch" style="background: #FF8E53"></div>
+                                </div>
+                                <span>Warm & Cozy</span>
+                            </div>
+                            <div class="option" data-value="cool">
+                                <div class="color-palette">
+                                    <div class="color-swatch" style="background: #4ECDC4"></div>
+                                    <div class="color-swatch" style="background: #45B7D1"></div>
+                                    <div class="color-swatch" style="background: #96CEB4"></div>
+                                </div>
+                                <span>Cool & Calm</span>
+                            </div>
+                            <div class="option" data-value="neutral">
+                                <div class="color-palette">
+                                    <div class="color-swatch" style="background: #F7F7F7"></div>
+                                    <div class="color-swatch" style="background: #E8E8E8"></div>
+                                    <div class="color-swatch" style="background: #D4D4D4"></div>
+                                </div>
+                                <span>Neutral & Elegant</span>
+                            </div>
+                            <div class="option" data-value="vibrant">
+                                <div class="color-palette">
+                                    <div class="color-swatch" style="background: #FF1744"></div>
+                                    <div class="color-swatch" style="background: #00E676"></div>
+                                    <div class="color-swatch" style="background: #FFC400"></div>
+                                </div>
+                                <span>Vibrant & Bold</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2: Style Preference -->
+                    <div id="question-2" class="question" data-question="2">
+                        <h2>What's your aesthetic vibe?</h2>
+                        <p class="question-subtitle">Choose your design personality</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="minimalist">
+                                <div class="style-icon">
+                                    <i class="fas fa-minus"></i>
+                                </div>
+                                <span>Minimalist</span>
+                                <small>Clean, simple, focused</small>
+                            </div>
+                            <div class="option" data-value="retro">
+                                <div class="style-icon">
+                                    <i class="fas fa-vinyl"></i>
+                                </div>
+                                <span>Retro</span>
+                                <small>Vintage, nostalgic, classic</small>
+                            </div>
+                            <div class="option" data-value="modern">
+                                <div class="style-icon">
+                                    <i class="fas fa-cube"></i>
+                                </div>
+                                <span>Modern</span>
+                                <small>Contemporary, sleek, innovative</small>
+                            </div>
+                            <div class="option" data-value="nature">
+                                <div class="style-icon">
+                                    <i class="fas fa-leaf"></i>
+                                </div>
+                                <span>Nature</span>
+                                <small>Organic, peaceful, natural</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: Mood -->
+                    <div id="question-3" class="question" data-question="3">
+                        <h2>How do you want to feel?</h2>
+                        <p class="question-subtitle">Select your desired emotion</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="inspired">
+                                <div class="mood-icon">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <span>Inspired</span>
+                                <small>Creative & motivated</small>
+                            </div>
+                            <div class="option" data-value="relaxed">
+                                <div class="mood-icon">
+                                    <i class="fas fa-spa"></i>
+                                </div>
+                                <span>Relaxed</span>
+                                <small>Calm & peaceful</small>
+                            </div>
+                            <div class="option" data-value="energized">
+                                <div class="mood-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <span>Energized</span>
+                                <small>Dynamic & powerful</small>
+                            </div>
+                            <div class="option" data-value="focused">
+                                <div class="mood-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <span>Focused</span>
+                                <small>Concentrated & clear</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4: Environment -->
+                    <div id="question-4" class="question" data-question="4">
+                        <h2>Choose your ideal setting</h2>
+                        <p class="question-subtitle">Where does your mind wander?</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="urban">
+                                <div class="env-icon">
+                                    <i class="fas fa-city"></i>
+                                </div>
+                                <span>Urban</span>
+                                <small>City lights & architecture</small>
+                            </div>
+                            <div class="option" data-value="coastal">
+                                <div class="env-icon">
+                                    <i class="fas fa-water"></i>
+                                </div>
+                                <span>Coastal</span>
+                                <small>Ocean waves & beaches</small>
+                            </div>
+                            <div class="option" data-value="forest">
+                                <div class="env-icon">
+                                    <i class="fas fa-tree"></i>
+                                </div>
+                                <span>Forest</span>
+                                <small>Woods & greenery</small>
+                            </div>
+                            <div class="option" data-value="cosmic">
+                                <div class="env-icon">
+                                    <i class="fas fa-meteor"></i>
+                                </div>
+                                <span>Cosmic</span>
+                                <small>Space & galaxies</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5: Time of Day -->
+                    <div id="question-5" class="question" data-question="5">
+                        <h2>What's your favorite time?</h2>
+                        <p class="question-subtitle">Choose the moment that speaks to you</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="sunrise">
+                                <div class="time-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <span>Sunrise</span>
+                                <small>Fresh & hopeful</small>
+                            </div>
+                            <div class="option" data-value="daylight">
+                                <div class="time-icon">
+                                    <i class="fas fa-cloud-sun"></i>
+                                </div>
+                                <span>Daylight</span>
+                                <small>Bright & active</small>
+                            </div>
+                            <div class="option" data-value="sunset">
+                                <div class="time-icon">
+                                    <i class="fas fa-sunset"></i>
+                                </div>
+                                <span>Sunset</span>
+                                <small>Warm & romantic</small>
+                            </div>
+                            <div class="option" data-value="night">
+                                <div class="time-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <span>Night</span>
+                                <small>Mysterious & calm</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 6: Pattern Preference -->
+                    <div id="question-6" class="question" data-question="6">
+                        <h2>What patterns catch your eye?</h2>
+                        <p class="question-subtitle">Choose your visual language</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="geometric">
+                                <div class="pattern-icon">
+                                    <i class="fas fa-shapes"></i>
+                                </div>
+                                <span>Geometric</span>
+                                <small>Clean lines & angles</small>
+                            </div>
+                            <div class="option" data-value="organic">
+                                <div class="pattern-icon">
+                                    <i class="fas fa-seedling"></i>
+                                </div>
+                                <span>Organic</span>
+                                <small>Flowing & natural</small>
+                            </div>
+                            <div class="option" data-value="abstract">
+                                <div class="pattern-icon">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <span>Abstract</span>
+                                <small>Creative & expressive</small>
+                            </div>
+                            <div class="option" data-value="textured">
+                                <div class="pattern-icon">
+                                    <i class="fas fa-texture"></i>
+                                </div>
+                                <span>Textured</span>
+                                <small>Rich & tactile</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 7: Device Usage -->
+                    <div id="question-7" class="question" data-question="7">
+                        <h2>How do you use your device?</h2>
+                        <p class="question-subtitle">Tell us about your digital life</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="work">
+                                <div class="usage-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <span>Work</span>
+                                <small>Productivity & focus</small>
+                            </div>
+                            <div class="option" data-value="creative">
+                                <div class="usage-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <span>Creative</span>
+                                <small>Art & design</small>
+                            </div>
+                            <div class="option" data-value="entertainment">
+                                <div class="usage-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <span>Entertainment</span>
+                                <small>Fun & engaging</small>
+                            </div>
+                            <div class="option" data-value="social">
+                                <div class="usage-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span>Social</span>
+                                <small>Connection & sharing</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 8: Personal Style -->
+                    <div id="question-8" class="question" data-question="8">
+                        <h2>Define your personal style</h2>
+                        <p class="question-subtitle">Final question - be honest!</p>
+                        <div class="options-grid">
+                            <div class="option" data-value="classic">
+                                <div class="style-icon">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <span>Classic</span>
+                                <small>Timeless & sophisticated</small>
+                            </div>
+                            <div class="option" data-value="trendy">
+                                <div class="style-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <span>Trendy</span>
+                                <small>Modern & current</small>
+                            </div>
+                            <div class="option" data-value="unique">
+                                <div class="style-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span>Unique</span>
+                                <small>One-of-a-kind</small>
+                            </div>
+                            <div class="option" data-value="balanced">
+                                <div class="style-icon">
+                                    <i class="fas fa-balance-scale"></i>
+                                </div>
+                                <span>Balanced</span>
+                                <small>Harmonious & versatile</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button id="prev-btn" class="btn-neon-secondary" style="display: none;">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Previous</span>
+                    </button>
+                    <button id="next-btn" class="btn-neon">
+                        <span>Next</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="neon-border">
+                <div class="results-content">
+                    <div class="score-animation">
+                        <div class="score-circle">
+                            <span id="score-percentage">0</span>%
+                        </div>
+                        <div class="score-label" id="score-label">Loading...</div>
+                    </div>
+                    
+                    <h2>Your Style Profile</h2>
+                    <p class="results-subtitle">Here's what we discovered about your aesthetic:</p>
+                    
+                    <div class="style-traits">
+                        <div class="trait" id="trait-1">
+                            <i class="fas fa-palette"></i>
+                            <span>Loading...</span>
+                        </div>
+                        <div class="trait" id="trait-2">
+                            <i class="fas fa-heart"></i>
+                            <span>Loading...</span>
+                        </div>
+                        <div class="trait" id="trait-3">
+                            <i class="fas fa-star"></i>
+                            <span>Loading...</span>
+                        </div>
+                    </div>
+
+                    <div class="exclusive-offer">
+                        <div class="offer-header">
+                            <i class="fas fa-gift"></i>
+                            <h3>Exclusive Wallpaper Pack</h3>
+                        </div>
+                        <p>Get your personalized collection of wallpapers that match your unique style!</p>
+                        <div class="wallpaper-preview">
+                            <div class="preview-item" id="preview-1"></div>
+                            <div class="preview-item" id="preview-2"></div>
+                            <div class="preview-item" id="preview-3"></div>
+                        </div>
+                    </div>
+
+                    <div class="cta-buttons">
+                        <button id="download-app" class="btn-neon">
+                            <i class="fas fa-download"></i>
+                            <span>Download App & Get Wallpapers</span>
+                        </button>
+                        <button id="retake-quiz" class="btn-neon-secondary">
+                            <i class="fas fa-redo"></i>
+                            <span>Retake Quiz</span>
+                        </button>
+                    </div>
+
+                    <div class="social-share">
+                        <p>Share your style with friends!</p>
+                        <div class="share-buttons">
+                            <button class="share-btn" data-platform="twitter">
+                                <i class="fab fa-twitter"></i>
+                            </button>
+                            <button class="share-btn" data-platform="facebook">
+                                <i class="fab fa-facebook"></i>
+                            </button>
+                            <button class="share-btn" data-platform="instagram">
+                                <i class="fab fa-instagram"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
