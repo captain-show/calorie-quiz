@@ -195,6 +195,9 @@ function startScanningProgress() {
 function startActualScanning() {
     console.log('Starting actual scanning...');
     
+    // Очищаем предыдущий выбор плана подписки
+    localStorage.removeItem('selectedPlan');
+    
     // Переходим к подписочному экрану
     showSection('subscription-section');
     window.history.pushState({}, '', '#subscription');
@@ -249,11 +252,11 @@ function subscribeToPlan() {
     let selectedPlan = localStorage.getItem('selectedPlan');
     console.log('Selected plan:', selectedPlan);
     
-    // Если план не выбран, автоматически устанавливаем месячный
+    // Если план не выбран, автоматически устанавливаем годовой
     if (!selectedPlan) {
-        selectedPlan = 'monthly';
+        selectedPlan = 'yearly';
         localStorage.setItem('selectedPlan', selectedPlan);
-        console.log('Auto-selected monthly plan');
+        console.log('Auto-selected yearly plan');
     }
     
     console.log('Subscribing to plan:', selectedPlan);
@@ -490,6 +493,8 @@ function navigateToAnchor(anchor) {
             showSection('start-scanning-section');
             break;
         case 'subscription':
+            // Очищаем предыдущий выбор плана подписки
+            localStorage.removeItem('selectedPlan');
             showSection('subscription-section');
             break;
         case 'success':

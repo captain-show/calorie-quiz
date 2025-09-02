@@ -4,6 +4,9 @@ let cardElement = null;
 let serverPublishableKey = null;
 let serverPlans = null;
 
+// Очищаем выбор плана при загрузке stripe.js
+localStorage.removeItem('selectedPlan');
+
 // API base URL - change this when deploying to different servers
 const API_BASE_URL = 'https://ydtsxivmnq.us-east-1.awsapprunner.com';
 
@@ -80,9 +83,9 @@ async function loadPlansFromServer() {
     } catch (e) {
         // Фолбэк если сервер недоступен
         serverPlans = {
-            weekly: { id: null, productName: 'Weekly', unitAmount: 499, recurring: { interval: 'week' } },
-            monthly: { id: null, productName: 'Monthly', unitAmount: 999, recurring: { interval: 'month' } },
-            yearly: { id: null, productName: 'Yearly', unitAmount: 1999, recurring: { interval: 'year' } }
+            weekly: { id: null, priceId: null, productName: 'Weekly', unitAmount: 499, recurring: { interval: 'week' } },
+            monthly: { id: null, priceId: null, productName: 'Monthly', unitAmount: 999, recurring: { interval: 'month' } },
+            yearly: { id: null, priceId: null, productName: 'Yearly', unitAmount: 1999, recurring: { interval: 'year' } }
         };
         return serverPlans;
     }
@@ -138,7 +141,12 @@ async function handleSubmitPayment(e) {
         const email = document.getElementById('checkoutEmail').value.trim() || 'noemail@example.com';
         const planKey = getSelectedPlanKey();
         const plan = serverPlans?.[planKey];
-        if (!plan?.priceId) throw new Error('Plan is unavailable');
+        if (!plan) throw new Error('Plan is unavailable');
+        
+        // Если нет priceId (сервер недоступен), показываем ошибку
+        if (!plan.priceId) {
+            throw new Error('Payment service is temporarily unavailable. Please try again later.');
+        }
 
         // Create a PaymentMethod from card
         if (!stripeInstance || !cardElement) throw new Error('Payment form is not initialized');
