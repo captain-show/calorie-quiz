@@ -165,14 +165,14 @@ async function handleSubmitPayment(e) {
         statusEl.textContent = 'Payment successful!';
         
         // Отправляем события при успешной покупке
-        const planKey = getSelectedPlanKey();
-        const plan = serverPlans?.[planKey];
-        const price = plan?.unitAmount ? plan.unitAmount / 100 : 0;
+        const selectedPlanKey = getSelectedPlanKey();
+        const selectedPlan = serverPlans?.[selectedPlanKey];
+        const price = selectedPlan?.unitAmount ? selectedPlan.unitAmount / 100 : 0;
         
         // Mixpanel purchase event
         if (typeof mixpanel !== 'undefined') {
             mixpanel.track('purchase', {
-                plan: planKey,
+                plan: selectedPlanKey,
                 plan_price: price,
                 currency: 'USD'
             });
@@ -183,7 +183,7 @@ async function handleSubmitPayment(e) {
             fbq('track', 'Purchase', {
                 value: price,
                 currency: 'USD',
-                content_name: planKey + ' plan',
+                content_name: selectedPlanKey + ' plan',
                 content_category: 'palmistry_subscription'
             });
         }
