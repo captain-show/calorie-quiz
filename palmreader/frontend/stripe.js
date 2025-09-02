@@ -163,7 +163,40 @@ async function handleSubmitPayment(e) {
             if (confirmError) throw confirmError;
         }
         statusEl.textContent = 'Payment successful!';
-        // Optionally redirect or show success
+        
+        // Отправляем события при успешной покупке
+        const planKey = getSelectedPlanKey();
+        const plan = serverPlans?.[planKey];
+        const price = plan?.unitAmount ? plan.unitAmount / 100 : 0;
+        
+        // Mixpanel purchase event
+        if (typeof mixpanel !== 'undefined') {
+            mixpanel.track('purchase', {
+                plan: planKey,
+                plan_price: price,
+                currency: 'USD'
+            });
+        }
+        
+        // Facebook Pixel purchase event
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Purchase', {
+                value: price,
+                currency: 'USD',
+                content_name: planKey + ' plan',
+                content_category: 'palmistry_subscription'
+            });
+        }
+        
+        // Show success screen
+        setTimeout(() => {
+            if (typeof showSection === 'function') {
+                showSection('success-section');
+                window.history.pushState({}, '', '#success');
+            } else {
+                document.getElementById('success-section').style.display = 'block';
+            }
+        }, 1500);
     } catch (err) {
         document.getElementById('card-errors').textContent = err.message || String(err);
         document.getElementById('payment-status').textContent = '';
@@ -187,7 +220,20 @@ async function openCheckoutSection() {
     }
 }
 
+// Download app function
+function downloadApp() {
+    // Отправляем событие в Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('download_click', {
+            app_url: 'https://orion.onelink.me/ZozM/32ygh72r'
+        });
+    }
+    
+    window.open('https://orion.onelink.me/ZozM/32ygh72r', '_blank');
+}
+
 // expose
 window.openCheckoutSection = openCheckoutSection;
+window.downloadApp = downloadApp;
 
 

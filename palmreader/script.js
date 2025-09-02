@@ -17,15 +17,7 @@ function startQuiz() {
 function selectGender(gender) {
     console.log('Selected gender:', gender);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 1,
-            question_type: 'gender',
-            answer: gender
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 1,
@@ -57,15 +49,7 @@ function continueToNext() {
 function selectAspect(aspect) {
     console.log('Selected aspect:', aspect);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 3,
-            question_type: 'aspects',
-            answer: aspect
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 3,
@@ -86,15 +70,7 @@ function selectAspect(aspect) {
 function selectRelationship(status) {
     console.log('Selected relationship status:', status);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 4,
-            question_type: 'relationship',
-            answer: status
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 4,
@@ -114,15 +90,7 @@ function selectRelationship(status) {
 function selectElement(element) {
     console.log('Selected element:', element);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 5,
-            question_type: 'element',
-            answer: element
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 5,
@@ -142,15 +110,7 @@ function selectElement(element) {
 function selectColor(color) {
     console.log('Selected color:', color);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 6,
-            question_type: 'color',
-            answer: color
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 6,
@@ -170,15 +130,7 @@ function selectColor(color) {
 function selectDecision(decision) {
     console.log('Selected decision making:', decision);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'question_answered', {
-            question_number: 7,
-            question_type: 'decision',
-            answer: decision
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 7,
@@ -306,16 +258,9 @@ function subscribeToPlan() {
     
     console.log('Subscribing to plan:', selectedPlan);
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'subscription_complete', {
-            plan: selectedPlan,
-            plan_price: getPlanPrice(selectedPlan)
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
-        mixpanel.track('subscription_complete', {
+        mixpanel.track('subscription_click', {
             plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan)
         });
@@ -405,23 +350,7 @@ function sendEmail() {
     // Получаем план (если не выбран, будет месячный)
     const plan = localStorage.getItem('selectedPlan') || 'monthly';
     
-    // Отправляем события в Facebook Pixel и Mixpanel
-    if (typeof fbq !== 'undefined') {
-        fbq('track', 'email_submitted', {
-            email: email,
-            plan: plan,
-            plan_price: getPlanPrice(plan)
-        });
-        
-        // Отправляем событие purchase для Facebook Pixel
-        fbq('track', 'Purchase', {
-            value: getPlanPrice(plan),
-            currency: 'USD',
-            content_name: plan + ' plan',
-            content_category: 'palmistry_subscription'
-        });
-    }
-    
+    // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('email_submitted', {
             email: email,
@@ -458,15 +387,7 @@ function selectAge() {
         // Сохраняем выбранный возраст
         localStorage.setItem('selectedAge', age);
         
-        // Отправляем события в Facebook Pixel и Mixpanel
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'question_answered', {
-                question_number: 2,
-                question_type: 'age',
-                answer: age
-            });
-        }
-        
+        // Отправляем событие в Mixpanel
         if (typeof mixpanel !== 'undefined') {
             mixpanel.track('question_answered', {
                 question_number: 2,
@@ -509,7 +430,7 @@ function handleAgeChange() {
 // Функция показа определенного раздела
 function showSection(sectionId) {
     // Скрываем все разделы
-    const sections = ['welcome-section', 'gender-section', 'birthdate-section', 'palms-section', 'aspects-section', 'relationship-section', 'element-section', 'color-section', 'decision-section', 'palmistry-info-section', 'scanning-section', 'start-scanning-section', 'subscription-section', 'checkout-section'];
+    const sections = ['welcome-section', 'gender-section', 'birthdate-section', 'palms-section', 'aspects-section', 'relationship-section', 'element-section', 'color-section', 'decision-section', 'palmistry-info-section', 'scanning-section', 'start-scanning-section', 'subscription-section', 'checkout-section', 'success-section'];
     sections.forEach(id => {
         const section = document.getElementById(id);
         if (section) {
@@ -570,6 +491,9 @@ function navigateToAnchor(anchor) {
             break;
         case 'subscription':
             showSection('subscription-section');
+            break;
+        case 'success':
+            showSection('success-section');
             break;
         default:
             showSection('welcome-section');
