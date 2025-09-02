@@ -49,9 +49,6 @@ async function initStripeElements() {
             }
         });
         cardElement.mount('#card-element');
-        
-        // Initialize Apple Pay if available
-        initApplePay();
     } catch (e) {
         // Показываем секцию чек-аута без Stripe, чтобы пользователь видел форму
         const errorsEl = document.getElementById('card-errors');
@@ -95,7 +92,7 @@ async function loadPlansFromServer() {
 }
 
 function getSelectedPlanKey() {
-    return localStorage.getItem('selectedPlan') || 'weekly';
+    return localStorage.getItem('selectedPlan') || 'yearly';
 }
 
 function selectCheckoutPlanUI() {
@@ -241,143 +238,6 @@ function downloadApp() {
     }
     
     window.open('https://orion.onelink.me/ZozM/32ygh72r', '_blank');
-}
-
-// Apple Pay functions
-function isIOSDevice() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-}
-
-function isApplePayAvailable() {
-    return window.ApplePaySession && ApplePaySession.canMakePayments();
-}
-
-async function initApplePay() {
-    const applePayButton = document.getElementById('apple-pay-button');
-    const paymentDivider = document.querySelector('.payment-divider');
-    
-    if (!isIOSDevice() || !isApplePayAvailable()) {
-        // Hide Apple Pay button and divider on non-iOS devices
-        if (applePayButton) {
-            applePayButton.style.display = 'none';
-        }
-        if (paymentDivider) {
-            paymentDivider.style.display = 'none';
-        }
-        return;
-    }
-    
-    // Show Apple Pay button and divider on iOS devices
-    if (applePayButton) {
-        applePayButton.style.display = 'block';
-        
-        const applePayBtn = document.getElementById('apple-pay-btn');
-        if (applePayBtn) {
-            applePayBtn.addEventListener('click', handleApplePayPayment);
-        }
-    }
-    
-    if (paymentDivider) {
-        paymentDivider.style.display = 'block';
-    }
-}
-
-async function handleApplePayPayment() {
-    if (!stripeInstance || !serverPlans) {
-        console.error('Stripe not initialized or plans not loaded');
-        return;
-    }
-    
-    const planKey = getSelectedPlanKey();
-    const plan = serverPlans[planKey];
-    
-    if (!plan || !plan.priceId) {
-        alert('Payment service temporarily unavailable. Please try again later.');
-        return;
-    }
-    
-    try {
-        const email = document.getElementById('checkoutEmail').value || 'noemail@example.com';
-        
-        // Create payment request
-        const paymentRequest = stripeInstance.paymentRequest({
-            country: 'US',
-            currency: 'usd',
-            total: {
-                label: plan.name,
-                amount: Math.round(parseFloat(plan.price) * 100), // Convert to cents
-            },
-            requestPayerName: true,
-            requestPayerEmail: true,
-        });
-        
-        // Check if Apple Pay is available
-        const canMakePayment = await paymentRequest.canMakePayment();
-        if (!canMakePayment || !canMakePayment.applePay) {
-            console.log('Apple Pay not available');
-            return;
-        }
-        
-        // Handle payment method
-        paymentRequest.on('paymentmethod', async (ev) => {
-            try {
-                // Create subscription on server
-                const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        priceId: plan.priceId,
-                        email: email,
-                        paymentMethodId: ev.paymentMethod.id,
-                    }),
-                });
-                
-                const result = await response.json();
-                
-                if (result.error) {
-                    ev.complete('fail');
-                    throw new Error(result.error);
-                }
-                
-                // Confirm payment
-                ev.complete('success');
-                
-                // Track analytics
-                if (typeof mixpanel !== 'undefined') {
-                    mixpanel.track('purchase', {
-                        plan: planKey,
-                        price: plan.price,
-                        payment_method: 'apple_pay'
-                    });
-                }
-                
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Purchase', {
-                        value: parseFloat(plan.price),
-                        currency: 'USD'
-                    });
-                }
-                
-                // Show success screen
-                showSection('success-section');
-                window.history.pushState({}, '', '#success');
-                
-            } catch (error) {
-                console.error('Apple Pay payment failed:', error);
-                ev.complete('fail');
-                alert('Payment failed. Please try again.');
-            }
-        });
-        
-        // Show Apple Pay sheet
-        paymentRequest.show();
-        
-    } catch (error) {
-        console.error('Apple Pay error:', error);
-        alert('Apple Pay is not available. Please use card payment.');
-    }
 }
 
 // expose

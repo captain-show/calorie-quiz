@@ -5,15 +5,15 @@
 }
 
 body {
-    font-family: 'Crimson Text', serif;
-    background: #0f0f23; /* Fallback для iOS */
-    background: -webkit-linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    font-family: 'Inter', sans-serif;
+    background: #f8f9fa; /* Fallback для iOS */
+    background: -webkit-linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #e8e8e8;
+    color: #2c3e50;
     position: relative;
     overflow-x: hidden;
 }
@@ -26,9 +26,9 @@ body::before {
     width: 100%;
     height: 100%;
     background-image: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+        radial-gradient(circle at 20% 80%, rgba(108, 117, 125, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(73, 80, 87, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(52, 58, 64, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
 }
@@ -41,15 +41,15 @@ body::before {
 }
 
 .quiz-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     padding: 40px 30px;
     text-align: center;
     box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
     position: relative;
     overflow: hidden;
 }
@@ -81,16 +81,16 @@ body::before {
 }
 
 .logo-text {
-    font-family: 'Cinzel', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 32px;
     font-weight: 700;
-    background: linear-gradient(45deg, #ff77c6, #7b68ee, #00d4ff);
+    background: linear-gradient(45deg, #2c3e50, #34495e, #2c3e50);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: gradient 3s ease infinite;
-    text-shadow: 0 0 30px rgba(255, 119, 198, 0.3);
+    text-shadow: 0 0 30px rgba(44, 62, 80, 0.3);
 }
 
 .welcome-content {
@@ -99,20 +99,20 @@ body::before {
 }
 
 .welcome-title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: #f0f0f0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    color: #2c3e50;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-description {
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.6;
     margin-bottom: 30px;
-    color: #e0e0e0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #495057;
+    font-weight: 400;
 }
 
 .mystical-elements {
@@ -138,27 +138,27 @@ body::before {
 
 .start-btn {
     position: relative;
-    background: linear-gradient(45deg, #7b68ee, #ff77c6);
+    background: linear-gradient(45deg, #2c3e50, #34495e);
     border: none;
-    border-radius: 50px;
-    padding: 18px 40px;
-    font-family: 'Cinzel', serif;
-    font-size: 18px;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
     font-weight: 600;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
     box-shadow: 
-        0 8px 25px rgba(123, 104, 238, 0.4),
-        0 0 0 0 rgba(123, 104, 238, 0.7);
+        0 4px 12px rgba(44, 62, 80, 0.3),
+        0 0 0 0 rgba(44, 62, 80, 0.7);
 }
 
 .start-btn:hover {
     transform: translateY(-2px);
     box-shadow: 
-        0 12px 35px rgba(123, 104, 238, 0.6),
-        0 0 0 10px rgba(123, 104, 238, 0.1);
+        0 8px 20px rgba(44, 62, 80, 0.4),
+        0 0 0 10px rgba(44, 62, 80, 0.1);
 }
 
 .start-btn:active {
@@ -188,7 +188,7 @@ body::before {
 
 .footer p {
     font-size: 15px;
-    color: #b0b0b0;
+    color: #6c757d;
 }
 
 /* Анимации */
@@ -216,20 +216,19 @@ body::before {
 }
 
 .question-title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Playfair Display', serif;
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 10px;
-    color: #f0f0f0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    color: #2c3e50;
 }
 
 .question-description {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.6;
     margin-bottom: 20px;
-    color: #e0e0e0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #495057;
+    font-weight: 400;
 }
 
 .gender-options {
@@ -245,18 +244,19 @@ body::before {
     align-items: center;
     cursor: pointer;
     padding: 25px;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
     transition: all 0.3s ease;
     min-width: 120px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .gender-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 119, 198, 0.3);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(44, 62, 80, 0.2);
 }
 
 .gender-option:active {
@@ -276,11 +276,11 @@ body::before {
 }
 
 .gender-label {
-    font-family: 'Cinzel', serif;
-    font-size: 17px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
+    text-align: center;
 }
 
 /* Стили для вопроса о дате рождения */
@@ -389,27 +389,27 @@ body::before {
 
 .continue-btn {
     position: relative;
-    background: linear-gradient(45deg, #7b68ee, #ff77c6);
+    background: linear-gradient(45deg, #2c3e50, #34495e);
     border: none;
-    border-radius: 50px;
-    padding: 18px 40px;
-    font-family: 'Cinzel', serif;
-    font-size: 18px;
+    border-radius: 8px;
+    padding: 16px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
     font-weight: 600;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease, opacity 0.3s ease;
     overflow: hidden;
     box-shadow: 
-        0 8px 25px rgba(123, 104, 238, 0.4),
-        0 0 0 0 rgba(123, 104, 238, 0.7);
+        0 4px 12px rgba(44, 62, 80, 0.3),
+        0 0 0 0 rgba(44, 62, 80, 0.7);
 }
 
 .continue-btn:hover {
     transform: translateY(-2px);
     box-shadow: 
-        0 12px 35px rgba(123, 104, 238, 0.6),
-        0 0 0 10px rgba(123, 104, 238, 0.1);
+        0 8px 20px rgba(44, 62, 80, 0.4),
+        0 0 0 10px rgba(44, 62, 80, 0.1);
 }
 
 .continue-btn:active {
@@ -434,20 +434,21 @@ body::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 55px;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .aspect-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 119, 198, 0.2);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(44, 62, 80, 0.2);
 }
 
 .aspect-option:active {
@@ -466,11 +467,10 @@ body::before {
 }
 
 .aspect-label {
-    font-family: 'Cinzel', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
 }
 
 /* Стили для вопроса о статусе отношений */
@@ -491,20 +491,21 @@ body::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 55px;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .relationship-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 119, 198, 0.2);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(44, 62, 80, 0.2);
 }
 
 .relationship-option:active {
@@ -523,11 +524,10 @@ body::before {
 }
 
 .relationship-label {
-    font-family: 'Cinzel', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
 }
 
 /* Стили для вопроса о стихиях */
@@ -548,20 +548,21 @@ body::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 55px;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .element-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 119, 198, 0.2);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(44, 62, 80, 0.2);
 }
 
 .element-option:active {
@@ -580,11 +581,10 @@ body::before {
 }
 
 .element-label {
-    font-family: 'Cinzel', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
 }
 
 /* Стили для вопроса о цветах */
@@ -605,20 +605,21 @@ body::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 55px;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .color-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 119, 198, 0.2);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(44, 62, 80, 0.2);
 }
 
 .color-option:active {
@@ -637,11 +638,10 @@ body::before {
 }
 
 .color-label {
-    font-family: 'Cinzel', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
 }
 
 /* Стили для вопроса о принятии решений */
@@ -662,20 +662,21 @@ body::before {
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px 25px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    min-height: 55px;
+    min-height: 60px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .decision-option:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 119, 198, 0.5);
-    transform: translateX(8px);
-    box-shadow: 0 8px 25px rgba(255, 119, 198, 0.2);
+    background: #ffffff;
+    border-color: #2c3e50;
+    transform: translateX(5px);
+    box-shadow: 0 6px 16px rgba(44, 62, 80, 0.2);
 }
 
 .decision-option:active {
@@ -694,11 +695,10 @@ body::before {
 }
 
 .decision-label {
-    font-family: 'Cinzel', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #f0f0f0;
-    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    color: #2c3e50;
 }
 
 /* Стили для информационного раздела о хиромантии */
@@ -1614,74 +1614,4 @@ body::before {
 .age-button-container .continue-btn:not(:disabled) {
     opacity: 1;
     cursor: pointer;
-}
-
-/* Apple Pay Button Styles */
-.apple-pay-button {
-    margin: 20px 0;
-    text-align: center;
-}
-
-#apple-pay-btn {
-    background: #000;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-#apple-pay-btn:hover {
-    background: #333;
-    transform: translateY(-1px);
-}
-
-#apple-pay-btn:active {
-    transform: translateY(0);
-}
-
-.apple-pay-text {
-    position: relative;
-}
-
-.apple-pay-text::before {
-    content: "🍎";
-    margin-right: 8px;
-    font-size: 18px;
-}
-
-.payment-divider {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
-
-.payment-divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #444, transparent);
-}
-
-.divider-text {
-    background: #1a1a2e;
-    padding: 0 20px;
-    color: #888;
-    font-size: 14px;
-    position: relative;
-    z-index: 1;
 }

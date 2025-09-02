@@ -4,165 +4,164 @@ console.log('Script.js loaded successfully!');
 function startQuiz() {
     console.log('startQuiz function called!');
     
-    // Переходим к разделу с вопросом о поле
+    // Переходим к разделу с вопросом о стиле
     showSection('gender-section');
     
     // Обновляем URL с якорем
-    window.history.pushState({}, '', '#gender');
+    window.history.pushState({}, '', '#style');
     
-    console.log('Starting palmistry quiz!');
+    console.log('Starting room design quiz!');
 }
 
-// Функция выбора пола
-function selectGender(gender) {
-    console.log('Selected gender:', gender);
+// Функция выбора стиля
+function selectGender(style) {
+    console.log('Selected style:', style);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 1,
-            question_type: 'gender',
-            answer: gender
+            question_type: 'style',
+            answer: style
         });
     }
     
-    // Переходим к следующему вопросу о дате рождения
+    // Переходим к следующему вопросу о цветах
     showSection('birthdate-section');
     
     // Обновляем URL с якорем
-    window.history.pushState({}, '', '#birthdate');
+    window.history.pushState({}, '', '#colors');
     
-    // Сохраняем выбранный пол
-    localStorage.setItem('selectedGender', gender);
+    // Сохраняем выбранный стиль
+    localStorage.setItem('selectedStyle', style);
 }
 
 // Функция продолжения к следующему разделу
 function continueToNext() {
     console.log('Continuing to next section...');
     
-    // Переходим к следующему вопросу о жизненных аспектах
+    // Переходим к следующему вопросу о функциях комнаты
     showSection('aspects-section');
-    window.history.pushState({}, '', '#aspects');
+    window.history.pushState({}, '', '#function');
 }
 
-// Функция выбора жизненного аспекта
-function selectAspect(aspect) {
-    console.log('Selected aspect:', aspect);
+// Функция выбора функции комнаты
+function selectAspect(function_type) {
+    console.log('Selected function:', function_type);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 3,
-            question_type: 'aspects',
-            answer: aspect
+            question_type: 'function',
+            answer: function_type
         });
     }
     
-    // Сохраняем выбранный аспект
-    localStorage.setItem('selectedAspect', aspect);
+    // Сохраняем выбранную функцию
+    localStorage.setItem('selectedFunction', function_type);
     
-    // Переходим к следующему вопросу о статусе отношений
+    // Переходим к следующему вопросу об освещении
     showSection('relationship-section');
-    window.history.pushState({}, '', '#relationship');
+    window.history.pushState({}, '', '#lighting');
 }
 
-// Функция выбора статуса отношений
-function selectRelationship(status) {
-    console.log('Selected relationship status:', status);
+// Функция выбора освещения
+function selectRelationship(lighting) {
+    console.log('Selected lighting:', lighting);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 4,
-            question_type: 'relationship',
-            answer: status
+            question_type: 'lighting',
+            answer: lighting
         });
     }
     
-    localStorage.setItem('selectedRelationship', status);
+    localStorage.setItem('selectedLighting', lighting);
     
-    // Переходим к следующему вопросу о стихиях
+    // Переходим к следующему вопросу о мебели
     showSection('element-section');
-    window.history.pushState({}, '', '#element');
+    window.history.pushState({}, '', '#furniture');
 }
 
-// Функция выбора стихии
-function selectElement(element) {
-    console.log('Selected element:', element);
+// Функция выбора приоритета мебели
+function selectElement(priority) {
+    console.log('Selected furniture priority:', priority);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 5,
-            question_type: 'element',
-            answer: element
+            question_type: 'furniture_priority',
+            answer: priority
         });
     }
     
-    localStorage.setItem('selectedElement', element);
+    localStorage.setItem('selectedFurniturePriority', priority);
     
-    // Переходим к следующему вопросу о цветах
+    // Переходим к следующему вопросу о декоре
     showSection('color-section');
-    window.history.pushState({}, '', '#color');
+    window.history.pushState({}, '', '#decor');
 }
 
-// Функция выбора цвета
-function selectColor(color) {
-    console.log('Selected color:', color);
+// Функция выбора декора
+function selectColor(decor) {
+    console.log('Selected decor:', decor);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 6,
-            question_type: 'color',
-            answer: color
+            question_type: 'decor',
+            answer: decor
         });
     }
     
-    localStorage.setItem('selectedColor', color);
+    localStorage.setItem('selectedDecor', decor);
     
-    // Переходим к следующему вопросу о принятии решений
+    // Переходим к следующему вопросу о черном цвете
     showSection('decision-section');
-    window.history.pushState({}, '', '#decision');
+    window.history.pushState({}, '', '#black_color');
 }
 
-// Функция выбора способа принятия решений
-function selectDecision(decision) {
-    console.log('Selected decision making:', decision);
+// Функция выбора отношения к черному цвету
+function selectDecision(black_preference) {
+    console.log('Selected black color preference:', black_preference);
     
     // Отправляем событие в Mixpanel
     if (typeof mixpanel !== 'undefined') {
         mixpanel.track('question_answered', {
             question_number: 7,
-            question_type: 'decision',
-            answer: decision
+            question_type: 'black_color',
+            answer: black_preference
         });
     }
     
-    localStorage.setItem('selectedDecision', decision);
+    localStorage.setItem('selectedBlackPreference', black_preference);
     
     // Все вопросы завершены
     console.log('All questions completed!');
-    console.log('Gender:', localStorage.getItem('selectedGender'));
-    console.log('Birthdate:', localStorage.getItem('selectedBirthdate'));
-    console.log('Aspect:', localStorage.getItem('selectedAspect'));
-    console.log('Relationship:', localStorage.getItem('selectedRelationship'));
-    console.log('Element:', localStorage.getItem('selectedElement'));
-    console.log('Color:', localStorage.getItem('selectedColor'));
-    console.log('Decision:', localStorage.getItem('selectedDecision'));
+    console.log('Style:', localStorage.getItem('selectedStyle'));
+    console.log('Function:', localStorage.getItem('selectedFunction'));
+    console.log('Lighting:', localStorage.getItem('selectedLighting'));
+    console.log('Furniture Priority:', localStorage.getItem('selectedFurniturePriority'));
+    console.log('Decor:', localStorage.getItem('selectedDecor'));
+    console.log('Black Preference:', localStorage.getItem('selectedBlackPreference'));
     
-    // Переходим к информационному разделу о хиромантии
+    // Переходим к информационному разделу о дизайне
     showSection('palmistry-info-section');
-    window.history.pushState({}, '', '#palmistry-info');
+    window.history.pushState({}, '', '#design-info');
 }
 
 // Функция перехода к результатам
 function continueToResults() {
     console.log('Continuing to results...');
     
-    // Переходим к разделу сканирования руки
+    // Переходим к разделу анализа комнаты
     showSection('scanning-section');
-    window.history.pushState({}, '', '#scanning');
+    window.history.pushState({}, '', '#analysis');
     
     // Запускаем анимацию прогресса
     startScanningProgress();
@@ -182,18 +181,18 @@ function startScanningProgress() {
         if (progress >= 100) {
             clearInterval(interval);
             
-            // Переходим к разделу начала сканирования
+            // Переходим к разделу готовности дизайна
             setTimeout(() => {
                 showSection('start-scanning-section');
-                window.history.pushState({}, '', '#start-scanning');
+                window.history.pushState({}, '', '#design-ready');
             }, 500);
         }
     }, 40); // 4000ms / 100 = 40ms для 4 секунд
 }
 
-// Функция начала реального сканирования
+// Функция начала создания дизайна
 function startActualScanning() {
-    console.log('Starting actual scanning...');
+    console.log('Starting design creation...');
     
     // Очищаем предыдущий выбор плана подписки
     localStorage.removeItem('selectedPlan');
@@ -252,11 +251,11 @@ function subscribeToPlan() {
     let selectedPlan = localStorage.getItem('selectedPlan');
     console.log('Selected plan:', selectedPlan);
     
-    // Если план не выбран, автоматически устанавливаем недельный
+    // Если план не выбран, автоматически устанавливаем годовой
     if (!selectedPlan) {
-        selectedPlan = 'weekly';
+        selectedPlan = 'yearly';
         localStorage.setItem('selectedPlan', selectedPlan);
-        console.log('Auto-selected weekly plan');
+        console.log('Auto-selected yearly plan');
     }
     
     console.log('Subscribing to plan:', selectedPlan);
@@ -369,7 +368,7 @@ function sendEmail() {
     closeEmailModal();
     
     // Показываем сообщение об успехе
-    alert('Thank you! Your palmistry reading is being prepared.');
+    alert('Thank you! Your room design guide is being prepared.');
 }
 
 // Функция валидации email
@@ -459,37 +458,37 @@ function navigateToAnchor(anchor) {
         case '':
             showSection('welcome-section');
             break;
-        case 'gender':
+        case 'style':
             showSection('gender-section');
             break;
-        case 'age':
+        case 'colors':
             showSection('birthdate-section');
             break;
-        case 'palms':
+        case 'atmosphere':
             showSection('palms-section');
             break;
-        case 'aspects':
+        case 'function':
             showSection('aspects-section');
             break;
-        case 'relationship':
+        case 'lighting':
             showSection('relationship-section');
             break;
-        case 'element':
+        case 'furniture':
             showSection('element-section');
             break;
-        case 'color':
+        case 'decor':
             showSection('color-section');
             break;
-        case 'decision':
+        case 'black_color':
             showSection('decision-section');
             break;
-        case 'palmistry-info':
+        case 'design-info':
             showSection('palmistry-info-section');
             break;
-        case 'scanning':
+        case 'analysis':
             showSection('scanning-section');
             break;
-        case 'start-scanning':
+        case 'design-ready':
             showSection('start-scanning-section');
             break;
         case 'subscription':

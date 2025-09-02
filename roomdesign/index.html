@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palmistry - Palm Reading</title>
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔮</text></svg>">
+    <title>Room Design - Interior Style Quiz</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Facebook Pixel Code -->
     <script>
@@ -18,11 +18,11 @@
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1210061714219099');
+        fbq('init', 'YOUR_FACEBOOK_PIXEL_ID');
         fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=1210061714219099&ev=PageView&noscript=1"
+        src="https://www.facebook.com/tr?id=YOUR_FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Facebook Pixel Code -->
     
@@ -31,7 +31,7 @@
         (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]||[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (staging)");return d};a.people.toString=function(){return a.toString(1)+".people (staging)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
         for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call(c,arguments)}}var d={},c=[c];for(var e=0;e<j.length;e++)b(j[e]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
         MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
-        mixpanel.init("828575024ae420ebf1a423b7022cdc5c");
+        mixpanel.init("YOUR_MIXPANEL_PROJECT_ID");
     </script>
 </head>
 <body>
@@ -40,21 +40,21 @@
             <!-- Welcome Section -->
             <div id="welcome-section">
                 <div class="logo">
-                    <div class="logo-symbol">🔮</div>
-                    <h1 class="logo-text">Palmistry</h1>
+                    <div class="logo-symbol">🏠</div>
+                    <h1 class="logo-text">Room Design</h1>
                 </div>
                 
                 <div class="welcome-content">
-                    <h2 class="welcome-title">Welcome to the World of Palmistry</h2>
+                    <h2 class="welcome-title">Discover Your Perfect Interior Style</h2>
                     <p class="welcome-description">
-                        Unlock the secrets of your destiny through the lines on your palm. 
-                        We will help you understand the meaning of each feature and predict your future.
+                        Find your ideal room design through our personalized style quiz. 
+                        We'll help you create a space that reflects your personality and lifestyle.
                     </p>
                     
                     <div class="mystical-elements">
-                        <div class="element">⭐</div>
-                        <div class="element">🌙</div>
-                        <div class="element">✨</div>
+                        <div class="element">🎨</div>
+                        <div class="element">🪑</div>
+                        <div class="element">💡</div>
                     </div>
                     
                     <button class="start-btn" onclick="startQuiz()">
@@ -64,59 +64,65 @@
                 </div>
                 
                 <div class="footer">
-                    <p>Trust the ancient wisdom of palmistry</p>
+                    <p>Create your dream space with confidence</p>
                 </div>
             </div>
             
-            <!-- Gender Selection Question -->
+            <!-- Style Preference Question -->
             <div id="gender-section" class="gender-question" style="display: none;">
-                <h3 class="question-title">What's your gender?</h3>
+                <h3 class="question-title">What interior style appeals to you most?</h3>
                 <p class="question-description">
-                    In Palmistry, everyone is a blend of masculine and feminine, so it helps to know yours.
+                    Choose the style that immediately catches your eye and makes you feel at home.
                 </p>
                 
                 <div class="gender-options">
-                    <div class="gender-option" onclick="selectGender('male')">
-                        <div class="gender-icon">👨</div>
-                        <span class="gender-label">Male</span>
+                    <div class="gender-option" onclick="selectGender('scandinavian')">
+                        <div class="gender-icon">🏔️</div>
+                        <span class="gender-label">Scandinavian</span>
                     </div>
-                    <div class="gender-option" onclick="selectGender('female')">
-                        <div class="gender-icon">👩</div>
-                        <span class="gender-label">Female</span>
+                    <div class="gender-option" onclick="selectGender('modern')">
+                        <div class="gender-icon">🏢</div>
+                        <span class="gender-label">Modern</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Age Question -->
+            <!-- Color Preference Question -->
             <div id="birthdate-section" class="birthdate-question" style="display: none;">
-                <h3 class="question-title">What's your age?</h3>
+                <h3 class="question-title">What color palette do you prefer?</h3>
                 <p class="question-description">
-                    Your age reveals your core personality traits, needs and desires.
+                    Colors have a powerful impact on mood and atmosphere in your space.
                 </p>
                 
-                <div class="age-input" id="ageInputContainer">
-                    <input type="number" id="ageInput" class="age-picker" placeholder="Enter your age" min="1" max="120" oninput="handleAgeChange()" onchange="handleAgeChange()">
-                </div>
-                
-
-                
-                <div class="age-button-container">
-                    <button class="continue-btn" onclick="selectAge()" id="ageContinueBtn">
-                        <span class="btn-text">Continue</span>
-                        <div class="btn-glow"></div>
-                    </button>
+                <div class="color-options">
+                    <div class="color-option" onclick="selectColor('neutral')">
+                        <div class="color-icon">⚪</div>
+                        <span class="color-label">Neutral: white, gray, beige</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('warm')">
+                        <div class="color-icon">🟤</div>
+                        <span class="color-label">Warm: terracotta, ochre, sand</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('cool')">
+                        <div class="color-icon">🔵</div>
+                        <span class="color-label">Cool: blue, green, gray-blue</span>
+                    </div>
+                    <div class="color-option" onclick="selectColor('bright')">
+                        <div class="color-icon">🟡</div>
+                        <span class="color-label">Bright: fuchsia, turquoise, lime</span>
+                    </div>
                 </div>
             </div>
             
-            <!-- Palms Information Question -->
+            <!-- Atmosphere Question -->
             <div id="palms-section" class="palms-question" style="display: none;">
-                <h3 class="question-title">Your palms hold a wealth of information about your fate and personality</h3>
+                <h3 class="question-title">What atmosphere do you want in your room?</h3>
                 <p class="question-description">
-                    Let's explore what your hands can reveal about your future.
+                    The right atmosphere can transform your space and improve your daily life.
                 </p>
                 
                 <div class="palms-illustration">
-                    <div class="hand-symbol">🤲</div>
+                    <div class="hand-symbol">🏡</div>
                 </div>
                 
                 <button class="continue-btn" onclick="continueToNext()">
@@ -125,124 +131,116 @@
                 </button>
             </div>
             
-            <!-- Life Aspects Question -->
+            <!-- Room Function Question -->
             <div id="aspects-section" class="aspects-question" style="display: none;">
-                <h3 class="question-title">What aspects of your life do you wish to gain insight into through palmistry?</h3>
+                <h3 class="question-title">How do you primarily use your room?</h3>
                 
                 <div class="aspects-options">
-                    <div class="aspect-option" onclick="selectAspect('love')">
-                        <div class="aspect-icon">💕</div>
-                        <span class="aspect-label">Love & Relationship</span>
+                    <div class="aspect-option" onclick="selectAspect('relaxation')">
+                        <div class="aspect-icon">🛋️</div>
+                        <span class="aspect-label">Relaxation & Rest</span>
                     </div>
-                    <div class="aspect-option" onclick="selectAspect('health')">
-                        <div class="aspect-icon">🌿</div>
-                        <span class="aspect-label">Health & Vitality</span>
+                    <div class="aspect-option" onclick="selectAspect('work')">
+                        <div class="aspect-icon">💻</div>
+                        <span class="aspect-label">Work & Focus</span>
                     </div>
-                    <div class="aspect-option" onclick="selectAspect('career')">
-                        <div class="aspect-icon">⭐</div>
-                        <span class="aspect-label">Career & Destiny</span>
+                    <div class="aspect-option" onclick="selectAspect('social')">
+                        <div class="aspect-icon">👥</div>
+                        <span class="aspect-label">Social & Entertainment</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Relationship Status Question -->
+            <!-- Lighting Preference Question -->
             <div id="relationship-section" class="relationship-question" style="display: none;">
-                <h3 class="question-title">So we can get to know you better, please tell us your relationship status.</h3>
+                <h3 class="question-title">What type of lighting do you prefer?</h3>
                 
                 <div class="relationship-options">
-                    <div class="relationship-option" onclick="selectRelationship('single')">
-                        <div class="relationship-icon">💔</div>
-                        <span class="relationship-label">Single</span>
+                    <div class="relationship-option" onclick="selectRelationship('warm')">
+                        <div class="relationship-icon">🕯️</div>
+                        <span class="relationship-label">Warm & Cozy</span>
                     </div>
-                    <div class="relationship-option" onclick="selectRelationship('in-relationship')">
-                        <div class="relationship-icon">💕</div>
-                        <span class="relationship-label">In a relationship</span>
+                    <div class="relationship-option" onclick="selectRelationship('bright')">
+                        <div class="relationship-icon">💡</div>
+                        <span class="relationship-label">Bright & Clear</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Element Question -->
+            <!-- Furniture Priority Question -->
             <div id="element-section" class="element-question" style="display: none;">
-                <h3 class="question-title">Which element resonates with you the most?</h3>
+                <h3 class="question-title">What's most important in furniture for you?</h3>
                 
                 <div class="element-options">
-                    <div class="element-option" onclick="selectElement('earth')">
-                        <div class="element-icon">🌍</div>
-                        <span class="element-label">Earth</span>
+                    <div class="element-option" onclick="selectElement('comfort')">
+                        <div class="element-icon">🛋️</div>
+                        <span class="element-label">Comfort & Ergonomics</span>
                     </div>
-                    <div class="element-option" onclick="selectElement('water')">
-                        <div class="element-icon">💧</div>
-                        <span class="element-label">Water</span>
+                    <div class="element-option" onclick="selectElement('style')">
+                        <div class="element-icon">✨</div>
+                        <span class="element-label">Style & Aesthetics</span>
                     </div>
-                    <div class="element-option" onclick="selectElement('fire')">
-                        <div class="element-icon">🔥</div>
-                        <span class="element-label">Fire</span>
+                    <div class="element-option" onclick="selectElement('function')">
+                        <div class="element-icon">🔧</div>
+                        <span class="element-label">Functionality</span>
                     </div>
-                    <div class="element-option" onclick="selectElement('air')">
-                        <div class="element-icon">💨</div>
-                        <span class="element-label">Air</span>
+                    <div class="element-option" onclick="selectElement('eco')">
+                        <div class="element-icon">🌱</div>
+                        <span class="element-label">Eco-friendly Materials</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Color Question -->
+            <!-- Decor Preference Question -->
             <div id="color-section" class="color-question" style="display: none;">
-                <h3 class="question-title">Which color do you like the most?</h3>
+                <h3 class="question-title">What decor elements do you want in your room?</h3>
                 
                 <div class="color-options">
-                    <div class="color-option" onclick="selectColor('red')">
-                        <div class="color-icon">🔴</div>
-                        <span class="color-label">Red</span>
+                    <div class="color-option" onclick="selectColor('plants')">
+                        <div class="color-icon">🌿</div>
+                        <span class="color-label">Plants & Greenery</span>
                     </div>
-                    <div class="color-option" onclick="selectColor('yellow')">
-                        <div class="color-icon">🟡</div>
-                        <span class="color-label">Yellow</span>
+                    <div class="color-option" onclick="selectColor('art')">
+                        <div class="color-icon">🖼️</div>
+                        <span class="color-label">Art & Posters</span>
                     </div>
-                    <div class="color-option" onclick="selectColor('blue')">
-                        <div class="color-icon">🔵</div>
-                        <span class="color-label">Blue</span>
+                    <div class="color-option" onclick="selectColor('textiles')">
+                        <div class="color-icon">🛏️</div>
+                        <span class="color-label">Textiles & Pillows</span>
                     </div>
-                    <div class="color-option" onclick="selectColor('orange')">
-                        <div class="color-icon">🟠</div>
-                        <span class="color-label">Orange</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('green')">
-                        <div class="color-icon">🟢</div>
-                        <span class="color-label">Green</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('violet')">
-                        <div class="color-icon">🟣</div>
-                        <span class="color-label">Violet</span>
+                    <div class="color-option" onclick="selectColor('minimal')">
+                        <div class="color-icon">⚪</div>
+                        <span class="color-label">Minimal & Clean</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Decision Making Question -->
+            <!-- Black Color Question -->
             <div id="decision-section" class="decision-question" style="display: none;">
-                <h3 class="question-title">Do you make decisions with your head or your heart?</h3>
+                <h3 class="question-title">How do you feel about black color in interior design?</h3>
                 
                 <div class="decision-options">
-                    <div class="decision-option" onclick="selectDecision('heart')">
-                        <div class="decision-icon">💖</div>
-                        <span class="decision-label">Heart</span>
+                    <div class="decision-option" onclick="selectDecision('love')">
+                        <div class="decision-icon">⚫</div>
+                        <span class="decision-label">Love it - adds depth</span>
                     </div>
-                    <div class="decision-option" onclick="selectDecision('head')">
-                        <div class="decision-icon">🧠</div>
-                        <span class="decision-label">Head</span>
+                    <div class="decision-option" onclick="selectDecision('accents')">
+                        <div class="decision-icon">🔲</div>
+                        <span class="decision-label">Only as accents</span>
                     </div>
-                    <div class="decision-option" onclick="selectDecision('both')">
-                        <div class="decision-icon">⚖️</div>
-                        <span class="decision-label">Both</span>
+                    <div class="decision-option" onclick="selectDecision('avoid')">
+                        <div class="decision-icon">⚪</div>
+                        <span class="decision-label">Prefer to avoid</span>
                     </div>
                 </div>
             </div>
             
-            <!-- Palmistry Information Section -->
+            <!-- Design Analysis Section -->
             <div id="palmistry-info-section" class="palmistry-info-question" style="display: none;">
-                <h3 class="question-title">People who are passionate about palmistry are skilled at noticing subtle details, connecting them to a person's life story, and drawing conclusions that resemble a psychological profile.</h3>
+                <h3 class="question-title">Great interior designers understand how to create spaces that reflect personality, enhance daily life, and bring comfort and joy to every moment spent in the room.</h3>
                 
                 <div class="palmistry-illustration">
-                    <div class="palmistry-symbol">🔮</div>
+                    <div class="palmistry-symbol">🏠</div>
                 </div>
                 
                 <button class="continue-btn" onclick="continueToResults()">
@@ -251,13 +249,13 @@
                 </button>
             </div>
             
-            <!-- Hand Scanning Section -->
+            <!-- Room Analysis Section -->
             <div id="scanning-section" class="scanning-question" style="display: none;">
-                <h3 class="question-title">To provide you with personalized insights about your personality and future, we first need to scan your hand</h3>
+                <h3 class="question-title">To create your perfect room design, we're analyzing your preferences and style choices</h3>
                 
                 <div class="scanning-illustration">
-                    <div class="hand-scan-symbol">🤲</div>
-                    <div class="scanning-text">Reading the lines of destiny...</div>
+                    <div class="hand-scan-symbol">🏠</div>
+                    <div class="scanning-text">Analyzing your design preferences...</div>
                 </div>
                 
                 <div class="progress-container">
@@ -268,12 +266,12 @@
                 </div>
             </div>
             
-            <!-- Start Scanning Section -->
+            <!-- Design Ready Section -->
             <div id="start-scanning-section" class="start-scanning-question" style="display: none;">
-                <h3 class="question-title">Let’s unlock the mysteries of who you are!</h3>
+                <h3 class="question-title">Let's create your perfect room design!</h3>
                 
                 <div class="start-scanning-illustration">
-                    <div class="start-scan-symbol">✨</div>
+                    <div class="start-scan-symbol">🎨</div>
                 </div>
                 
                 <button class="continue-btn" onclick="startActualScanning()">
@@ -285,8 +283,8 @@
             <!-- Subscription Section -->
             <div id="subscription-section" class="subscription-question" style="display: none;">
                 <div class="subscription-header">
-                    <h3 class="subscription-title">Unlock Your Complete Palmistry Reading</h3>
-                    <p class="subscription-description">Get detailed insights about your personality, relationships, career, and future through the ancient art of palmistry.</p>
+                    <h3 class="subscription-title">Unlock Your Complete Room Design Guide</h3>
+                    <p class="subscription-description">Get detailed design recommendations, furniture suggestions, color schemes, and layout ideas for your perfect space.</p>
                     
                     <div class="discount-badge">
                         <span class="discount-text">50% OFF</span>
@@ -299,18 +297,18 @@
                 </div>
                 
                 <div class="subscription-plans">
-                    <div class="plan-option selected" onclick="selectPlan('weekly', this)">
+                    <div class="plan-option selected" onclick="selectPlan('yearly', this)">
                         <div class="plan-header">
-                            <div class="plan-name">Weekly Plan</div>
+                            <div class="plan-name">Yearly Plan</div>
                             <div class="plan-price">
-                                <span class="original-price">$9.98</span>
-                                <span class="current-price">$4.99</span>
+                                <span class="original-price">$39.98</span>
+                                <span class="current-price">$19.99</span>
                             </div>
                         </div>
                         <div class="plan-features">
-                            <span class="feature">✓ Complete palm reading</span>
-                            <span class="feature">✓ Daily insights</span>
-                            <span class="feature">✓ Relationship guidance</span>
+                            <span class="feature">✓ Everything in Monthly</span>
+                            <span class="feature">✓ 3D room visualization</span>
+                            <span class="feature">✓ Priority design support</span>
                         </div>
                     </div>
                     
@@ -324,23 +322,23 @@
                         </div>
                         <div class="plan-features">
                             <span class="feature">✓ Everything in Weekly</span>
-                            <span class="feature">✓ Career predictions</span>
-                            <span class="feature">✓ Health insights</span>
+                            <span class="feature">✓ Furniture recommendations</span>
+                            <span class="feature">✓ Color scheme guides</span>
                         </div>
                     </div>
                     
-                    <div class="plan-option" onclick="selectPlan('yearly', this)">
+                    <div class="plan-option" onclick="selectPlan('weekly', this)">
                         <div class="plan-header">
-                            <div class="plan-name">Yearly Plan</div>
+                            <div class="plan-name">Weekly Plan</div>
                             <div class="plan-price">
-                                <span class="original-price">$39.98</span>
-                                <span class="current-price">$19.99</span>
+                                <span class="original-price">$9.98</span>
+                                <span class="current-price">$4.99</span>
                             </div>
                         </div>
                         <div class="plan-features">
-                            <span class="feature">✓ Everything in Monthly</span>
-                            <span class="feature">✓ Life path analysis</span>
-                            <span class="feature">✓ Priority support</span>
+                            <span class="feature">✓ Complete design guide</span>
+                            <span class="feature">✓ Daily inspiration</span>
+                            <span class="feature">✓ Shopping lists</span>
                         </div>
                     </div>
                 </div>
@@ -375,17 +373,6 @@
                     <div id="card-element" class="card-element"></div>
                     <div id="card-errors" role="alert" class="card-errors"></div>
 
-                    <!-- Apple Pay Button (iOS only) -->
-                    <div id="apple-pay-button" class="apple-pay-button" style="display: none;">
-                        <button id="apple-pay-btn" type="button">
-                            <span class="apple-pay-text">Pay with Apple Pay</span>
-                        </button>
-                    </div>
-
-                    <div class="payment-divider" style="display: none;">
-                        <span class="divider-text">or</span>
-                    </div>
-
                     <button id="submit-payment" class="subscribe-btn">
                         <span class="btn-text">Pay now</span>
                         <div class="btn-glow"></div>
@@ -401,31 +388,31 @@
             <!-- Success Section -->
             <div id="success-section" class="success-section" style="display: none;">
                 <div class="success-header">
-                    <h3 class="success-title">Payment Successful!</h3>
-                    <p class="success-subtitle">You now have VIP access to all premium features</p>
+                    <h3 class="success-title">Welcome to Room Design Pro!</h3>
+                    <p class="success-subtitle">You now have access to all premium design features</p>
                 </div>
                 
                 <div class="success-content">
                     <div class="features-list">
                         <div class="feature-item">
-                            <span class="feature-icon">🔮</span>
-                            <span class="feature-text">Complete palm reading</span>
+                            <span class="feature-icon">🏠</span>
+                            <span class="feature-text">Complete room design guide</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">⭐</span>
-                            <span class="feature-text">Daily horoscopes</span>
+                            <span class="feature-icon">🎨</span>
+                            <span class="feature-text">Daily design inspiration</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">💕</span>
-                            <span class="feature-text">Love compatibility</span>
+                            <span class="feature-icon">🛋️</span>
+                            <span class="feature-text">Furniture recommendations</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">🎴</span>
-                            <span class="feature-text">Tarot card readings</span>
+                            <span class="feature-icon">🎯</span>
+                            <span class="feature-text">3D room visualization</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">🔮</span>
-                            <span class="feature-text">Crystal ball predictions</span>
+                            <span class="feature-icon">🛒</span>
+                            <span class="feature-text">Shopping lists & deals</span>
                         </div>
                     </div>
                 </div>
@@ -435,7 +422,7 @@
                         <span class="btn-text">Download App</span>
                         <div class="btn-glow"></div>
                     </button>
-                    <p class="download-note">Get the full experience on your mobile device</p>
+                    <p class="download-note">Get the full design experience on your mobile device</p>
                 </div>
             </div>
             
@@ -445,7 +432,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title">Almost Done!</h3>
-                        <p class="modal-subtitle">Just one more step to unlock your palmistry reading</p>
+                        <p class="modal-subtitle">Just one more step to unlock your room design guide</p>
                     </div>
                     
                     <div class="modal-body">
