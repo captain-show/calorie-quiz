@@ -89,7 +89,7 @@ async function loadPlansFromServer() {
 }
 
 function getSelectedPlanKey() {
-    return localStorage.getItem('selectedPlan') || 'monthly';
+    return localStorage.getItem('selectedPlan') || 'yearly';
 }
 
 function selectCheckoutPlanUI() {
