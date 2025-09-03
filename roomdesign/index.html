@@ -3,458 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room Design - Interior Style Quiz</title>
+    <title>AI Room Design - Style Quiz</title>
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
-    
-    <!-- Facebook Pixel Code -->
-    <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', 'YOUR_FACEBOOK_PIXEL_ID');
-        fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=YOUR_FACEBOOK_PIXEL_ID&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Facebook Pixel Code -->
-    
-    <!-- Mixpanel -->
-    <script type="text/javascript">
-        (function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]||[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (staging)");return d};a.people.toString=function(){return a.toString(1)+".people (staging)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
-        for(h=0;h<i.length;h++)g(a,i[h]);var j="set set_once union unset remove delete".split(" ");a.get_group=function(){function b(c){d[c]=function(){call(c,arguments)}}var d={},c=[c];for(var e=0;e<j.length;e++)b(j[e]);return d};b._i.push([e,f,c])};b.__SV=1.2;e=f.createElement("script");e.type="text/javascript";e.async=!0;e.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?
-        MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";g=f.getElementsByTagName("script")[0];g.parentNode.insertBefore(e,g)}})(document,window.mixpanel||[]);
-        mixpanel.init("YOUR_MIXPANEL_PROJECT_ID");
-    </script>
 </head>
 <body>
     <div class="container">
-                <div class="quiz-card">
+        <div class="quiz-card">
             <!-- Welcome Section -->
-            <div id="welcome-section">
+            <div id="welcome-section" class="section">
                 <div class="logo">
                     <div class="logo-symbol">🏠</div>
-                    <h1 class="logo-text">Room Design</h1>
+                    <h1 class="logo-text">AI Room Design</h1>
                 </div>
                 
                 <div class="welcome-content">
                     <h2 class="welcome-title">Discover Your Perfect Interior Style</h2>
                     <p class="welcome-description">
-                        Find your ideal room design through our personalized style quiz. 
-                        We'll help you create a space that reflects your personality and lifestyle.
+                        Take our comprehensive style quiz to get personalized AI-powered room design recommendations tailored to your preferences.
                     </p>
                     
-                    <div class="mystical-elements">
-                        <div class="element">🎨</div>
-                        <div class="element">🪑</div>
-                        <div class="element">💡</div>
+                    <div class="features-preview">
+                        <div class="feature-item">🎨</div>
+                        <div class="feature-item">🪑</div>
+                        <div class="feature-item">💡</div>
                     </div>
                     
                     <button class="start-btn" onclick="startQuiz()">
-                        <span class="btn-text">Let's begin</span>
-                        <div class="btn-glow"></div>
+                        <span class="btn-text">Start Style Quiz</span>
                     </button>
                 </div>
-                
-                <div class="footer">
-                    <p>Create your dream space with confidence</p>
-                </div>
             </div>
-            
-            <!-- Style Preference Question -->
-            <div id="gender-section" class="gender-question" style="display: none;">
-                <h3 class="question-title">What interior style appeals to you most?</h3>
-                <p class="question-description">
-                    Choose the style that immediately catches your eye and makes you feel at home.
-                </p>
-                
-                <div class="gender-options">
-                    <div class="gender-option" onclick="selectGender('scandinavian')">
-                        <div class="gender-icon">🏔️</div>
-                        <span class="gender-label">Scandinavian</span>
-                    </div>
-                    <div class="gender-option" onclick="selectGender('modern')">
-                        <div class="gender-icon">🏢</div>
-                        <span class="gender-label">Modern</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Color Preference Question -->
-            <div id="birthdate-section" class="birthdate-question" style="display: none;">
-                <h3 class="question-title">What color palette do you prefer?</h3>
-                <p class="question-description">
-                    Colors have a powerful impact on mood and atmosphere in your space.
-                </p>
-                
-                <div class="color-options">
-                    <div class="color-option" onclick="selectColor('neutral')">
-                        <div class="color-icon">⚪</div>
-                        <span class="color-label">Neutral: white, gray, beige</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('warm')">
-                        <div class="color-icon">🟤</div>
-                        <span class="color-label">Warm: terracotta, ochre, sand</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('cool')">
-                        <div class="color-icon">🔵</div>
-                        <span class="color-label">Cool: blue, green, gray-blue</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('bright')">
-                        <div class="color-icon">🟡</div>
-                        <span class="color-label">Bright: fuchsia, turquoise, lime</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Atmosphere Question -->
-            <div id="palms-section" class="palms-question" style="display: none;">
-                <h3 class="question-title">What atmosphere do you want in your room?</h3>
-                <p class="question-description">
-                    The right atmosphere can transform your space and improve your daily life.
-                </p>
-                
-                <div class="palms-illustration">
-                    <div class="hand-symbol">🏡</div>
-                </div>
-                
-                <button class="continue-btn" onclick="continueToNext()">
-                    <span class="btn-text">Continue</span>
-                    <div class="btn-glow"></div>
-                </button>
-            </div>
-            
-            <!-- Room Function Question -->
-            <div id="aspects-section" class="aspects-question" style="display: none;">
-                <h3 class="question-title">How do you primarily use your room?</h3>
-                
-                <div class="aspects-options">
-                    <div class="aspect-option" onclick="selectAspect('relaxation')">
-                        <div class="aspect-icon">🛋️</div>
-                        <span class="aspect-label">Relaxation & Rest</span>
-                    </div>
-                    <div class="aspect-option" onclick="selectAspect('work')">
-                        <div class="aspect-icon">💻</div>
-                        <span class="aspect-label">Work & Focus</span>
-                    </div>
-                    <div class="aspect-option" onclick="selectAspect('social')">
-                        <div class="aspect-icon">👥</div>
-                        <span class="aspect-label">Social & Entertainment</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Lighting Preference Question -->
-            <div id="relationship-section" class="relationship-question" style="display: none;">
-                <h3 class="question-title">What type of lighting do you prefer?</h3>
-                
-                <div class="relationship-options">
-                    <div class="relationship-option" onclick="selectRelationship('warm')">
-                        <div class="relationship-icon">🕯️</div>
-                        <span class="relationship-label">Warm & Cozy</span>
-                    </div>
-                    <div class="relationship-option" onclick="selectRelationship('bright')">
-                        <div class="relationship-icon">💡</div>
-                        <span class="relationship-label">Bright & Clear</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Furniture Priority Question -->
-            <div id="element-section" class="element-question" style="display: none;">
-                <h3 class="question-title">What's most important in furniture for you?</h3>
-                
-                <div class="element-options">
-                    <div class="element-option" onclick="selectElement('comfort')">
-                        <div class="element-icon">🛋️</div>
-                        <span class="element-label">Comfort & Ergonomics</span>
-                    </div>
-                    <div class="element-option" onclick="selectElement('style')">
-                        <div class="element-icon">✨</div>
-                        <span class="element-label">Style & Aesthetics</span>
-                    </div>
-                    <div class="element-option" onclick="selectElement('function')">
-                        <div class="element-icon">🔧</div>
-                        <span class="element-label">Functionality</span>
-                    </div>
-                    <div class="element-option" onclick="selectElement('eco')">
-                        <div class="element-icon">🌱</div>
-                        <span class="element-label">Eco-friendly Materials</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Decor Preference Question -->
-            <div id="color-section" class="color-question" style="display: none;">
-                <h3 class="question-title">What decor elements do you want in your room?</h3>
-                
-                <div class="color-options">
-                    <div class="color-option" onclick="selectColor('plants')">
-                        <div class="color-icon">🌿</div>
-                        <span class="color-label">Plants & Greenery</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('art')">
-                        <div class="color-icon">🖼️</div>
-                        <span class="color-label">Art & Posters</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('textiles')">
-                        <div class="color-icon">🛏️</div>
-                        <span class="color-label">Textiles & Pillows</span>
-                    </div>
-                    <div class="color-option" onclick="selectColor('minimal')">
-                        <div class="color-icon">⚪</div>
-                        <span class="color-label">Minimal & Clean</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Black Color Question -->
-            <div id="decision-section" class="decision-question" style="display: none;">
-                <h3 class="question-title">How do you feel about black color in interior design?</h3>
-                
-                <div class="decision-options">
-                    <div class="decision-option" onclick="selectDecision('love')">
-                        <div class="decision-icon">⚫</div>
-                        <span class="decision-label">Love it - adds depth</span>
-                    </div>
-                    <div class="decision-option" onclick="selectDecision('accents')">
-                        <div class="decision-icon">🔲</div>
-                        <span class="decision-label">Only as accents</span>
-                    </div>
-                    <div class="decision-option" onclick="selectDecision('avoid')">
-                        <div class="decision-icon">⚪</div>
-                        <span class="decision-label">Prefer to avoid</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Design Analysis Section -->
-            <div id="palmistry-info-section" class="palmistry-info-question" style="display: none;">
-                <h3 class="question-title">Great interior designers understand how to create spaces that reflect personality, enhance daily life, and bring comfort and joy to every moment spent in the room.</h3>
-                
-                <div class="palmistry-illustration">
-                    <div class="palmistry-symbol">🏠</div>
-                </div>
-                
-                <button class="continue-btn" onclick="continueToResults()">
-                    <span class="btn-text">Continue</span>
-                    <div class="btn-glow"></div>
-                </button>
-            </div>
-            
-            <!-- Room Analysis Section -->
-            <div id="scanning-section" class="scanning-question" style="display: none;">
-                <h3 class="question-title">To create your perfect room design, we're analyzing your preferences and style choices</h3>
-                
-                <div class="scanning-illustration">
-                    <div class="hand-scan-symbol">🏠</div>
-                    <div class="scanning-text">Analyzing your design preferences...</div>
-                </div>
-                
-                <div class="progress-container">
+
+            <!-- Question 1: Style Preference -->
+            <div id="question-1" class="section question-section" style="display: none;">
+                <div class="question-header">
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
+                        <div class="progress-fill" style="width: 6.67%"></div>
                     </div>
-                    <div class="progress-text" id="progressText">0%</div>
-                </div>
-            </div>
-            
-            <!-- Design Ready Section -->
-            <div id="start-scanning-section" class="start-scanning-question" style="display: none;">
-                <h3 class="question-title">Let's create your perfect room design!</h3>
-                
-                <div class="start-scanning-illustration">
-                    <div class="start-scan-symbol">🎨</div>
+                    <div class="question-number">Question 1 of 15</div>
                 </div>
                 
-                <button class="continue-btn" onclick="startActualScanning()">
-                    <span class="btn-text">Continue</span>
-                    <div class="btn-glow"></div>
-                </button>
+                <h3 class="question-title">What interior style appeals to you most?</h3>
+                <p class="question-description">Choose the style that immediately catches your eye</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('scandinavian', 1)">
+                        <div class="option-icon">🏔️</div>
+                        <span class="option-label">Scandinavian</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('modern', 1)">
+                        <div class="option-icon">🏢</div>
+                        <span class="option-label">Modern</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('classic', 1)">
+                        <div class="option-icon">🏛️</div>
+                        <span class="option-label">Classic</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('industrial', 1)">
+                        <div class="option-icon">🏭</div>
+                        <span class="option-label">Industrial</span>
+                    </div>
+                </div>
             </div>
-            
+
+            <!-- Question 2: Color Palette -->
+            <div id="question-2" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 13.33%"></div>
+                    </div>
+                    <div class="question-number">Question 2 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What color palette do you prefer?</h3>
+                <p class="question-description">Colors have a powerful impact on mood and atmosphere</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('neutral', 2)">
+                        <div class="option-icon">⚪</div>
+                        <span class="option-label">Neutral</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('warm', 2)">
+                        <div class="option-icon">🟤</div>
+                        <span class="option-label">Warm</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('cool', 2)">
+                        <div class="option-icon">🔵</div>
+                        <span class="option-label">Cool</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('bold', 2)">
+                        <div class="option-icon">🟡</div>
+                        <span class="option-label">Bold</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3: Room Function -->
+            <div id="question-3" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%"></div>
+                    </div>
+                    <div class="question-number">Question 3 of 15</div>
+                </div>
+                
+                <h3 class="question-title">How do you primarily use your room?</h3>
+                <p class="question-description">Understanding function helps us optimize your space</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('relaxation', 3)">
+                        <div class="option-icon">🛋️</div>
+                        <span class="option-label">Relaxation</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('work', 3)">
+                        <div class="option-icon">💻</div>
+                        <span class="option-label">Work</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('entertainment', 3)">
+                        <div class="option-icon">🎬</div>
+                        <span class="option-label">Entertainment</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('sleep', 3)">
+                        <div class="option-icon">🛏️</div>
+                        <span class="option-label">Sleep</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4: Lighting Preference -->
+            <div id="question-4" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 26.67%"></div>
+                    </div>
+                    <div class="question-number">Question 4 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What type of lighting do you prefer?</h3>
+                <p class="question-description">Lighting sets the mood and functionality of your space</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('natural', 4)">
+                        <div class="option-icon">☀️</div>
+                        <span class="option-label">Natural</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('warm', 4)">
+                        <div class="option-icon">🕯️</div>
+                        <span class="option-label">Warm</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('bright', 4)">
+                        <div class="option-icon">💡</div>
+                        <span class="option-label">Bright</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('ambient', 4)">
+                        <div class="option-icon">✨</div>
+                        <span class="option-label">Ambient</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5: Furniture Style -->
+            <div id="question-5" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 33.33%"></div>
+                    </div>
+                    <div class="question-number">Question 5 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What furniture style do you prefer?</h3>
+                <p class="question-description">Furniture is the foundation of your room's character</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('minimalist', 5)">
+                        <div class="option-icon">📐</div>
+                        <span class="option-label">Minimalist</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('comfortable', 5)">
+                        <div class="option-icon">🛋️</div>
+                        <span class="option-label">Comfortable</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('vintage', 5)">
+                        <div class="option-icon">🕰️</div>
+                        <span class="option-label">Vintage</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('luxury', 5)">
+                        <div class="option-icon">💎</div>
+                        <span class="option-label">Luxury</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6: Space Size -->
+            <div id="question-6" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                    <div class="question-number">Question 6 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What's the size of your room?</h3>
+                <p class="question-description">Room size affects furniture selection and layout</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('small', 6)">
+                        <div class="option-icon">📦</div>
+                        <span class="option-label">Small</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('medium', 6)">
+                        <div class="option-icon">📏</div>
+                        <span class="option-label">Medium</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('large', 6)">
+                        <div class="option-icon">🏛️</div>
+                        <span class="option-label">Large</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('open', 6)">
+                        <div class="option-icon">🌐</div>
+                        <span class="option-label">Open Plan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7: Budget Range -->
+            <div id="question-7" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 46.67%"></div>
+                    </div>
+                    <div class="question-number">Question 7 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What's your budget range?</h3>
+                <p class="question-description">This helps us recommend appropriate solutions</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('budget', 7)">
+                        <div class="option-icon">💰</div>
+                        <span class="option-label">Budget</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('moderate', 7)">
+                        <div class="option-icon">💳</div>
+                        <span class="option-label">Moderate</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('premium', 7)">
+                        <div class="option-icon">💎</div>
+                        <span class="option-label">Premium</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('luxury', 7)">
+                        <div class="option-icon">👑</div>
+                        <span class="option-label">Luxury</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 8: Lifestyle -->
+            <div id="question-8" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 53.33%"></div>
+                    </div>
+                    <div class="question-number">Question 8 of 15</div>
+                </div>
+                
+                <h3 class="question-title">How would you describe your lifestyle?</h3>
+                <p class="question-description">Your lifestyle influences design choices</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('busy', 8)">
+                        <div class="option-icon">⚡</div>
+                        <span class="option-label">Busy</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('relaxed', 8)">
+                        <div class="option-icon">🌊</div>
+                        <span class="option-label">Relaxed</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('social', 8)">
+                        <div class="option-icon">👥</div>
+                        <span class="option-label">Social</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('creative', 8)">
+                        <div class="option-icon">🎨</div>
+                        <span class="option-label">Creative</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 9: Storage Needs -->
+            <div id="question-9" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%"></div>
+                    </div>
+                    <div class="question-number">Question 9 of 15</div>
+                </div>
+                
+                <h3 class="question-title">How much storage do you need?</h3>
+                <p class="question-description">Storage solutions are crucial for organization</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('minimal', 9)">
+                        <div class="option-icon">📦</div>
+                        <span class="option-label">Minimal</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('moderate', 9)">
+                        <div class="option-icon">🗄️</div>
+                        <span class="option-label">Moderate</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('extensive', 9)">
+                        <div class="option-icon">🏪</div>
+                        <span class="option-label">Extensive</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('maximal', 9)">
+                        <div class="option-icon">🏬</div>
+                        <span class="option-label">Maximal</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 10: Decor Preference -->
+            <div id="question-10" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 66.67%"></div>
+                    </div>
+                    <div class="question-number">Question 10 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What decor elements do you want?</h3>
+                <p class="question-description">Decor adds personality to your space</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('plants', 10)">
+                        <div class="option-icon">🌿</div>
+                        <span class="option-label">Plants</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('art', 10)">
+                        <div class="option-icon">🖼️</div>
+                        <span class="option-label">Art</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('textiles', 10)">
+                        <div class="option-icon">🛏️</div>
+                        <span class="option-label">Textiles</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('minimal', 10)">
+                        <div class="option-icon">⚪</div>
+                        <span class="option-label">Minimal</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 11: Technology Integration -->
+            <div id="question-11" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73.33%"></div>
+                    </div>
+                    <div class="question-number">Question 11 of 15</div>
+                </div>
+                
+                <h3 class="question-title">How important is technology integration?</h3>
+                <p class="question-description">Smart home features and tech setup</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('essential', 11)">
+                        <div class="option-icon">📱</div>
+                        <span class="option-label">Essential</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('important', 11)">
+                        <div class="option-icon">💻</div>
+                        <span class="option-label">Important</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('optional', 11)">
+                        <div class="option-icon">🔌</div>
+                        <span class="option-label">Optional</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('none', 11)">
+                        <div class="option-icon">🚫</div>
+                        <span class="option-label">None</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 12: Privacy Level -->
+            <div id="question-12" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 80%"></div>
+                    </div>
+                    <div class="question-number">Question 12 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What privacy level do you prefer?</h3>
+                <p class="question-description">Privacy affects window treatments and layout</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('open', 12)">
+                        <div class="option-icon">🪟</div>
+                        <span class="option-label">Open</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('moderate', 12)">
+                        <div class="option-icon">🪞</div>
+                        <span class="option-label">Moderate</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('private', 12)">
+                        <div class="option-icon">🔒</div>
+                        <span class="option-label">Private</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('secluded', 12)">
+                        <div class="option-icon">🏰</div>
+                        <span class="option-label">Secluded</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 13: Maintenance Level -->
+            <div id="question-13" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 86.67%"></div>
+                    </div>
+                    <div class="question-number">Question 13 of 15</div>
+                </div>
+                
+                <h3 class="question-title">How much maintenance are you willing to do?</h3>
+                <p class="question-description">This affects material and plant choices</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('low', 13)">
+                        <div class="option-icon">😌</div>
+                        <span class="option-label">Low</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('moderate', 13)">
+                        <div class="option-icon">😊</div>
+                        <span class="option-label">Moderate</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('high', 13)">
+                        <div class="option-icon">😅</div>
+                        <span class="option-label">High</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('extensive', 13)">
+                        <div class="option-icon">🌱</div>
+                        <span class="option-label">Extensive</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 14: Inspiration Source -->
+            <div id="question-14" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 93.33%"></div>
+                    </div>
+                    <div class="question-number">Question 14 of 15</div>
+                </div>
+                
+                <h3 class="question-title">Where do you find design inspiration?</h3>
+                <p class="question-description">Understanding your inspiration helps us create the perfect design</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('magazines', 14)">
+                        <div class="option-icon">📖</div>
+                        <span class="option-label">Magazines</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('social', 14)">
+                        <div class="option-icon">📱</div>
+                        <span class="option-label">Social Media</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('travel', 14)">
+                        <div class="option-icon">✈️</div>
+                        <span class="option-label">Travel</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('nature', 14)">
+                        <div class="option-icon">🌿</div>
+                        <span class="option-label">Nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 15: Final Preference -->
+            <div id="question-15" class="section question-section" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="question-number">Question 15 of 15</div>
+                </div>
+                
+                <h3 class="question-title">What's most important to you in a room?</h3>
+                <p class="question-description">This final question helps us prioritize your needs</p>
+                
+                <div class="options-grid">
+                    <div class="option-card" onclick="selectOption('comfort', 15)">
+                        <div class="option-icon">🛋️</div>
+                        <span class="option-label">Comfort</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('style', 15)">
+                        <div class="option-icon">✨</div>
+                        <span class="option-label">Style</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('function', 15)">
+                        <div class="option-icon">⚙️</div>
+                        <span class="option-label">Function</span>
+                    </div>
+                    <div class="option-card" onclick="selectOption('atmosphere', 15)">
+                        <div class="option-icon">🌅</div>
+                        <span class="option-label">Atmosphere</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Processing Section -->
+            <div id="processing-section" class="section" style="display: none;">
+                <div class="processing-content">
+                    <div class="processing-icon">🤖</div>
+                    <h3 class="processing-title">Creating Your AI Room Design</h3>
+                    <p class="processing-description">We're analyzing your preferences and generating personalized recommendations...</p>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar-large">
+                            <div class="progress-fill-large" id="processing-progress"></div>
+                        </div>
+                        <div class="progress-text" id="progress-text">0%</div>
+                    </div>
+                    
+                    <div class="processing-steps">
+                        <div class="step active" id="step-1">
+                            <div class="step-icon">📊</div>
+                            <span class="step-text">Analyzing preferences</span>
+                        </div>
+                        <div class="step" id="step-2">
+                            <div class="step-icon">🎨</div>
+                            <span class="step-text">Generating design concepts</span>
+                        </div>
+                        <div class="step" id="step-3">
+                            <div class="step-icon">🪑</div>
+                            <span class="step-text">Selecting furniture</span>
+                        </div>
+                        <div class="step" id="step-4">
+                            <div class="step-icon">✨</div>
+                            <span class="step-text">Finalizing recommendations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Subscription Section -->
-            <div id="subscription-section" class="subscription-question" style="display: none;">
-                <div class="subscription-header">
-                    <h3 class="subscription-title">Unlock Your Complete Room Design Guide</h3>
-                    <p class="subscription-description">Get detailed design recommendations, furniture suggestions, color schemes, and layout ideas for your perfect space.</p>
+            <div id="subscription-section" class="section" style="display: none;">
+                <div class="subscription-content">
+                    <h3 class="subscription-title">One Last Step to Get Your Personal Design</h3>
+                    <p class="subscription-description">Choose your plan to unlock your personalized AI room design</p>
                     
                     <div class="discount-badge">
                         <span class="discount-text">50% OFF</span>
-                    </div>
-                    
-                    <div class="timer-container">
-                        <div class="timer-label">Limited Time Offer</div>
-                        <div class="timer" id="subscriptionTimer">05:00</div>
-                    </div>
-                </div>
-                
-                <div class="subscription-plans">
-                    <div class="plan-option selected" onclick="selectPlan('yearly', this)">
-                        <div class="plan-header">
-                            <div class="plan-name">Yearly Plan</div>
-                            <div class="plan-price">
-                                <span class="original-price">$39.98</span>
-                                <span class="current-price">$19.99</span>
-                            </div>
-                        </div>
-                        <div class="plan-features">
-                            <span class="feature">✓ Everything in Monthly</span>
-                            <span class="feature">✓ 3D room visualization</span>
-                            <span class="feature">✓ Priority design support</span>
+                        <div class="timer-container">
+                            <span class="timer-label">Limited Time Offer</span>
+                            <div class="timer" id="countdown-timer">05:00</div>
                         </div>
                     </div>
                     
-                    <div class="plan-option" onclick="selectPlan('monthly', this)">
-                        <div class="plan-header">
-                            <div class="plan-name">Monthly Plan</div>
-                            <div class="plan-price">
-                                <span class="original-price">$19.98</span>
-                                <span class="current-price">$9.99</span>
+                    <div class="plans-container">
+                        <div class="plan-option selected" data-plan="weekly" onclick="selectPlan('weekly')">
+                            <div class="plan-header">
+                                <div class="plan-name">Weekly</div>
+                                <div class="plan-badge">Most Popular</div>
+                            </div>
+                            <div class="plan-pricing">
+                                <div class="current-price">$4.99</div>
+                                <div class="original-price">$9.99</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="feature">✓ AI Room Design</div>
+                                <div class="feature">✓ 3D Visualization</div>
+                                <div class="feature">✓ Furniture Recommendations</div>
                             </div>
                         </div>
-                        <div class="plan-features">
-                            <span class="feature">✓ Everything in Weekly</span>
-                            <span class="feature">✓ Furniture recommendations</span>
-                            <span class="feature">✓ Color scheme guides</span>
+                        
+                        <div class="plan-option" data-plan="monthly" onclick="selectPlan('monthly')">
+                            <div class="plan-header">
+                                <div class="plan-name">Monthly</div>
+                            </div>
+                            <div class="plan-pricing">
+                                <div class="current-price">$9.99</div>
+                                <div class="original-price">$19.99</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="feature">✓ Everything in Weekly</div>
+                                <div class="feature">✓ Color Palette Generator</div>
+                                <div class="feature">✓ Style Matching</div>
+                            </div>
+                        </div>
+                        
+                        <div class="plan-option" data-plan="yearly" onclick="selectPlan('yearly')">
+                            <div class="plan-header">
+                                <div class="plan-name">Yearly</div>
+                                <div class="plan-badge best-value">Best Value</div>
+                            </div>
+                            <div class="plan-pricing">
+                                <div class="current-price">$19.99</div>
+                                <div class="original-price">$39.99</div>
+                            </div>
+                            <div class="plan-features">
+                                <div class="feature">✓ Everything in Monthly</div>
+                                <div class="feature">✓ Priority Support</div>
+                                <div class="feature">✓ Advanced Analytics</div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="plan-option" onclick="selectPlan('weekly', this)">
-                        <div class="plan-header">
-                            <div class="plan-name">Weekly Plan</div>
-                            <div class="plan-price">
-                                <span class="original-price">$9.98</span>
-                                <span class="current-price">$4.99</span>
-                            </div>
-                        </div>
-                        <div class="plan-features">
-                            <span class="feature">✓ Complete design guide</span>
-                            <span class="feature">✓ Daily inspiration</span>
-                            <span class="feature">✓ Shopping lists</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="subscribe-btn" onclick="subscribeToPlan()">
-                    <span class="btn-text">Subscribe Now</span>
-                    <div class="btn-glow"></div>
-                </button>
-                
-                <div class="subscription-footer">
-                    <p class="footer-text">Cancel anytime • Secure payment • 30-day money-back guarantee</p>
-                </div>
-            </div>
-            
-            <!-- Checkout Section (Email + Card) -->
-            <div id="checkout-section" class="checkout-section" style="display: none;">
-                <div class="checkout-header">
-                    <h3 class="checkout-title">Complete your purchase</h3>
-                    <p class="checkout-subtitle">Enter your email and card details to start your subscription.</p>
-                </div>
-
-                <div class="checkout-plan-summary">
-                    <div class="plan-summary-name" id="checkoutPlanName">Selected plan</div>
-                    <div class="plan-summary-price" id="checkoutPlanPrice">$0.00</div>
-                </div>
-
-                <form id="payment-form" class="payment-form">
-                    <label for="checkoutEmail" class="checkout-label">Email</label>
-                    <input type="email" id="checkoutEmail" class="checkout-input" placeholder="your@email.com">
-
-                    <label for="card-element" class="checkout-label">Card details</label>
-                    <div id="card-element" class="card-element"></div>
-                    <div id="card-errors" role="alert" class="card-errors"></div>
-
-                    <button id="submit-payment" class="subscribe-btn">
-                        <span class="btn-text">Pay now</span>
-                        <div class="btn-glow"></div>
+                    <button class="subscribe-btn" onclick="showEmailModal()">
+                        <span class="btn-text">Continue to Subscribe</span>
                     </button>
-                    <div id="payment-status" class="payment-status" aria-live="polite"></div>
-                </form>
+                </div>
+            </div>
 
-                <div class="checkout-footer">
-                    <button class="back-btn" onclick="showSection('subscription-section')">Back to plans</button>
-                </div>
-            </div>
-            
-            <!-- Success Section -->
-            <div id="success-section" class="success-section" style="display: none;">
-                <div class="success-header">
-                    <h3 class="success-title">Welcome to Room Design Pro!</h3>
-                    <p class="success-subtitle">You now have access to all premium design features</p>
-                </div>
-                
-                <div class="success-content">
-                    <div class="features-list">
-                        <div class="feature-item">
-                            <span class="feature-icon">🏠</span>
-                            <span class="feature-text">Complete room design guide</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🎨</span>
-                            <span class="feature-text">Daily design inspiration</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🛋️</span>
-                            <span class="feature-text">Furniture recommendations</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🎯</span>
-                            <span class="feature-text">3D room visualization</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🛒</span>
-                            <span class="feature-text">Shopping lists & deals</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="success-footer">
-                    <button class="download-btn" onclick="downloadApp()">
-                        <span class="btn-text">Download App</span>
-                        <div class="btn-glow"></div>
-                    </button>
-                    <p class="download-note">Get the full design experience on your mobile device</p>
-                </div>
-            </div>
-            
             <!-- Email Modal -->
-            <div id="emailModal" class="email-modal" style="display: none;">
-                <div class="modal-overlay" onclick="closeEmailModal()"></div>
+            <div id="email-modal" class="modal" style="display: none;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Almost Done!</h3>
-                        <p class="modal-subtitle">Just one more step to unlock your room design guide</p>
+                        <h3 class="modal-title">Get Your Plan</h3>
+                        <span class="close-btn" onclick="closeEmailModal()">&times;</span>
                     </div>
-                    
                     <div class="modal-body">
+                        <p class="modal-description">To receive your personalized room design plan, please enter your email address:</p>
                         <div class="email-input-container">
-                            <label for="emailInput" class="email-label">Enter your email address</label>
-                            <input type="email" id="emailInput" class="email-input" placeholder="your@email.com">
+                            <input type="email" id="email-input" class="email-input" placeholder="Enter your email address">
+                            <button class="send-btn" onclick="submitEmail()">
+                                <span class="btn-text">Get My Plan</span>
+                            </button>
                         </div>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button class="send-btn" onclick="sendEmail()">
-                            <span class="btn-text">Send</span>
-                            <div class="btn-glow"></div>
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="frontend/stripe.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

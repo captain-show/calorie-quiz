@@ -387,6 +387,7 @@ async function handleApplePayPayment() {
         const canMakePayment = await paymentRequest.canMakePayment();
         if (!canMakePayment || !canMakePayment.applePay) {
             console.log('Apple Pay not available - canMakePayment result:', canMakePayment);
+            console.log('This usually means Apple Pay is not configured in Stripe Dashboard for this domain');
             alert('Apple Pay is not available. Please use card payment.');
             return;
         }
