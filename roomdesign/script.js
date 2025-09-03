@@ -85,7 +85,16 @@ function selectOption(option, questionNumber) {
             console.error('Error sending Mixpanel event:', error);
         }
     } else {
-        console.error('Mixpanel not available or not loaded');
+        console.warn('Mixpanel not available, retrying in 1 second...');
+        setTimeout(() => {
+            if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+                mixpanel.track('question_answered', {
+                    question_number: questionNumber,
+                    answer: option,
+                    question_type: getQuestionType(questionNumber)
+                });
+            }
+        }, 1000);
     }
     
     // Add visual feedback
@@ -271,17 +280,21 @@ function selectPlan(plan) {
 // Show email modal
 function showEmailModal() {
     // Track subscribe complete event in Mixpanel
-    if (typeof mixpanel !== 'undefined') {
+    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
         console.log('Sending Mixpanel event: subscribe_complete', {
             selected_plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan)
         });
-        mixpanel.track('subscribe_complete', {
-            selected_plan: selectedPlan,
-            plan_price: getPlanPrice(selectedPlan)
-        });
+        try {
+            mixpanel.track('subscribe_complete', {
+                selected_plan: selectedPlan,
+                plan_price: getPlanPrice(selectedPlan)
+            });
+        } catch (error) {
+            console.error('Error sending Mixpanel event:', error);
+        }
     } else {
-        console.error('Mixpanel not available');
+        console.warn('Mixpanel not available for subscribe_complete event');
     }
     
     const modal = document.getElementById('email-modal');
@@ -333,21 +346,25 @@ function submitEmail() {
     console.log(`Email submitted: ${email} for plan: ${selectedPlan}`);
     
     // Track email submitted event in Mixpanel
-    if (typeof mixpanel !== 'undefined') {
+    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
         console.log('Sending Mixpanel event: email_submitted', {
             email: email,
             selected_plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan),
             quiz_answers: answers
         });
-        mixpanel.track('email_submitted', {
-            email: email,
-            selected_plan: selectedPlan,
-            plan_price: getPlanPrice(selectedPlan),
-            quiz_answers: answers
-        });
+        try {
+            mixpanel.track('email_submitted', {
+                email: email,
+                selected_plan: selectedPlan,
+                plan_price: getPlanPrice(selectedPlan),
+                quiz_answers: answers
+            });
+        } catch (error) {
+            console.error('Error sending Mixpanel event:', error);
+        }
     } else {
-        console.error('Mixpanel not available');
+        console.warn('Mixpanel not available for email_submitted event');
     }
     
     // Track purchase event in Facebook Pixel
@@ -413,9 +430,30 @@ function showWelcome() {
     currentQuestion = 0;
 }
 
+// Test Mixpanel function
+function testMixpanel() {
+    console.log('Testing Mixpanel...');
+    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+        console.log('Mixpanel is available!');
+        mixpanel.track('test_event', {
+            test: true,
+            timestamp: new Date().toISOString()
+        });
+        console.log('Test event sent to Mixpanel');
+    } else {
+        console.error('Mixpanel is not available');
+    }
+}
+
+// Make test function globally available
+window.testMixpanel = testMixpanel;
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('AI Room Design Quiz loaded');
+    
+    // Test Mixpanel after a short delay
+    setTimeout(testMixpanel, 2000);
     
     // Check if there's a hash in the URL
     const hash = window.location.hash.slice(1);
