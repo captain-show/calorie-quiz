@@ -68,19 +68,24 @@ function selectOption(option, questionNumber) {
     answers[questionNumber] = option;
     
     // Track question answered event in Mixpanel
-    if (typeof mixpanel !== 'undefined') {
+    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
         console.log('Sending Mixpanel event: question_answered', {
             question_number: questionNumber,
             answer: option,
             question_type: getQuestionType(questionNumber)
         });
-        mixpanel.track('question_answered', {
-            question_number: questionNumber,
-            answer: option,
-            question_type: getQuestionType(questionNumber)
-        });
+        try {
+            mixpanel.track('question_answered', {
+                question_number: questionNumber,
+                answer: option,
+                question_type: getQuestionType(questionNumber)
+            });
+            console.log('Mixpanel event sent successfully');
+        } catch (error) {
+            console.error('Error sending Mixpanel event:', error);
+        }
     } else {
-        console.error('Mixpanel not available');
+        console.error('Mixpanel not available or not loaded');
     }
     
     // Add visual feedback
