@@ -47,6 +47,15 @@
                     }
                 });
                 console.log('Mixpanel initialized:', mixpanel);
+                
+                // Force send test event after a delay
+                setTimeout(function() {
+                    console.log('Sending test event...');
+                    mixpanel.track('test_event', {
+                        test: true,
+                        timestamp: new Date().toISOString()
+                    });
+                }, 1000);
             } else {
                 console.log('Mixpanel not ready, retrying...');
                 setTimeout(initMixpanel, 100);
