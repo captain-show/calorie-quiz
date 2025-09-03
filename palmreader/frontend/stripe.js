@@ -251,7 +251,19 @@ function isAppleDevice() {
 }
 
 function isApplePayAvailable() {
-    return window.ApplePaySession && ApplePaySession.canMakePayments();
+    const hasApplePaySession = !!window.ApplePaySession;
+    const canMakePayments = hasApplePaySession && ApplePaySession.canMakePayments();
+    
+    console.log('Apple Pay availability check:', {
+        hasApplePaySession: hasApplePaySession,
+        canMakePayments: canMakePayments,
+        ApplePaySession: window.ApplePaySession,
+        userAgent: navigator.userAgent,
+        isHTTPS: location.protocol === 'https:',
+        domain: location.hostname
+    });
+    
+    return canMakePayments;
 }
 
 async function initApplePay() {
