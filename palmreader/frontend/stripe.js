@@ -256,7 +256,6 @@ function isApplePayAvailable() {
 
 async function initApplePay() {
     const applePayButton = document.getElementById('apple-pay-button');
-    const paymentDivider = document.querySelector('.payment-divider');
     
     console.log('Apple Pay initialization:');
     console.log('- User Agent:', navigator.userAgent);
@@ -276,23 +275,17 @@ async function initApplePay() {
                     applePayBtn.addEventListener('click', handleApplePayPayment);
                 }
             }
-            if (paymentDivider) {
-                paymentDivider.style.display = 'block';
-            }
             return;
         }
         
-        // Hide Apple Pay button and divider on non-Apple devices
+        // Hide Apple Pay button on non-Apple devices
         if (applePayButton) {
             applePayButton.style.display = 'none';
-        }
-        if (paymentDivider) {
-            paymentDivider.style.display = 'none';
         }
         return;
     }
     
-    // Show Apple Pay button and divider on Apple devices
+    // Show Apple Pay button on Apple devices
     if (applePayButton) {
         applePayButton.style.display = 'block';
         
@@ -300,10 +293,6 @@ async function initApplePay() {
         if (applePayBtn) {
             applePayBtn.addEventListener('click', handleApplePayPayment);
         }
-    }
-    
-    if (paymentDivider) {
-        paymentDivider.style.display = 'block';
     }
 }
 
@@ -361,6 +350,7 @@ async function handleApplePayPayment() {
         const canMakePayment = await paymentRequest.canMakePayment();
         if (!canMakePayment || !canMakePayment.applePay) {
             console.log('Apple Pay not available');
+            alert('Apple Pay is not available. Please use card payment.');
             return;
         }
         

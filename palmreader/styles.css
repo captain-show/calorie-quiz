@@ -1655,33 +1655,6 @@ body::before {
     position: relative;
 }
 
-.apple-pay-text::before {
-    content: "🍎";
-    margin-right: 8px;
-    font-size: 18px;
-}
 
-.payment-divider {
-    text-align: center;
-    margin: 20px 0;
-    position: relative;
-}
 
-.payment-divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #444, transparent);
-}
 
-.divider-text {
-    background: #1a1a2e;
-    padding: 0 20px;
-    color: #888;
-    font-size: 14px;
-    position: relative;
-    z-index: 1;
-}
