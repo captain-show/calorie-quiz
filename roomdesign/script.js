@@ -67,6 +67,15 @@ function selectOption(option, questionNumber) {
     // Store answer
     answers[questionNumber] = option;
     
+    // Track question answered event in Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('question_answered', {
+            question_number: questionNumber,
+            answer: option,
+            question_type: getQuestionType(questionNumber)
+        });
+    }
+    
     // Add visual feedback
     const optionCards = document.querySelectorAll(`#question-${questionNumber} .option-card`);
     optionCards.forEach(card => {
@@ -88,6 +97,28 @@ function selectOption(option, questionNumber) {
             showProcessing();
         }
     }, 500);
+}
+
+// Get question type for analytics
+function getQuestionType(questionNumber) {
+    const questionTypes = [
+        'style_preference',
+        'color_palette', 
+        'room_function',
+        'lighting_preference',
+        'furniture_style',
+        'space_size',
+        'budget_range',
+        'lifestyle',
+        'storage_needs',
+        'decor_preference',
+        'technology_integration',
+        'privacy_level',
+        'maintenance_level',
+        'inspiration_source',
+        'final_preference'
+    ];
+    return questionTypes[questionNumber - 1] || 'unknown';
 }
 
 // Show processing section
@@ -163,10 +194,8 @@ function showCompletionMessage() {
         <em>Our AI is now creating your custom room design application...</em>
     `;
     
-    // Show subscription section after delay
-    setTimeout(() => {
-        showSubscriptionSection();
-    }, 2000);
+    // Show subscription section immediately
+    showSubscriptionSection();
 }
 
 // Show subscription section
@@ -229,6 +258,14 @@ function selectPlan(plan) {
 
 // Show email modal
 function showEmailModal() {
+    // Track subscribe complete event in Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('subscribe_complete', {
+            selected_plan: selectedPlan,
+            plan_price: getPlanPrice(selectedPlan)
+        });
+    }
+    
     const modal = document.getElementById('email-modal');
     if (modal) {
         modal.style.display = 'flex';
@@ -240,6 +277,16 @@ function showEmailModal() {
             }
         }, 100);
     }
+}
+
+// Get plan price for analytics
+function getPlanPrice(plan) {
+    const prices = {
+        'weekly': 4.99,
+        'monthly': 9.99,
+        'yearly': 19.99
+    };
+    return prices[plan] || 0;
 }
 
 // Close email modal
@@ -266,6 +313,26 @@ function submitEmail() {
     }
     
     console.log(`Email submitted: ${email} for plan: ${selectedPlan}`);
+    
+    // Track email submitted event in Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+        mixpanel.track('email_submitted', {
+            email: email,
+            selected_plan: selectedPlan,
+            plan_price: getPlanPrice(selectedPlan),
+            quiz_answers: answers
+        });
+    }
+    
+    // Track purchase event in Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Purchase', {
+            value: getPlanPrice(selectedPlan),
+            currency: 'USD',
+            content_type: 'subscription',
+            content_name: `${selectedPlan}_plan`
+        });
+    }
     
     // Here you would typically send the data to your backend
     alert(`Thank you! Your ${selectedPlan} plan will be sent to ${email}`);
