@@ -4,6 +4,7 @@ let answers = {};
 const totalQuestions = 15;
 let selectedPlan = 'weekly';
 let countdownTimer = null;
+let mixpanelReady = false;
 
 // Question data with anchors
 const questions = [
@@ -68,7 +69,7 @@ function selectOption(option, questionNumber) {
     answers[questionNumber] = option;
     
     // Track question answered event in Mixpanel
-    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+    if (isMixpanelTrackReady()) {
         console.log('Sending Mixpanel event: question_answered', {
             question_number: questionNumber,
             answer: option,
@@ -78,21 +79,32 @@ function selectOption(option, questionNumber) {
             mixpanel.track('question_answered', {
                 question_number: questionNumber,
                 answer: option,
-                question_type: getQuestionType(questionNumber)
+                question_type: getQuestionType(questionNumber),
+                timestamp: new Date().toISOString()
             });
+            
+            // Force flush the event
+            if (mixpanel.flush) {
+                mixpanel.flush();
+            }
+            
             console.log('Mixpanel event sent successfully');
         } catch (error) {
             console.error('Error sending Mixpanel event:', error);
         }
     } else {
-        console.warn('Mixpanel not available, retrying in 1 second...');
+        console.warn('Mixpanel track not ready, retrying in 1 second...');
         setTimeout(() => {
-            if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+            if (isMixpanelTrackReady()) {
                 mixpanel.track('question_answered', {
                     question_number: questionNumber,
                     answer: option,
-                    question_type: getQuestionType(questionNumber)
+                    question_type: getQuestionType(questionNumber),
+                    timestamp: new Date().toISOString()
                 });
+                if (mixpanel.flush) {
+                    mixpanel.flush();
+                }
             }
         }, 1000);
     }
@@ -280,7 +292,7 @@ function selectPlan(plan) {
 // Show email modal
 function showEmailModal() {
     // Track subscribe complete event in Mixpanel
-    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+    if (isMixpanelTrackReady()) {
         console.log('Sending Mixpanel event: subscribe_complete', {
             selected_plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan)
@@ -290,11 +302,14 @@ function showEmailModal() {
                 selected_plan: selectedPlan,
                 plan_price: getPlanPrice(selectedPlan)
             });
+            if (mixpanel.flush) {
+                mixpanel.flush();
+            }
         } catch (error) {
             console.error('Error sending Mixpanel event:', error);
         }
     } else {
-        console.warn('Mixpanel not available for subscribe_complete event');
+        console.warn('Mixpanel track not ready for subscribe_complete event');
     }
     
     const modal = document.getElementById('email-modal');
@@ -346,7 +361,7 @@ function submitEmail() {
     console.log(`Email submitted: ${email} for plan: ${selectedPlan}`);
     
     // Track email submitted event in Mixpanel
-    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+    if (isMixpanelTrackReady()) {
         console.log('Sending Mixpanel event: email_submitted', {
             email: email,
             selected_plan: selectedPlan,
@@ -360,11 +375,14 @@ function submitEmail() {
                 plan_price: getPlanPrice(selectedPlan),
                 quiz_answers: answers
             });
+            if (mixpanel.flush) {
+                mixpanel.flush();
+            }
         } catch (error) {
             console.error('Error sending Mixpanel event:', error);
         }
     } else {
-        console.warn('Mixpanel not available for email_submitted event');
+        console.warn('Mixpanel track not ready for email_submitted event');
     }
     
     // Track purchase event in Facebook Pixel
@@ -430,23 +448,99 @@ function showWelcome() {
     currentQuestion = 0;
 }
 
+// Check if Mixpanel is ready
+function isMixpanelReady() {
+    return typeof mixpanel !== 'undefined' && 
+           typeof mixpanel.track === 'function' && 
+           mixpanel.config && 
+           mixpanel.config.token;
+}
+
+// Alternative check - just if track function exists
+function isMixpanelTrackReady() {
+    return typeof mixpanel !== 'undefined' && 
+           typeof mixpanel.track === 'function';
+}
+
 // Test Mixpanel function
 function testMixpanel() {
     console.log('Testing Mixpanel...');
-    if (typeof mixpanel !== 'undefined' && mixpanel.track) {
-        console.log('Mixpanel is available!');
-        mixpanel.track('test_event', {
-            test: true,
-            timestamp: new Date().toISOString()
-        });
-        console.log('Test event sent to Mixpanel');
+    console.log('Mixpanel ready:', isMixpanelReady());
+    console.log('Mixpanel track ready:', isMixpanelTrackReady());
+    
+    if (isMixpanelTrackReady()) {
+        console.log('Mixpanel track is available!');
+        console.log('Mixpanel object:', mixpanel);
+        console.log('Mixpanel config:', mixpanel.config);
+        
+        if (mixpanel.config) {
+            console.log('Mixpanel token:', mixpanel.config.token);
+        } else {
+            console.warn('Mixpanel config is undefined, but track function works');
+        }
+        
+        // Send test event
+        try {
+            mixpanel.track('test_event', {
+                test: true,
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                user_agent: navigator.userAgent
+            });
+            
+            // Force flush
+            if (mixpanel.flush) {
+                mixpanel.flush();
+                console.log('Test event flushed to Mixpanel');
+            }
+            
+            console.log('Test event sent to Mixpanel');
+        } catch (error) {
+            console.error('Error sending test event:', error);
+        }
+        
+        // Check network requests
+        console.log('Check Network tab for requests to api.mixpanel.com');
     } else {
-        console.error('Mixpanel is not available');
+        console.error('Mixpanel is not ready. Details:');
+        console.log('- mixpanel exists:', typeof mixpanel !== 'undefined');
+        console.log('- mixpanel.track is function:', typeof mixpanel !== 'undefined' && typeof mixpanel.track === 'function');
+        console.log('- mixpanel.config exists:', typeof mixpanel !== 'undefined' && mixpanel.config);
+        console.log('- mixpanel.config.token exists:', typeof mixpanel !== 'undefined' && mixpanel.config && mixpanel.config.token);
     }
 }
 
-// Make test function globally available
+// Function to check network requests
+function checkMixpanelNetwork() {
+    console.log('=== MIXPANEL NETWORK CHECK ===');
+    console.log('1. Open Network tab in DevTools');
+    console.log('2. Look for requests to:');
+    console.log('   - api.mixpanel.com/track');
+    console.log('   - cdn4.mxpnl.com');
+    console.log('3. Check if requests are being made');
+    console.log('4. Check response status codes');
+    
+    // Try to send a test event and monitor
+    if (typeof mixpanel !== 'undefined') {
+        console.log('Sending test event for network monitoring...');
+        mixpanel.track('network_test', {
+            test: 'network_check',
+            timestamp: new Date().toISOString()
+        });
+        
+        if (mixpanel.flush) {
+            mixpanel.flush();
+        }
+        
+        console.log('Check Network tab now for the request!');
+    }
+}
+
+// Make functions globally available
 window.testMixpanel = testMixpanel;
+window.checkMixpanelNetwork = checkMixpanelNetwork;
+window.isMixpanelReady = isMixpanelReady;
+window.isMixpanelTrackReady = isMixpanelTrackReady;
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
