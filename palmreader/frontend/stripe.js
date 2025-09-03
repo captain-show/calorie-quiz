@@ -244,8 +244,8 @@ function downloadApp() {
 }
 
 // Apple Pay functions
-function isIOSDevice() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+function isAppleDevice() {
+    return /iPad|iPhone|iPod|Macintosh|MacIntel/.test(navigator.userAgent) && !window.MSStream;
 }
 
 function isApplePayAvailable() {
@@ -256,8 +256,31 @@ async function initApplePay() {
     const applePayButton = document.getElementById('apple-pay-button');
     const paymentDivider = document.querySelector('.payment-divider');
     
-    if (!isIOSDevice() || !isApplePayAvailable()) {
-        // Hide Apple Pay button and divider on non-iOS devices
+    console.log('Apple Pay initialization:');
+    console.log('- User Agent:', navigator.userAgent);
+    console.log('- Is Apple Device:', isAppleDevice());
+    console.log('- Apple Pay Available:', isApplePayAvailable());
+    console.log('- ApplePaySession exists:', !!window.ApplePaySession);
+    
+    if (!isAppleDevice() || !isApplePayAvailable()) {
+        // For testing on macOS - show button even if Apple Pay is not available
+        const isMac = /Macintosh|MacIntel/.test(navigator.userAgent);
+        if (isMac) {
+            console.log('macOS detected - showing Apple Pay button for testing');
+            if (applePayButton) {
+                applePayButton.style.display = 'block';
+                const applePayBtn = document.getElementById('apple-pay-btn');
+                if (applePayBtn) {
+                    applePayBtn.addEventListener('click', handleApplePayPayment);
+                }
+            }
+            if (paymentDivider) {
+                paymentDivider.style.display = 'block';
+            }
+            return;
+        }
+        
+        // Hide Apple Pay button and divider on non-Apple devices
         if (applePayButton) {
             applePayButton.style.display = 'none';
         }
@@ -267,7 +290,7 @@ async function initApplePay() {
         return;
     }
     
-    // Show Apple Pay button and divider on iOS devices
+    // Show Apple Pay button and divider on Apple devices
     if (applePayButton) {
         applePayButton.style.display = 'block';
         
