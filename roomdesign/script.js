@@ -69,11 +69,18 @@ function selectOption(option, questionNumber) {
     
     // Track question answered event in Mixpanel
     if (typeof mixpanel !== 'undefined') {
+        console.log('Sending Mixpanel event: question_answered', {
+            question_number: questionNumber,
+            answer: option,
+            question_type: getQuestionType(questionNumber)
+        });
         mixpanel.track('question_answered', {
             question_number: questionNumber,
             answer: option,
             question_type: getQuestionType(questionNumber)
         });
+    } else {
+        console.error('Mixpanel not available');
     }
     
     // Add visual feedback
@@ -260,10 +267,16 @@ function selectPlan(plan) {
 function showEmailModal() {
     // Track subscribe complete event in Mixpanel
     if (typeof mixpanel !== 'undefined') {
+        console.log('Sending Mixpanel event: subscribe_complete', {
+            selected_plan: selectedPlan,
+            plan_price: getPlanPrice(selectedPlan)
+        });
         mixpanel.track('subscribe_complete', {
             selected_plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan)
         });
+    } else {
+        console.error('Mixpanel not available');
     }
     
     const modal = document.getElementById('email-modal');
@@ -316,12 +329,20 @@ function submitEmail() {
     
     // Track email submitted event in Mixpanel
     if (typeof mixpanel !== 'undefined') {
+        console.log('Sending Mixpanel event: email_submitted', {
+            email: email,
+            selected_plan: selectedPlan,
+            plan_price: getPlanPrice(selectedPlan),
+            quiz_answers: answers
+        });
         mixpanel.track('email_submitted', {
             email: email,
             selected_plan: selectedPlan,
             plan_price: getPlanPrice(selectedPlan),
             quiz_answers: answers
         });
+    } else {
+        console.error('Mixpanel not available');
     }
     
     // Track purchase event in Facebook Pixel
