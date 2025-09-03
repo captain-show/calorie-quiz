@@ -82,6 +82,8 @@ async function loadPlansFromServer() {
         if (!res.ok) throw new Error('Ошибка загрузки планов');
         const data = await res.json();
         serverPlans = data.plans || {};
+        
+        console.log('Plans loaded from server:', serverPlans);
         return serverPlans;
     } catch (e) {
         // Фолбэк если сервер недоступен
@@ -314,6 +316,12 @@ async function handleApplePayPayment() {
     const planKey = getSelectedPlanKey();
     const plan = serverPlans[planKey];
     
+    console.log('Apple Pay payment attempt:', {
+        planKey: planKey,
+        plan: plan,
+        serverPlans: serverPlans
+    });
+    
     if (!plan || !plan.priceId) {
         alert('Payment service temporarily unavailable. Please try again later.');
         return;
@@ -323,12 +331,27 @@ async function handleApplePayPayment() {
         const email = document.getElementById('checkoutEmail').value || 'noemail@example.com';
         
         // Create payment request
+        const planNames = {
+            weekly: 'Weekly Plan',
+            monthly: 'Monthly Plan', 
+            yearly: 'Yearly Plan'
+        };
+        
+        const planName = planNames[planKey] || planKey;
+        const price = plan.unitAmount ? plan.unitAmount : 499; // Fallback to 499 cents ($4.99)
+        
+        console.log('Apple Pay price calculation:', {
+            planName: planName,
+            unitAmount: plan.unitAmount,
+            finalPrice: price
+        });
+        
         const paymentRequest = stripeInstance.paymentRequest({
             country: 'US',
             currency: 'usd',
             total: {
-                label: plan.name,
-                amount: Math.round(parseFloat(plan.price) * 100), // Convert to cents
+                label: planName,
+                amount: price,
             },
             requestPayerName: true,
             requestPayerEmail: true,
@@ -368,18 +391,23 @@ async function handleApplePayPayment() {
                 ev.complete('success');
                 
                 // Track analytics
+                const priceInDollars = plan.unitAmount ? plan.unitAmount / 100 : 4.99;
+                
                 if (typeof mixpanel !== 'undefined') {
                     mixpanel.track('purchase', {
                         plan: planKey,
-                        price: plan.price,
+                        plan_price: priceInDollars,
+                        currency: 'USD',
                         payment_method: 'apple_pay'
                     });
                 }
                 
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Purchase', {
-                        value: parseFloat(plan.price),
-                        currency: 'USD'
+                        value: priceInDollars,
+                        currency: 'USD',
+                        content_name: planKey + ' plan',
+                        content_category: 'palmistry_subscription'
                     });
                 }
                 
