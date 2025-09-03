@@ -17,6 +17,12 @@ async function initStripeElements() {
         const config = await configRes.json();
         serverPublishableKey = config.publishableKey;
         if (!serverPublishableKey) throw new Error('Нет публичного ключа Stripe');
+        
+        console.log('Stripe config loaded:', {
+            publishableKey: serverPublishableKey ? 'Present' : 'Missing',
+            applePayEnabled: config.applePayEnabled
+        });
+        
         stripeInstance = Stripe(serverPublishableKey);
         stripeElements = stripeInstance.elements({
             appearance: {
@@ -365,6 +371,7 @@ async function handleApplePayPayment() {
             finalPrice: price
         });
         
+        // Check if Apple Pay is available BEFORE creating paymentRequest
         const paymentRequest = stripeInstance.paymentRequest({
             country: 'US',
             currency: 'usd',
@@ -379,7 +386,7 @@ async function handleApplePayPayment() {
         // Check if Apple Pay is available
         const canMakePayment = await paymentRequest.canMakePayment();
         if (!canMakePayment || !canMakePayment.applePay) {
-            console.log('Apple Pay not available');
+            console.log('Apple Pay not available - canMakePayment result:', canMakePayment);
             alert('Apple Pay is not available. Please use card payment.');
             return;
         }
