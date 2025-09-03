@@ -27,6 +27,19 @@ const questions = [
 // Start the quiz
 function startQuiz() {
     console.log('Starting AI Room Design Quiz');
+    
+    // Track quiz start event in Mixpanel
+    if (typeof mixpanel !== 'undefined' && mixpanel && mixpanel.track) {
+        try {
+            mixpanel.track('quiz_started', {
+                quiz_type: 'room_design',
+                total_questions: totalQuestions
+            });
+        } catch (error) {
+            console.warn('Mixpanel tracking error:', error);
+        }
+    }
+    
     currentQuestion = 1;
     showQuestion(1);
     updateURL('style-preference');
@@ -69,12 +82,16 @@ function selectOption(option, questionNumber) {
     
     // Track question answered event in Mixpanel
     if (typeof mixpanel !== 'undefined' && mixpanel && mixpanel.track) {
-        mixpanel.track('question_answered', {
-            question_number: questionNumber,
-            question_type: getQuestionType(questionNumber),
-            answer: option,
-            progress_percentage: Math.round((questionNumber / totalQuestions) * 100)
-        });
+        try {
+            mixpanel.track('question_answered', {
+                question_number: questionNumber,
+                question_type: getQuestionType(questionNumber),
+                answer: option,
+                progress_percentage: Math.round((questionNumber / totalQuestions) * 100)
+            });
+        } catch (error) {
+            console.warn('Mixpanel tracking error:', error);
+        }
     }
     
     // Add visual feedback
@@ -124,6 +141,20 @@ function getQuestionType(questionNumber) {
 
 // Show processing section
 function showProcessing() {
+    // Track quiz completion event in Mixpanel
+    if (typeof mixpanel !== 'undefined' && mixpanel && mixpanel.track) {
+        try {
+            mixpanel.track('quiz_completed', {
+                quiz_type: 'room_design',
+                total_questions: totalQuestions,
+                answers: answers,
+                completion_time: new Date().toISOString()
+            });
+        } catch (error) {
+            console.warn('Mixpanel tracking error:', error);
+        }
+    }
+    
     // Hide all sections
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => {
@@ -261,11 +292,15 @@ function selectPlan(plan) {
 function showEmailModal() {
     // Track subscription complete event in Mixpanel
     if (typeof mixpanel !== 'undefined' && mixpanel && mixpanel.track) {
-        mixpanel.track('subscription_complete', {
-            selected_plan: selectedPlan,
-            plan_price: getPlanPrice(selectedPlan),
-            currency: 'USD'
-        });
+        try {
+            mixpanel.track('subscription_complete', {
+                selected_plan: selectedPlan,
+                plan_price: getPlanPrice(selectedPlan),
+                currency: 'USD'
+            });
+        } catch (error) {
+            console.warn('Mixpanel tracking error:', error);
+        }
     }
     
     const modal = document.getElementById('email-modal');
@@ -318,14 +353,18 @@ function submitEmail() {
     
     // Track email submitted event in Mixpanel
     if (typeof mixpanel !== 'undefined' && mixpanel && mixpanel.track) {
-        mixpanel.track('email_submitted', {
-            email: email,
-            selected_plan: selectedPlan,
-            plan_price: getPlanPrice(selectedPlan),
-            currency: 'USD',
-            quiz_completed: true,
-            total_questions: totalQuestions
-        });
+        try {
+            mixpanel.track('email_submitted', {
+                email: email,
+                selected_plan: selectedPlan,
+                plan_price: getPlanPrice(selectedPlan),
+                currency: 'USD',
+                quiz_completed: true,
+                total_questions: totalQuestions
+            });
+        } catch (error) {
+            console.warn('Mixpanel tracking error:', error);
+        }
     }
     
     // Track purchase event in Facebook Pixel
@@ -393,9 +432,26 @@ function showWelcome() {
 
 
 
+// Check Mixpanel status
+function checkMixpanelStatus() {
+    if (typeof mixpanel !== 'undefined') {
+        console.log('✅ Mixpanel is loaded and available');
+        console.log('Mixpanel config:', mixpanel.config);
+        return true;
+    } else {
+        console.warn('❌ Mixpanel is not loaded');
+        return false;
+    }
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     console.log('AI Room Design Quiz loaded');
+    
+    // Check Mixpanel status
+    setTimeout(() => {
+        checkMixpanelStatus();
+    }, 1000);
     
     // Check if there's a hash in the URL
     const hash = window.location.hash.slice(1);
