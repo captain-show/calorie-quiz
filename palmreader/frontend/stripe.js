@@ -253,17 +253,32 @@ function isAppleDevice() {
 function isApplePayAvailable() {
     const hasApplePaySession = !!window.ApplePaySession;
     const canMakePayments = hasApplePaySession && ApplePaySession.canMakePayments();
+    const isHTTPS = location.protocol === 'https:';
+    const domain = location.hostname;
     
-    console.log('Apple Pay availability check:', {
-        hasApplePaySession: hasApplePaySession,
-        canMakePayments: canMakePayments,
+    // Check if we're on a supported domain
+    const supportedDomains = ['webpall.com', 'localhost', '127.0.0.1'];
+    const isSupportedDomain = supportedDomains.some(supportedDomain => domain.includes(supportedDomain));
+    
+    // More detailed diagnostics
+    const diagnostics = {
+        hasApplePaySession,
+        canMakePayments,
         ApplePaySession: window.ApplePaySession,
         userAgent: navigator.userAgent,
-        isHTTPS: location.protocol === 'https:',
-        domain: location.hostname
-    });
+        isHTTPS,
+        domain,
+        protocol: location.protocol,
+        hostname: location.hostname,
+        port: location.port,
+        isSupportedDomain,
+        isAppleDevice: isAppleDevice()
+    };
     
-    return canMakePayments;
+    console.log('Apple Pay availability check:', diagnostics);
+    
+    // Apple Pay requires HTTPS and supported domain
+    return hasApplePaySession && canMakePayments && isHTTPS && isSupportedDomain;
 }
 
 async function initApplePay() {
@@ -274,6 +289,9 @@ async function initApplePay() {
     console.log('- Is Apple Device:', isAppleDevice());
     console.log('- Apple Pay Available:', isApplePayAvailable());
     console.log('- ApplePaySession exists:', !!window.ApplePaySession);
+    console.log('- Current domain:', location.hostname);
+    console.log('- Current protocol:', location.protocol);
+    console.log('- Current port:', location.port);
     
     if (!isAppleDevice() || !isApplePayAvailable()) {
         // For testing on macOS - show button even if Apple Pay is not available
