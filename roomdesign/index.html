@@ -63,6 +63,8 @@
                 </div>
             </div>
 
+            
+
             <!-- Question 1: Style Preference -->
             <div id="question-1" class="section question-section" style="display: none;">
                 <div class="question-header">
@@ -261,22 +263,20 @@
             <!-- AI Quick Generate Interstitial -->
             <div id="ai-quick-generate" class="section" style="display: none;">
                 <div class="processing-content">
-                    <h3 class="processing-title">✨ Quick AI Redesign</h3>
+                    <h3 class="processing-title">Quick AI Redesign</h3>
                     <p class="processing-description">Our app delivers ultra-fast room design generation.</p>
 
-                    <div style="position: relative; margin: 16px 0;">
-                        <img id="ai-before-img" src="img/before-ai-change-colors1.webp" alt="Before" style="width: 100%; border-radius: 10px;" />
-                        <img id="ai-after-img" src="img/after-ai-change-colors1.webp" alt="After" style="width: 100%; border-radius: 10px; display: none;" />
-                    </div>
+                    <div class="hint-banner">Drag the slider left or right to compare</div>
 
-                    <div class="progress-container">
-                        <div class="progress-bar-large">
-                            <div class="progress-fill-large" id="ai-quick-progress"></div>
+                    <div class="before-after" id="ai-before-after" style="margin: 16px 0;">
+                        <img id="ai-before-img" src="img/before-ai-change-colors1.webp" alt="Before" />
+                        <div id="ai-after-wrap">
+                            <img id="ai-after-img" src="img/after-ai-change-colors1.webp" alt="After" />
                         </div>
-                        <div class="progress-text" id="ai-quick-progress-text">0%</div>
+                        <div id="ai-slider"></div>
                     </div>
 
-                    <button id="ai-quick-continue" class="subscribe-btn" disabled onclick="continueFromQuickAI()">
+                    <button id="ai-quick-continue" class="subscribe-btn" onclick="continueFromQuickAI()">
                         <span class="btn-text">Continue</span>
                     </button>
                 </div>
@@ -349,7 +349,7 @@
             <!-- Change Colors, Textures, Weather Interstitial -->
             <div id="ctw-section" class="section" style="display: none;">
                 <div class="processing-content">
-                    <h3 class="processing-title">🎨 Change Colors, Textures, Weather</h3>
+                    <h3 class="processing-title">Change Colors, Textures, Weather</h3>
                     <p class="processing-description">Experiment with different palettes, materials, and environments.</p>
                     <img src="img/change.png" alt="Change preview" style="width: 100%; border-radius: 10px; margin: 12px 0 20px;" />
                     <button class="subscribe-btn" onclick="continueFromCTW()">

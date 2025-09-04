@@ -222,7 +222,7 @@ body {
 .processing-icon {
     font-size: 64px;
     margin-bottom: 20px;
-    animation: pulse 2s ease-in-out infinite;
+    animation: gentlePulse 2.4s ease-in-out infinite;
 }
 
 .processing-title {
@@ -242,6 +242,66 @@ body {
 
 .progress-container {
     margin-bottom: 40px;
+}
+
+/* Before/After slider styling */
+.before-after {
+    user-select: none;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.before-after img {
+    pointer-events: none;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.hint-banner {
+    background: #f1f3f5;
+    color: #495057;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Specific slider elements */
+#ai-after-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    z-index: 2;
+}
+
+#ai-slider {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 3px;
+    background: rgba(0,0,0,0.45);
+    cursor: ew-resize;
+    z-index: 3;
+}
+
+#ai-slider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid rgba(0,0,0,0.35);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .progress-bar-large {

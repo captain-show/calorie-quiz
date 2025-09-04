@@ -40,9 +40,8 @@ function startQuiz() {
         }
     }
     
-    currentQuestion = 1;
-    showQuestion(1);
-    updateURL('style-preference');
+    // Show the before/after screen first
+    showQuickAI();
 }
 
 // Show specific question
@@ -112,11 +111,7 @@ function selectOption(option, questionNumber) {
             return;
         }
 
-        // After question 5 show quick AI generate screen
-        if (questionNumber === 5) {
-            showQuickAI();
-            return;
-        }
+        // (Removed) After question 5 quick AI screen
 
         // After question 7 show CTW screen
         if (questionNumber === 7) {
@@ -173,44 +168,74 @@ function showQuickAI() {
         screen.scrollIntoView({ behavior: 'smooth' });
     }
 
-    const progressFill = document.getElementById('ai-quick-progress');
-    const progressText = document.getElementById('ai-quick-progress-text');
-    const btn = document.getElementById('ai-quick-continue');
-    const beforeImg = document.getElementById('ai-before-img');
-    const afterImg = document.getElementById('ai-after-img');
+    // Initialize draggable before/after slider
+    const container = document.getElementById('ai-before-after');
+    const afterWrap = document.getElementById('ai-after-wrap');
+    const slider = document.getElementById('ai-slider');
+    if (!container || !afterWrap || !slider) return;
 
-    let progress = 0;
-    const totalMs = 3000; // 3 seconds
-    const stepMs = 50;
-    const stepInc = 100 / (totalMs / stepMs);
+    // Initialize to 50% so both images are visible
+    afterWrap.style.clipPath = 'inset(0 50% 0 0)';
+    afterWrap.style.webkitClipPath = 'inset(0 50% 0 0)';
+    slider.style.left = '50%';
 
-    const interval = setInterval(() => {
-        progress = Math.min(100, progress + stepInc);
-        if (progressFill) progressFill.style.width = `${progress}%`;
-        if (progressText) progressText.textContent = `${Math.round(progress)}%`;
+    function setPosition(clientX) {
+        const rect = container.getBoundingClientRect();
+        let x = clientX - rect.left;
+        x = Math.max(0, Math.min(x, rect.width));
+        const percent = (x / rect.width) * 100;
+        // Clip the after image using a mask (clip-path) so images keep the same size
+        afterWrap.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+        afterWrap.style.webkitClipPath = `inset(0 ${100 - percent}% 0 0)`;
+        slider.style.left = `${percent}%`;
+    }
 
-        // Apply gentle pulse to before image, then swap to after at the end
-        if (beforeImg && progress === stepInc) {
-            beforeImg.style.animation = 'gentlePulse 2.4s ease-in-out infinite';
+    function onPointerMove(e) {
+        if (e.type === 'touchmove') {
+            setPosition(e.touches[0].clientX);
+        } else {
+            setPosition(e.clientX);
         }
-        if (progress >= 100) {
-            clearInterval(interval);
-            if (beforeImg) beforeImg.style.display = 'none';
-            if (afterImg) afterImg.style.display = 'block';
-            if (btn) {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.style.cursor = 'pointer';
-            }
+    }
+
+    function startDrag(e) {
+        document.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('touchmove', onPointerMove, { passive: false });
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('touchend', endDrag);
+        if (e.type === 'touchstart') {
+            setPosition(e.touches[0].clientX);
+        } else {
+            setPosition(e.clientX);
         }
-    }, stepMs);
+    }
+
+    function endDrag() {
+        document.removeEventListener('mousemove', onPointerMove);
+        document.removeEventListener('touchmove', onPointerMove);
+        document.removeEventListener('mouseup', endDrag);
+        document.removeEventListener('touchend', endDrag);
+    }
+
+    function onContainerDown(e) {
+        if (e.type === 'touchstart') {
+            startDrag(e);
+        } else {
+            startDrag(e);
+        }
+    }
+
+    slider.addEventListener('mousedown', startDrag);
+    slider.addEventListener('touchstart', startDrag, { passive: true });
+    container.addEventListener('mousedown', onContainerDown);
+    container.addEventListener('touchstart', onContainerDown, { passive: true });
 }
 
 // Continue from quick AI screen to question 6
 function continueFromQuickAI() {
-    currentQuestion = 6;
+    currentQuestion = 1;
     showQuestion(currentQuestion);
-    updateURL('space-size');
+    updateURL('style-preference');
 }
 
 // Show Change Colors, Textures, Weather interstitial
