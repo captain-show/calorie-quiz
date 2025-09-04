@@ -310,6 +310,54 @@ body {
     color: #2c3e50;
 }
 
+/* Make styles/spaces list items look non-clickable */
+#styles-spaces .step {
+    cursor: default;
+    opacity: 1 !important;
+    background: #ffffff;
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+#styles-spaces .step:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #e9ecef;
+}
+
+/* Make beginner steps look non-clickable */
+#benefit-beginner .step {
+    cursor: default;
+    opacity: 1 !important;
+    background: #ffffff;
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+#benefit-beginner .step:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #e9ecef;
+}
+
+/* Left-align Beginner-friendly steps */
+#benefit-beginner .processing-steps {
+    text-align: left;
+}
+#benefit-beginner .step-text {
+    text-align: left;
+}
+
+/* Crisper text and slightly larger icons for non-clickable lists */
+#styles-spaces .step .step-text,
+#benefit-beginner .step .step-text {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+#styles-spaces .step .step-icon,
+#benefit-beginner .step .step-icon {
+    font-size: 22px;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -611,6 +659,24 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Smooth subtle pulse for images */
+@keyframes gentlePulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.95;
+    }
+    50% {
+        transform: scale(1.01);
+        opacity: 1;
+    }
+}
+
+/* Disabled subscribe button state */
+button.subscribe-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* Responsive Design */

@@ -159,6 +159,41 @@
                 </div>
             </div>
 
+            <!-- Benefit: Beginner-friendly -->
+            <div id="benefit-beginner" class="section" style="display: none;">
+                <div class="processing-content">
+                    <div class="processing-icon">🧩</div>
+                    <h3 class="processing-title">Beginner-friendly</h3>
+                    <p class="processing-description">No skills needed</p>
+                    <div class="processing-steps" style="margin-bottom: 20px;">
+                        <div class="step">
+                            <div class="step-icon">🖼️</div>
+                            <div class="step-text">
+                                <div>Step 1</div>
+                                <div>Upload your photo</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">⚙️</div>
+                            <div class="step-text">
+                                <div>Step 2</div>
+                                <div>Set your preferences</div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🚀</div>
+                            <div class="step-text">
+                                <div>Step 3</div>
+                                <div>Generate and use the result</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="subscribe-btn" onclick="continueFromBenefit()">
+                        <span class="btn-text">Continue</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Question 4: Lighting Preference -->
             <div id="question-4" class="section question-section" style="display: none;">
                 <div class="question-header">
@@ -220,6 +255,30 @@
                         <div class="option-icon">💎</div>
                         <span class="option-label">Luxury</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- AI Quick Generate Interstitial -->
+            <div id="ai-quick-generate" class="section" style="display: none;">
+                <div class="processing-content">
+                    <h3 class="processing-title">✨ Quick AI Redesign</h3>
+                    <p class="processing-description">Our app delivers ultra-fast room design generation.</p>
+
+                    <div style="position: relative; margin: 16px 0;">
+                        <img id="ai-before-img" src="img/before-ai-change-colors1.webp" alt="Before" style="width: 100%; border-radius: 10px;" />
+                        <img id="ai-after-img" src="img/after-ai-change-colors1.webp" alt="After" style="width: 100%; border-radius: 10px; display: none;" />
+                    </div>
+
+                    <div class="progress-container">
+                        <div class="progress-bar-large">
+                            <div class="progress-fill-large" id="ai-quick-progress"></div>
+                        </div>
+                        <div class="progress-text" id="ai-quick-progress-text">0%</div>
+                    </div>
+
+                    <button id="ai-quick-continue" class="subscribe-btn" disabled onclick="continueFromQuickAI()">
+                        <span class="btn-text">Continue</span>
+                    </button>
                 </div>
             </div>
 
@@ -287,6 +346,18 @@
                 </div>
             </div>
 
+            <!-- Change Colors, Textures, Weather Interstitial -->
+            <div id="ctw-section" class="section" style="display: none;">
+                <div class="processing-content">
+                    <h3 class="processing-title">🎨 Change Colors, Textures, Weather</h3>
+                    <p class="processing-description">Experiment with different palettes, materials, and environments.</p>
+                    <img src="img/change.png" alt="Change preview" style="width: 100%; border-radius: 10px; margin: 12px 0 20px;" />
+                    <button class="subscribe-btn" onclick="continueFromCTW()">
+                        <span class="btn-text">Continue</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Question 8: Lifestyle -->
             <div id="question-8" class="section question-section" style="display: none;">
                 <div class="question-header">
@@ -348,6 +419,43 @@
                         <div class="option-icon">🏬</div>
                         <span class="option-label">Maximal</span>
                     </div>
+                </div>
+            </div>
+
+            <!-- 80+ Design Styles & Spaces Interstitial -->
+            <div id="styles-spaces" class="section" style="display: none;">
+                <div class="processing-content">
+                    <h3 class="processing-title">80+ Design Styles & Spaces</h3>
+                    <p class="processing-description">Explore a wide range of looks and rooms to match your taste.</p>
+                    <div class="processing-steps" style="margin-bottom: 20px;">
+                        <div class="step">
+                            <div class="step-icon">🏠</div>
+                            <div class="step-text">Living rooms</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🛏️</div>
+                            <div class="step-text">Bedrooms</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🍽️</div>
+                            <div class="step-text">Kitchens & Dining</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🛁</div>
+                            <div class="step-text">Bathrooms</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🧒</div>
+                            <div class="step-text">Kids & Nurseries</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">🏢</div>
+                            <div class="step-text">Home office</div>
+                        </div>
+                    </div>
+                    <button class="subscribe-btn" onclick="continueFromStylesSpaces()">
+                        <span class="btn-text">Continue</span>
+                    </button>
                 </div>
             </div>
 
@@ -543,6 +651,26 @@
                 </div>
             </div>
 
+            <!-- Upload Image for Generation -->
+            <div id="upload-section" class="section" style="display: none;">
+                <div class="processing-content">
+                    <h3 class="processing-title">Upload your photo</h3>
+                    <p class="processing-description">Add a room photo to generate a personalized design.</p>
+                    <div class="upload-controls" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; text-align: left;">
+                        <label style="font-size: 14px; color: #495057;">Choose from device</label>
+                        <input type="file" id="upload-file" accept="image/*" onchange="onImageFileSelected(event)" />
+                        <label style="font-size: 14px; color: #495057; margin-top: 8px;">Or paste image URL</label>
+                        <input type="url" id="upload-url" class="email-input" placeholder="https://example.com/your-room.jpg" oninput="onImageUrlInput(event)" />
+                    </div>
+                    <div id="upload-preview" style="display: none; margin-bottom: 16px;">
+                        <img id="upload-preview-img" alt="Preview" style="width: 100%; border-radius: 10px;" />
+                    </div>
+                    <button id="upload-continue" class="subscribe-btn" onclick="continueFromUpload()" disabled>
+                        <span class="btn-text">Continue</span>
+                    </button>
+                </div>
+            </div>
+
             <!-- Processing Section -->
             <div id="processing-section" class="section" style="display: none;">
                 <div class="processing-content">
@@ -666,6 +794,8 @@
                 </div>
             </div>
         </div>
+
+        
     </div>
     
     <script src="script.js"></script>

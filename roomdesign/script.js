@@ -104,17 +104,153 @@ function selectOption(option, questionNumber) {
     const selectedCard = event.currentTarget;
     selectedCard.classList.add('selected');
     
-    // Move to next question after a short delay
+    // Move to next step after a short delay
     setTimeout(() => {
+        // After question 3 show benefit screen instead of question 4 immediately
+        if (questionNumber === 3) {
+            showBenefitBeginner();
+            return;
+        }
+
+        // After question 5 show quick AI generate screen
+        if (questionNumber === 5) {
+            showQuickAI();
+            return;
+        }
+
+        // After question 7 show CTW screen
+        if (questionNumber === 7) {
+            showCTW();
+            return;
+        }
+
+        // After question 9 show Styles & Spaces screen
+        if (questionNumber === 9) {
+            showStylesSpaces();
+            return;
+        }
+
         if (questionNumber < totalQuestions) {
             currentQuestion = questionNumber + 1;
             showQuestion(currentQuestion);
             updateURL(questions[questionNumber].anchor);
         } else {
-            // Quiz completed, show processing
-            showProcessing();
+            // Quiz completed, show upload section
+            showUploadSection();
         }
     }, 500);
+}
+
+// Show Beginner-friendly benefit screen
+function showBenefitBeginner() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    const benefit = document.getElementById('benefit-beginner');
+    if (benefit) {
+        benefit.style.display = 'block';
+        benefit.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Continue from benefit to question 4
+function continueFromBenefit() {
+    currentQuestion = 4;
+    showQuestion(currentQuestion);
+    updateURL('lighting-preference');
+}
+
+// Show AI quick redesign screen with 3s progress and image swap
+function showQuickAI() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    const screen = document.getElementById('ai-quick-generate');
+    if (screen) {
+        screen.style.display = 'block';
+        screen.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const progressFill = document.getElementById('ai-quick-progress');
+    const progressText = document.getElementById('ai-quick-progress-text');
+    const btn = document.getElementById('ai-quick-continue');
+    const beforeImg = document.getElementById('ai-before-img');
+    const afterImg = document.getElementById('ai-after-img');
+
+    let progress = 0;
+    const totalMs = 3000; // 3 seconds
+    const stepMs = 50;
+    const stepInc = 100 / (totalMs / stepMs);
+
+    const interval = setInterval(() => {
+        progress = Math.min(100, progress + stepInc);
+        if (progressFill) progressFill.style.width = `${progress}%`;
+        if (progressText) progressText.textContent = `${Math.round(progress)}%`;
+
+        // Apply gentle pulse to before image, then swap to after at the end
+        if (beforeImg && progress === stepInc) {
+            beforeImg.style.animation = 'gentlePulse 2.4s ease-in-out infinite';
+        }
+        if (progress >= 100) {
+            clearInterval(interval);
+            if (beforeImg) beforeImg.style.display = 'none';
+            if (afterImg) afterImg.style.display = 'block';
+            if (btn) {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            }
+        }
+    }, stepMs);
+}
+
+// Continue from quick AI screen to question 6
+function continueFromQuickAI() {
+    currentQuestion = 6;
+    showQuestion(currentQuestion);
+    updateURL('space-size');
+}
+
+// Show Change Colors, Textures, Weather interstitial
+function showCTW() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    const ctw = document.getElementById('ctw-section');
+    if (ctw) {
+        ctw.style.display = 'block';
+        ctw.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Continue from CTW to question 8
+function continueFromCTW() {
+    currentQuestion = 8;
+    showQuestion(currentQuestion);
+    updateURL('lifestyle');
+}
+
+// Show 80+ Design Styles & Spaces interstitial
+function showStylesSpaces() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    const ss = document.getElementById('styles-spaces');
+    if (ss) {
+        ss.style.display = 'block';
+        ss.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Continue from Styles & Spaces to question 10
+function continueFromStylesSpaces() {
+    currentQuestion = 10;
+    showQuestion(currentQuestion);
+    updateURL('decor-preference');
 }
 
 // Get question type for analytics
@@ -172,6 +308,65 @@ function showProcessing() {
     startProcessingAnimation();
 }
 
+// Show upload section
+function showUploadSection() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
+    });
+    const upload = document.getElementById('upload-section');
+    if (upload) {
+        upload.style.display = 'block';
+        upload.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+// Handle file input
+function onImageFileSelected(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        showUploadPreview(evt.target.result);
+    };
+    reader.readAsDataURL(file);
+    enableUploadContinue();
+    // Proceed to processing after image is selected
+    setTimeout(() => {
+        showProcessing();
+    }, 300);
+}
+
+// Handle URL input
+function onImageUrlInput(e) {
+    const url = e.target.value.trim();
+    if (!url) return;
+    showUploadPreview(url);
+    enableUploadContinue();
+    // Proceed to processing after URL is provided
+    setTimeout(() => {
+        showProcessing();
+    }, 300);
+}
+
+function showUploadPreview(src) {
+    const previewWrap = document.getElementById('upload-preview');
+    const img = document.getElementById('upload-preview-img');
+    if (img && previewWrap) {
+        img.src = src;
+        previewWrap.style.display = 'block';
+    }
+}
+
+function enableUploadContinue() {
+    const btn = document.getElementById('upload-continue');
+    if (btn) btn.disabled = false;
+}
+
+// Continue from upload to AI quick generation screen
+function continueFromUpload() {
+    showProcessing();
+}
 // Start processing animation
 function startProcessingAnimation() {
     const progressFill = document.getElementById('processing-progress');
