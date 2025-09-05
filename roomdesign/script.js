@@ -4,6 +4,7 @@ let answers = {};
 const totalQuestions = 15;
 let selectedPlan = 'weekly';
 let countdownTimer = null;
+let isQuestionScreenActive = false;
 
 // Question data with anchors
 const questions = [
@@ -61,6 +62,7 @@ function showQuestion(questionNumber) {
     
     // Update progress bar
     updateProgressBar(questionNumber);
+    isQuestionScreenActive = true;
 }
 
 // Update progress bar
@@ -147,6 +149,7 @@ function showBenefitBeginner() {
         benefit.style.display = 'block';
         benefit.scrollIntoView({ behavior: 'smooth' });
     }
+    isQuestionScreenActive = false;
 }
 
 // Continue from benefit to question 4
@@ -167,6 +170,7 @@ function showQuickAI() {
         screen.style.display = 'block';
         screen.scrollIntoView({ behavior: 'smooth' });
     }
+    isQuestionScreenActive = false;
 
     // Initialize draggable before/after slider
     const container = document.getElementById('ai-before-after');
@@ -249,6 +253,7 @@ function showCTW() {
         ctw.style.display = 'block';
         ctw.scrollIntoView({ behavior: 'smooth' });
     }
+    isQuestionScreenActive = false;
 }
 
 // Continue from CTW to question 8
@@ -269,6 +274,7 @@ function showStylesSpaces() {
         ss.style.display = 'block';
         ss.scrollIntoView({ behavior: 'smooth' });
     }
+    isQuestionScreenActive = false;
 }
 
 // Continue from Styles & Spaces to question 10
@@ -331,6 +337,7 @@ function showProcessing() {
     
     // Start processing animation
     startProcessingAnimation();
+    isQuestionScreenActive = false;
 }
 
 // Show upload section
@@ -344,6 +351,7 @@ function showUploadSection() {
         upload.style.display = 'block';
         upload.scrollIntoView({ behavior: 'smooth' });
     }
+    isQuestionScreenActive = false;
 }
 
 // Handle file input
@@ -467,6 +475,7 @@ function showSubscriptionSection() {
     
     // Start countdown timer
     startCountdownTimer();
+    isQuestionScreenActive = false;
 }
 
 // Start countdown timer
@@ -648,6 +657,7 @@ function showWelcome() {
     }
     
     currentQuestion = 0;
+    isQuestionScreenActive = false;
 }
 
 
@@ -704,7 +714,7 @@ document.addEventListener('keydown', function(e) {
         return;
     }
     
-    if (currentQuestion > 0 && currentQuestion <= totalQuestions) {
+    if (isQuestionScreenActive && currentQuestion > 0 && currentQuestion <= totalQuestions) {
         if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
             // Go to previous question
             if (currentQuestion > 1) {
@@ -740,6 +750,10 @@ function handleSwipe() {
     const swipeThreshold = 50;
     const diff = touchStartX - touchEndX;
     
+    if (!isQuestionScreenActive) {
+        return;
+    }
+
     if (Math.abs(diff) > swipeThreshold) {
         if (diff > 0) {
             // Swipe left - next question

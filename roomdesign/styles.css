@@ -333,6 +333,11 @@ body {
     gap: 20px;
 }
 
+/* Reduce spacing between list items on Beginner-friendly screen */
+#benefit-beginner .processing-steps {
+    gap: 4px;
+}
+
 .step {
     display: flex;
     align-items: center;
@@ -384,18 +389,20 @@ body {
     border-color: #e9ecef;
 }
 
-/* Make beginner steps look non-clickable */
+/* Beginner-friendly list: neutral fill, no border, compact padding */
 #benefit-beginner .step {
     cursor: default;
     opacity: 1 !important;
-    background: #ffffff;
-    border-color: #dee2e6;
+    background: #f8f9fa;
+    border: none;
+    padding: 8px 12px;
+    margin: 8px 0;
     box-shadow: none;
 }
 #benefit-beginner .step:hover {
     transform: none;
     box-shadow: none;
-    border-color: #e9ecef;
+    border-color: transparent;
 }
 
 /* Left-align Beginner-friendly steps */
@@ -737,6 +744,24 @@ body {
 button.subscribe-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Styles & Spaces list: neutral fill, no border, compact padding, larger outer margins */
+#styles-spaces .processing-steps {
+    gap: 4px;
+}
+#styles-spaces .step {
+    background: #f8f9fa;
+    border: none;
+    padding: 8px 12px;
+    margin: 8px 0;
+    box-shadow: none;
+    cursor: default;
+}
+#styles-spaces .step:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: transparent;
 }
 
 /* Responsive Design */
