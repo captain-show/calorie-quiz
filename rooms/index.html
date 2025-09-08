@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Room Design Quiz – Welcome</title>
+    <link rel="preload" href="./img/before.jpg" as="image">
+    <link rel="preload" href="./img/after.jpg" as="image">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main id="welcome" class="screen welcome-screen active" aria-label="Quiz">
+      <section class="image-compare" aria-label="Before and After room preview" data-pos="50">
+        <img class="image image--base" src="./img/before.jpg" alt="Комната до дизайна">
+        <div class="image-clip">
+          <img class="image image--overlay" src="./img/after.jpg" alt="Комната после дизайна">
+        </div>
+        <div class="slider" role="slider" aria-label="Reveal after design" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+          <div class="slider__line"></div>
+          <div class="slider__knob" aria-hidden="true"></div>
+        </div>
+
+      </section>
+      <div class="feature-icons" aria-hidden="true">
+        <span class="icon">🛋️</span>
+        <span class="icon">💡</span>
+        <span class="icon">🪴</span>
+      </div>
+
+      <section class="copy">
+        <h1 class="headline">Skip the $5,000 interior designer</h1>
+        <p class="subhead">Discover your style and get your custom design with 1-min quiz</p>
+      </section>
+
+      <div class="actions">
+        <a class="cta" href="#q1" role="button" aria-label="Start quiz">Let's do it</a>
+      </div>
+    </main>
+
+    <section id="q1" class="screen welcome-screen" aria-label="Question 1">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#welcome" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question" id="q1-label">What results are you looking for with CasaVista?</h2>
+      <form class="answers" id="q1-form" aria-labelledby="q1-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">💡</span>
+          <span class="opt-text">Get inspired by design ideas</span>
+          <input type="checkbox" name="q1" value="inspiration">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">👀</span>
+          <span class="opt-text">Just curious to see how my space could look</span>
+          <input type="checkbox" name="q1" value="curious">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛠️</span>
+          <span class="opt-text">Plan renovations</span>
+          <input type="checkbox" name="q1" value="renovations">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛍️</span>
+          <span class="opt-text">Find and purchase products</span>
+          <input type="checkbox" name="q1" value="purchase">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">❓</span>
+          <span class="opt-text">Other</span>
+          <input type="checkbox" name="q1" value="other">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="payment" class="screen welcome-screen" aria-label="Payment">
+      <h2 class="question pay-title">Enter your payment details</h2>
+      <div class="pay-card">
+        <div class="pay-field">
+          <div class="pay-label-row">
+            <label class="pay-label">Credit card</label>
+            <div class="pay-logos" aria-hidden="true">
+              <span class="pay-logo"><img src="./img/ic_visa.webp" alt="Visa"></span>
+              <span class="pay-logo"><img src="./img/ic_mastercard.webp" alt="Mastercard"></span>
+              <span class="pay-logo"><img src="./img/ic_maestro.webp" alt="Maestro"></span>
+            </div>
+          </div>
+          <input class="pay-input" type="text" inputmode="numeric" autocomplete="cc-number" placeholder="Card number">
+        </div>
+        <div class="pay-grid">
+          <div class="pay-field">
+            <label class="pay-label">MM / YY</label>
+            <input class="pay-input" type="text" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY">
+          </div>
+          <div class="pay-field">
+            <label class="pay-label">CVC</label>
+            <input class="pay-input" type="text" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC">
+          </div>
+        </div>
+        <div class="pay-field">
+          <label class="pay-label">Cardholder name</label>
+          <input class="pay-input" type="text" autocomplete="cc-name" placeholder="Cardholder name">
+        </div>
+        <div class="pay-field">
+          <label class="pay-label">Email</label>
+          <input class="pay-input" type="email" autocomplete="email" placeholder="Enter your email address">
+        </div>
+      </div>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="offer" class="screen welcome-screen" aria-label="Offer">
+      <div class="three-grid" aria-hidden="true">
+        <img src="./img/modern.webp" alt="Modern style">
+      </div>
+      <h2 class="question">Redesign your home with Al</h2>
+      <div class="features-card">
+        <ul class="features">
+          <li><span class="fi" aria-hidden="true">✨</span>Limitless design inspiration</li>
+          <li><span class="fi" aria-hidden="true">⚡️</span>Instant home transformation</li>
+          <li><span class="fi" aria-hidden="true">🎯</span>Dozens of styles at your fingertips</li>
+        </ul>
+      </div>
+      <p class="price-note">For just <span class="highlight">$2.00/week</span></p>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="progress" class="screen welcome-screen" aria-label="Loading">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#taste" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="progress-title">Personalizing your experience...</h2>
+      <div class="progress-wrap">
+        <div class="progress-ring" style="--deg: 0deg;">
+          <div class="progress-ring__label" id="progress-percent">0%</div>
+        </div>
+      </div>
+      <div class="loading-card">
+        <ul class="loading-list" aria-live="polite">
+          <li class="loading-item"><span class="check" aria-hidden="true"></span>Analyzing your answers</li>
+          <li class="loading-item"><span class="check" aria-hidden="true"></span>Finding the best matches</li>
+          <li class="loading-item"><span class="check" aria-hidden="true"></span>Preparing recommendations</li>
+          <li class="loading-item"><span class="check" aria-hidden="true"></span>Finalizing your results</li>
+        </ul>
+      </div>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="taste" class="screen welcome-screen" aria-label="Taste">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q9" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question">You've got great taste!</h2>
+      <div class="tip-card taste-tip">Did you know that <span class="highlight" id="taste-style">Style</span> was one of the hottest trends last year?</div>
+      <div class="marquee">
+        <div class="marquee-track"></div>
+      </div>
+      <div class="marquee marquee--reverse">
+        <div class="marquee-track"></div>
+      </div>
+      <p class="marquee-note">Explore even more styles! We offer 100+ unique styles to create your dream space</p>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="q9" class="screen welcome-screen" aria-label="Question 9">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q8" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question" id="q9-label">Which styles reflect your personality the most?</h2>
+      <form class="style-grid" id="q9-form" aria-labelledby="q9-label">
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="art-deco">
+          <figure>
+            <img src="./img/art-deco.webp" alt="Art Deco">
+            <figcaption>Art Deco</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="bohemian">
+          <figure>
+            <img src="./img/bohemian.webp" alt="Bohemian">
+            <figcaption>Bohemian</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="contemporary">
+          <figure>
+            <img src="./img/contemporary.webp" alt="Contemporary">
+            <figcaption>Contemporary</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="farmhouse">
+          <figure>
+            <img src="./img/farmhouse.webp" alt="Farmhouse">
+            <figcaption>Farmhouse</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="french-country">
+          <figure>
+            <img src="./img/french-country.webp" alt="French Country">
+            <figcaption>French Country</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="japandi">
+          <figure>
+            <img src="./img/japandi.webp" alt="Japandi">
+            <figcaption>Japandi</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="maximalist">
+          <figure>
+            <img src="./img/maximalist.webp" alt="Maximalist">
+            <figcaption>Maximalist</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="medieval">
+          <figure>
+            <img src="./img/medieval.webp" alt="Medieval">
+            <figcaption>Medieval</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="mid-century-modern">
+          <figure>
+            <img src="./img/mid-century-modern.webp" alt="Mid-Century Modern">
+            <figcaption>Mid-Century Modern</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="minimalist">
+          <figure>
+            <img src="./img/minimalist.webp" alt="Minimalist">
+            <figcaption>Minimalist</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="modern">
+          <figure>
+            <img src="./img/modern.webp" alt="Modern">
+            <figcaption>Modern</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="neoclassic">
+          <figure>
+            <img src="./img/neoclassic.webp" alt="Neoclassic">
+            <figcaption>Neoclassic</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="rustic">
+          <figure>
+            <img src="./img/rustic.webp" alt="Rustic">
+            <figcaption>Rustic</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="scandinavian">
+          <figure>
+            <img src="./img/scandinavian.webp" alt="Scandinavian">
+            <figcaption>Scandinavian</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="ski-chalet">
+          <figure>
+            <img src="./img/ski-chalet.webp" alt="Ski Chalet">
+            <figcaption>Ski Chalet</figcaption>
+          </figure>
+        </label>
+        <label class="style-card">
+          <input type="checkbox" name="q9" value="vintage">
+          <figure>
+            <img src="./img/vintage.webp" alt="Vintage">
+            <figcaption>Vintage</figcaption>
+          </figure>
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="q8" class="screen welcome-screen" aria-label="Question 8">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#thanks" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question" id="q8-label">What would you like to improve?</h2>
+      <form class="answers" id="q8-form" aria-labelledby="q8-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🏠</span>
+          <span class="opt-text">Interior redesign</span>
+          <input type="checkbox" name="q8" value="interior-redesign">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🏡</span>
+          <span class="opt-text">Exterior redesign</span>
+          <input type="checkbox" name="q8" value="exterior-redesign">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🪑</span>
+          <span class="opt-text">Upgrade furniture</span>
+          <input type="checkbox" name="q8" value="upgrade-furniture">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🧱</span>
+          <span class="opt-text">Upgrade walls</span>
+          <input type="checkbox" name="q8" value="upgrade-walls">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🪵</span>
+          <span class="opt-text">Upgrade flooring</span>
+          <input type="checkbox" name="q8" value="upgrade-flooring">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🎨</span>
+          <span class="opt-text">Refresh colors</span>
+          <input type="checkbox" name="q8" value="refresh-colors">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🧩</span>
+          <span class="opt-text">Fill empty space</span>
+          <input type="checkbox" name="q8" value="fill-empty-space">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🗑️</span>
+          <span class="opt-text">Remove objects</span>
+          <input type="checkbox" name="q8" value="remove-objects">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="thanks" class="screen welcome-screen" aria-label="Thanks">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q7" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question">Thank you for sharing your concerns</h2>
+      <div class="tip-card" role="note">
+        <p><span class="highlight">87% of our users</span><br>reported that CasaVista helped them redesign their spaces and boosted their life satisfaction.</p>
+      </div>
+      <div class="reviews">
+        <div class="review-track">
+          <article class="review">
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">CasaVista made it so easy to visualize my living room. The result exceeded expectations!</p>
+            <div class="review-author">— Emily R.</div>
+          </article>
+          <article class="review">
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">I finally stayed on budget and still achieved the style I wanted.</p>
+            <div class="review-author">— Marcus L.</div>
+          </article>
+          <article class="review">
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">Quick and fun! The process took minutes and gave me a clear plan.</p>
+            <div class="review-author">— Sofia K.</div>
+          </article>
+          <article class="review">
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">I loved seeing multiple concepts before choosing. Highly recommend.</p>
+            <div class="review-author">— Daniel M.</div>
+          </article>
+          <article class="review">
+            <div class="stars" aria-label="5 stars">★★★★★</div>
+            <p class="review-text">From start to finish, the guidance was clear and the results impressive.</p>
+            <div class="review-author">— Priya S.</div>
+          </article>
+        </div>
+        <div class="review-indicators">
+          <div class="dots" role="tablist" aria-label="Review navigation">
+            <button class="dot is-active" aria-label="Review 1"></button>
+            <button class="dot" aria-label="Review 2"></button>
+            <button class="dot" aria-label="Review 3"></button>
+            <button class="dot" aria-label="Review 4"></button>
+            <button class="dot" aria-label="Review 5"></button>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="q7" class="screen welcome-screen" aria-label="Question 7">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q6" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question" id="q7-label">What do you think could make redesigning your home difficult?</h2>
+      <form class="answers" id="q7-form" aria-labelledby="q7-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">💸</span>
+          <span class="opt-text">Going over budget</span>
+          <input type="radio" name="q7" value="budget">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🖼️</span>
+          <span class="opt-text">Not achieving the desired look</span>
+          <input type="radio" name="q7" value="desired-look">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">⏳</span>
+          <span class="opt-text">The process taking too long</span>
+          <input type="radio" name="q7" value="too-long">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">👁️</span>
+          <span class="opt-text">Not being able to visualize the outcome</span>
+          <input type="radio" name="q7" value="visualize-outcome">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🎨</span>
+          <span class="opt-text">Lack of design expertise</span>
+          <input type="radio" name="q7" value="expertise">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">❓</span>
+          <span class="opt-text">Not sure</span>
+          <input type="radio" name="q7" value="not-sure">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">➕</span>
+          <span class="opt-text">Other</span>
+          <input type="radio" name="q7" value="other">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="q6" class="screen welcome-screen" aria-label="Question 6">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q5" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress"></ol>
+      </div>
+      <h2 class="question" id="q6-label">Do you have any experience with redesigning your home?</h2>
+      <form class="answers" id="q6-form" aria-labelledby="q6-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">✅</span>
+          <span class="opt-text">Yes</span>
+          <input type="radio" name="q6" value="yes">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">❌</span>
+          <span class="opt-text">No</span>
+          <input type="radio" name="q6" value="no">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">😅</span>
+          <span class="opt-text">I wanted to, but I didn't dare</span>
+          <input type="radio" name="q6" value="wanted-but-didnt-dare">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="q4" class="screen welcome-screen" aria-label="Question 4">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q3" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress">
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+        </ol>
+      </div>
+      <h2 class="question" id="q4-label">Do you agree that the quality of your living space affects your mood?</h2>
+      <form class="answers" id="q4-form" aria-labelledby="q4-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">✅</span>
+          <span class="opt-text">Fully agree</span>
+          <input type="radio" name="q4" value="fully-agree">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🙂</span>
+          <span class="opt-text">Partially agree</span>
+          <input type="radio" name="q4" value="partially-agree">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🤔</span>
+          <span class="opt-text">Somewhat disagree</span>
+          <input type="radio" name="q4" value="somewhat-disagree">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">⛔</span>
+          <span class="opt-text">Fully disagree</span>
+          <input type="radio" name="q4" value="fully-disagree">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="q5" class="screen welcome-screen" aria-label="Statistics">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q4" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress">
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+        </ol>
+      </div>
+      <h2 class="section-title">You might not expect that...</h2>
+      <div class="tip-card" role="note">
+        <p>A Harvard study found that the<br><span class="highlight">quality of living conditions</span><br>is directly linked to life satisfaction</p>
+      </div>
+      <div class="svg-visual" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 344 261" class="styles_statistics-image__ShqkC"><path stroke="#CFCBC7" stroke-width="2" d="M-5.5 262c11.341-40.423 59.077-123.382 159.292-131.838 34.711-2.596 112.382-15.909 145.374-48.396C312.569 67.86 333.602 39.266 343.5 5"></path><path stroke="#CFCBC7" stroke-width="2" d="M76.5 149H87l-5 9m122.511-41 9.895 3.513-7.723 6.809m101.07-63.918 9.709-3.997-1.197 10.226"></path><circle cx="49.5" cy="175" r="4.5" fill="#fff" stroke="#FF602E" stroke-width="3"></circle><circle cx="147.5" cy="130" r="4.5" fill="#fff" stroke="#05A8FF" stroke-width="3"></circle><circle cx="291.5" cy="89" r="4.5" fill="#fff" stroke="#18C362" stroke-width="3"></circle><path fill="#000" d="M61.466 181v-9.8h4.018q1.021 0 1.722.322.7.322 1.05.896.364.56.364 1.302c0 .742-.107.91-.322 1.246a2.23 2.23 0 0 1-.854.784q-.518.266-1.148.308l.224-.154q.672.028 1.19.364.532.322.826.868.308.546.308 1.19 0 .785-.378 1.386-.378.602-1.092.952-.715.336-1.75.336"></path></svg>
+        <span class="svg-label svg-label--orange">Better home</span>
+        <span class="svg-label svg-label--blue">Better mood</span>
+        <span class="svg-label svg-label--green">Better life</span>
+      </div>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+    <section id="counter" class="screen welcome-screen" aria-label="Counter">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q2" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress">
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+        </ol>
+      </div>
+      <p class="reassure">We've got this, no worries!</p>
+      <div class="counter-visual">
+        <img class="counter-bg" src="./img/kids-room-bg.png" alt="">
+        <div class="counter-overlay">
+          <img src="./img/after.jpg" alt="After design preview">
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat-number" data-target="12487">0</div>
+        <div class="stat-label">Rooms have been redesigned by our users</div>
+      </div>
+      <p class="subhead notice">Your room could be next</p>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="q3" class="screen welcome-screen" aria-label="Question 3">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#counter" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress">
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+        </ol>
+      </div>
+      <h2 class="question" id="q3-label">What emotions do you feel about the current state of your home?</h2>
+      <form class="answers" id="q3-form" aria-labelledby="q3-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">😞</span>
+          <span class="opt-text">Frustrated and unhappy</span>
+          <input type="radio" name="q3" value="frustrated">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛠️</span>
+          <span class="opt-text">Needs improvement</span>
+          <input type="radio" name="q3" value="needs-improvement">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🙂</span>
+          <span class="opt-text">Okay but could be better</span>
+          <input type="radio" name="q3" value="okay-better">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">👍</span>
+          <span class="opt-text">I like it, but it needs updates</span>
+          <input type="radio" name="q3" value="like-needs-updates">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">😍</span>
+          <span class="opt-text">I absolutely love my home!</span>
+          <input type="radio" name="q3" value="love">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <section id="q2" class="screen welcome-screen" aria-label="Question 2">
+      <div class="topbar" aria-label="Progress and navigation">
+        <a class="back" href="#q1" aria-label="Back">‹</a>
+        <ol class="progress" aria-label="Progress">
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+          <li class="segment"></li>
+        </ol>
+      </div>
+      <h2 class="question" id="q2-label">Which rooms would you like to redesign?</h2>
+      <form class="answers" id="q2-form" aria-labelledby="q2-label">
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛋️</span>
+          <span class="opt-text">Living room</span>
+          <input type="checkbox" name="q2" value="living">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛏️</span>
+          <span class="opt-text">Bedroom</span>
+          <input type="checkbox" name="q2" value="bedroom">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🍳</span>
+          <span class="opt-text">Kitchen</span>
+          <input type="checkbox" name="q2" value="kitchen">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🛁</span>
+          <span class="opt-text">Bathroom</span>
+          <input type="checkbox" name="q2" value="bathroom">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🍽️</span>
+          <span class="opt-text">Dining room</span>
+          <input type="checkbox" name="q2" value="dining">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">💼</span>
+          <span class="opt-text">Home office</span>
+          <input type="checkbox" name="q2" value="office">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🚪</span>
+          <span class="opt-text">Entryway</span>
+          <input type="checkbox" name="q2" value="entryway">
+        </label>
+        <label class="option">
+          <span class="opt-icon" aria-hidden="true">🧸</span>
+          <span class="opt-text">Kids room</span>
+          <input type="checkbox" name="q2" value="kids">
+        </label>
+      </form>
+      <div class="actions">
+        <button class="cta" type="button">Continue</button>
+      </div>
+    </section>
+
+    <script src="./script.js"></script>
+  </body>
+  </html>
+
+
