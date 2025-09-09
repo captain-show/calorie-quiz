@@ -119,6 +119,9 @@ html, body {
   user-select: none;
 }
 
+/* Make the hero image less tall on the first screen only */
+#welcome .image-compare { aspect-ratio: 3 / 3.5; }
+
 .image {
   width: 100%;
   height: 100%;
@@ -305,6 +308,7 @@ html, body {
 /* Tighter spacing on counter screen */
 #counter { gap: 0; }
 #counter .reassure { margin: 6px 0 2px 0; }
+#counter .actions { margin-top: 12px; }
 
 .counter-visual {
   position: relative;
