@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .payment-container {
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: visible;
+        }
+
+        .payment-header {
+            background: white;
+            color: #212529;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .payment-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .total-section {
+            background: #f8f9fa;
+            padding: 16px 20px 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 16px;
+        }
+
+        .total-label {
+            font-size: 16px;
+            color: #212529;
+            font-weight: 500;
+        }
+
+        .total-amount {
+            font-size: 16px;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .payment-methods {
+            padding: 0;
+            background: transparent;
+        }
+
+        .payment-method {
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .payment-method:last-child {
+            margin-bottom: 0;
+        }
+
+        .payment-method.active {
+            border-color: #ff6b35;
+        }
+
+        .payment-method-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: background-color 0.2s;
+        }
+
+        .payment-method-header:hover {
+            background-color: #e9ecef;
+            border-radius: 12px;
+        }
+
+        .payment-method-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            flex: 1;
+        }
+
+        .payment-method-badge {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            display: flex;
+            align-items: center;
+        }
+
+        .payment-method-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            background: white;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .payment-method-radio.active {
+            border-color: #ff6b35;
+            background: #ff6b35;
+        }
+
+        .payment-method-radio.active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .payment-method-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            padding: 0 20px;
+            border-radius: 0 0 12px 12px;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+        }
+
+        .payment-method-content.active {
+            max-height: 500px;
+            opacity: 1;
+            padding: 0 20px 20px 20px;
+        }
+
+        .guarantee-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .guarantee-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .guarantee-text {
+            font-size: 14px;
+            color: #212529;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 16px;
+        }
+
+        .guarantee-divider {
+            height: 1px;
+            background: #dee2e6;
+            margin: 16px 0;
+        }
+
+        .guarantee-checkout {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .guarantee-methods {
+            text-align: left;
+        }
+
+        .apple-pay-button {
+            width: 100%;
+            height: 50px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .apple-pay-button:hover {
+            background: #333;
+        }
+
+        .apple-pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: #212529;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .pay-button {
+            width: 100%;
+            height: 50px;
+            background: #000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .pay-button:hover {
+            background: #333;
+        }
+
+        .pay-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .security-note {
+            text-align: center;
+            font-size: 12px;
+            color: #212529;
+            margin-top: 16px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>Payment method</h1>
+        </div>
+        
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Loading payment options...</div>
+        </div>
+
+        <div class="payment-methods" id="paymentMethods" style="display: none;">
+            <!-- Apple Pay Method -->
+            <div class="payment-method">
+                <div class="payment-method-header" onclick="togglePaymentMethod('applePay')">
+                    <div class="payment-method-radio" id="applePayRadio"></div>
+                    <div class="payment-method-title">Apple Pay</div>
+                    <div class="payment-method-badge">
+                        <img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 20px; height: 20px; margin-right: 4px;">
+                        <span>Pay</span>
+                    </div>
+                </div>
+                <div class="payment-method-content" id="applePayContent">
+                    <div class="total-section">
+                        <div class="total-label">Total Today</div>
+                        <div class="total-amount" id="applePayAmount">Loading...</div>
+                    </div>
+                    <button class="apple-pay-button" id="applePayButton" disabled>
+                        <span>Buy with</span>
+                        <img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);">
+                        <span>Pay</span>
+                    </button>
+                    <div class="security-note">
+                        Your payment information is secure with SSL/TLS encryption
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credit Card Method -->
+            <div class="payment-method">
+                <div class="payment-method-header" onclick="togglePaymentMethod('creditCard')">
+                    <div class="payment-method-radio" id="creditCardRadio"></div>
+                    <div class="payment-method-title">Credit card</div>
+                    <div class="payment-method-badge">
+                        <img src="img/methods.png" alt="Payment Methods" style="height: 26px;">
+                    </div>
+                </div>
+                <div class="payment-method-content" id="creditCardContent">
+                    <div class="total-section">
+                        <div class="total-label">Total Today</div>
+                        <div class="total-amount" id="creditCardAmount">Loading...</div>
+                    </div>
+                    <form id="paymentForm">
+                        <div class="form-group">
+                            <label class="form-label" for="cardNumber">Card number</label>
+                            <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="expiry">Expiry (MM/YY)</label>
+                                <input type="text" class="form-input" id="expiry" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cvv">CVV</label>
+                                <input type="text" class="form-input" id="cvv" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                        <button type="submit" class="pay-button" id="payButton" disabled>
+                            Pay
+                        </button>
+                        <div class="error-message" id="errorMessage"></div>
+                        <div class="success-message" id="successMessage"></div>
+                    </form>
+                    <div class="security-note">
+                        Your payment information is secure with SSL/TLS encryption
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guarantee Section -->
+        <div class="guarantee-section">
+            <img src="img/money-back-guarantee.webp" alt="Money Back Guarantee" style="width: 80px; height: 80px; margin: 0 0 16px 0; display: block;">
+            <div class="guarantee-title">100% Money-Back Guarantee</div>
+            <div class="guarantee-text">
+                We're so confident that Zing Coach can help you improve your fitness that we'll return your money if you don't see visible results in 4 weeks (and can prove that you followed our plan).
+            </div>
+            <div class="guarantee-divider"></div>
+            <div class="guarantee-checkout">Guaranteed Safe Checkout</div>
+            <div class="guarantee-methods">
+                <img src="img/methods.png" alt="Payment Methods" style="height: 26px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2Ue5CXYZBBgtBf2NRr300I4RzjW4h');
+        
+        let currentPrice = 0;
+        let isApplePayAvailable = false;
+
+        // Fetch price from backend
+        async function fetchPrice() {
+            try {
+                // Check if we're in a secure context (HTTPS or localhost)
+                const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                
+                if (!isSecureContext) {
+                    console.warn('Not in secure context, using fallback price');
+                    throw new Error('Not in secure context');
+                }
+                
+                const response = await fetch('https://ydtsxivmnq.us-east-1.awsapprunner.com/api/price', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'cors'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch price');
+                }
+                
+                const data = await response.json();
+                currentPrice = data.price || 29.99;
+                document.getElementById('applePayAmount').textContent = `${currentPrice.toFixed(2)} EUR`;
+                document.getElementById('creditCardAmount').textContent = `${currentPrice.toFixed(2)} EUR`;
+                
+                // Show payment methods
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('paymentMethods').style.display = 'block';
+                
+                // Initialize Apple Pay only in secure context
+                if (isSecureContext) {
+                    initializeApplePay();
+                }
+                
+            } catch (error) {
+                console.error('Error fetching price:', error);
+                // Fallback price
+                currentPrice = 29.99;
+                document.getElementById('applePayAmount').textContent = `${currentPrice.toFixed(2)} EUR`;
+                document.getElementById('creditCardAmount').textContent = `${currentPrice.toFixed(2)} EUR`;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('paymentMethods').style.display = 'block';
+                
+                // Only initialize Apple Pay in secure context
+                const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                if (isSecureContext) {
+                    initializeApplePay();
+                }
+            }
+        }
+
+        // Initialize Apple Pay
+        function initializeApplePay() {
+            if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+                isApplePayAvailable = true;
+                document.getElementById('applePayButton').disabled = false;
+            } else {
+                document.getElementById('applePayButton').style.display = 'none';
+            }
+        }
+
+        // Toggle payment method sections
+        function togglePaymentMethod(method) {
+            const content = document.getElementById(method + 'Content');
+            const radio = document.getElementById(method + 'Radio');
+            const methodElement = radio.closest('.payment-method');
+            
+            // Close all other methods
+            document.querySelectorAll('.payment-method-content').forEach(el => {
+                if (el !== content) {
+                    el.classList.remove('active');
+                }
+            });
+            
+            // Remove active state from all radios and method containers
+            document.querySelectorAll('.payment-method-radio').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Toggle current method
+            content.classList.toggle('active');
+            radio.classList.toggle('active');
+            methodElement.classList.toggle('active');
+        }
+
+        // Apple Pay button click handler
+        document.getElementById('applePayButton').addEventListener('click', async function() {
+            if (!isApplePayAvailable) return;
+            
+            try {
+                // Create payment request
+                const paymentRequest = {
+                    countryCode: 'US',
+                    currencyCode: 'EUR',
+                    total: {
+                        label: 'Total Today',
+                        amount: (currentPrice * 100).toString() // Convert to cents
+                    }
+                };
+                
+                const session = new ApplePaySession(3, paymentRequest);
+                
+                session.onvalidatemerchant = async function(event) {
+                    try {
+                        const response = await fetch('https://ydtsxivmnq.us-east-1.awsapprunner.com/api/apple-pay/validate', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                validationURL: event.validationURL
+                            })
+                        });
+                        
+                        const merchantSession = await response.json();
+                        session.completeMerchantValidation(merchantSession);
+                    } catch (error) {
+                        console.error('Apple Pay validation error:', error);
+                        session.abort();
+                    }
+                };
+                
+                session.onpaymentauthorized = async function(event) {
+                    try {
+                        const response = await fetch('https://ydtsxivmnq.us-east-1.awsapprunner.com/api/apple-pay/process', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                payment: event.payment,
+                                amount: currentPrice
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            session.completePayment(ApplePaySession.STATUS_SUCCESS);
+                            showSuccess('Payment successful!');
+                        } else {
+                            session.completePayment(ApplePaySession.STATUS_FAILURE);
+                            showError('Payment failed. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Apple Pay processing error:', error);
+                        session.completePayment(ApplePaySession.STATUS_FAILURE);
+                        showError('Payment failed. Please try again.');
+                    }
+                };
+                
+                session.begin();
+            } catch (error) {
+                console.error('Apple Pay error:', error);
+                showError('Apple Pay is not available. Please use credit card.');
+            }
+        });
+
+        // Credit card form handling
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            if (!cardNumber || !expiry || !cvv) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            // Enable pay button
+            document.getElementById('payButton').disabled = true;
+            document.getElementById('payButton').textContent = 'Processing...';
+            
+            try {
+                // Create payment method
+                const {error, paymentMethod} = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: {
+                        number: cardNumber.replace(/\s/g, ''),
+                        exp_month: expiry.split('/')[0],
+                        exp_year: '20' + expiry.split('/')[1],
+                        cvc: cvv,
+                    },
+                });
+                
+                if (error) {
+                    showError(error.message);
+                    return;
+                }
+                
+                // Process payment
+                const response = await fetch('https://ydtsxivmnq.us-east-1.awsapprunner.com/api/payment/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        paymentMethodId: paymentMethod.id,
+                        amount: currentPrice * 100, // Convert to cents
+                        currency: 'eur'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSuccess('Payment successful!');
+                } else {
+                    showError(result.error || 'Payment failed. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                showError('Payment failed. Please try again.');
+            } finally {
+                document.getElementById('payButton').disabled = false;
+                document.getElementById('payButton').textContent = 'Pay';
+            }
+        });
+
+        // Input formatting
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+            e.target.value = formattedValue;
+            
+            // Enable pay button when all fields are filled
+            checkFormCompletion();
+        });
+
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+            checkFormCompletion();
+        });
+
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+            checkFormCompletion();
+        });
+
+        function checkFormCompletion() {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiry = document.getElementById('expiry').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            const isComplete = cardNumber.length >= 19 && expiry.length === 5 && cvv.length >= 3;
+            document.getElementById('payButton').disabled = !isComplete;
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        }
+
+        function showSuccess(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in a secure context
+            const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            
+            if (!isSecureContext) {
+                console.warn('⚠️ Payment form requires HTTPS for full functionality');
+                // Show a warning to the user
+                const warningDiv = document.createElement('div');
+                warningDiv.style.cssText = 'background: #fff3cd; color: #856404; padding: 10px; margin: 10px 0; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 14px;';
+                warningDiv.innerHTML = '⚠️ For full payment functionality, please access this page via HTTPS or localhost';
+                document.querySelector('.payment-container').insertBefore(warningDiv, document.querySelector('.payment-methods'));
+            }
+            
+            fetchPrice();
+        });
+    </script>
+</body>
+</html>
