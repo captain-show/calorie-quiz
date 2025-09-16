@@ -15,9 +15,11 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: white;
-            width: 450px;
+            max-width: 450px;
+            width: 100%;
             margin: 0 auto;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         .payment-container {
@@ -346,6 +348,56 @@
 
         .StripeElement--complete {
             border-color: #28a745;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .payment-header h1 {
+                font-size: 20px;
+            }
+            
+            .total-section {
+                padding: 12px 16px 12px 0;
+            }
+            
+            .payment-method-header {
+                padding: 16px;
+            }
+            
+            .payment-method-content {
+                padding: 0 16px 16px 16px;
+            }
+            
+            .form-group {
+                margin-bottom: 12px;
+            }
+            
+            .form-input {
+                padding: 10px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .apple-pay-button,
+            .pay-button {
+                height: 48px;
+                font-size: 16px;
+            }
+            
+            .guarantee-section {
+                padding: 16px;
+            }
+            
+            .guarantee-title {
+                font-size: 14px;
+            }
+            
+            .guarantee-text {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
