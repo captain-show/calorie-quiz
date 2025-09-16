@@ -77,6 +77,50 @@
   // Initialize position
   setPositionByPercent(50);
   
+  // Analytics tracking functions
+  function trackQuestionAnswered(formSelector, answer) {
+    const questionId = formSelector.replace('#', '').replace('-form', '');
+    const eventData = {
+      question_id: questionId,
+      answer: answer,
+      timestamp: new Date().toISOString()
+    };
+    
+    // Track in Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+      mixpanel.track('question_answered', eventData);
+    }
+    
+    // Track in Facebook Pixel
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'question_answered', eventData);
+    }
+  }
+  
+  function trackPurchase(paymentMethod, amount) {
+    const eventData = {
+      payment_method: paymentMethod,
+      amount: amount,
+      currency: 'USD',
+      timestamp: new Date().toISOString()
+    };
+    
+    // Track in Mixpanel
+    if (typeof mixpanel !== 'undefined') {
+      mixpanel.track('purchase', eventData);
+    }
+    
+    // Track in Facebook Pixel (using built-in purchase event)
+    if (typeof fbq !== 'undefined') {
+      fbq('track', 'Purchase', {
+        value: amount,
+        currency: 'USD',
+        content_type: 'subscription',
+        content_name: 'Room Design Quiz Subscription'
+      });
+    }
+  }
+  
   // Simple hash router for screens
   function applyRoute() {
     const hash = window.location.hash || '#welcome';
@@ -334,6 +378,8 @@
     form.addEventListener('change', (e) => {
       const input = e.target && e.target.closest('input[type="radio"]');
       if (input && input.checked) {
+        // Track question answered event
+        trackQuestionAnswered(formSelector, input.value);
         // Small delay to let selection highlight be perceptible
         setTimeout(() => { window.location.hash = nextHash; }, 120);
       }
@@ -355,7 +401,14 @@
       btn.disabled = !hasSelection;
     }
     update();
-    form.addEventListener('change', update);
+    form.addEventListener('change', (e) => {
+      update();
+      // Track question answered event for multi-choice questions
+      if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+        const selectedValues = Array.from(form.querySelectorAll('input:checked')).map(input => input.value);
+        trackQuestionAnswered(formSelector, selectedValues);
+      }
+    });
     // Re-evaluate on route change (in case of back/forward)
     window.addEventListener('hashchange', update);
   }
