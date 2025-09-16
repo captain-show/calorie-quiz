@@ -85,13 +85,13 @@
     const target = document.querySelector(hash);
     if (target) target.classList.add('active');
 
-    // Progress update: 13-step journey up to #progress
-    const stepOrder = ['#q1','#q2','#counter','#q3','#q4','#q5','#q6','#q7','#thanks','#q8','#q9','#taste','#progress'];
-    const totalSteps = stepOrder.length; // 13
+    // Progress update: 12-step journey up to #progress
+    const stepOrder = ['#q1','#q2','#counter','#q3','#q4','#q5','#q6','#q7','#thanks','#q8','#q9','#taste'];
+    const totalSteps = stepOrder.length; // 12
     stepOrder.forEach((id, index) => {
       const progress = document.querySelector(`${id} .progress`);
       if (!progress) return;
-      // Ensure the progress bar has 13 segments
+      // Ensure the progress bar has 12 segments
       let segments = Array.from(progress.querySelectorAll('.segment'));
       for (let i = segments.length; i < totalSteps; i++) {
         const li = document.createElement('li');
@@ -272,13 +272,6 @@
     });
   }
 
-  // Navigate from Offer -> Payment
-  const offerContinue = document.querySelector('#offer .actions .cta');
-  if (offerContinue) {
-    offerContinue.addEventListener('click', () => {
-      window.location.hash = '#payment';
-    });
-  }
 
   // Reviews carousel (swipe + dots)
   const track = document.querySelector('#thanks .review-track');
