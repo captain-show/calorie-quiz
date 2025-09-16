@@ -675,6 +675,7 @@
                 const paymentRequest = {
                     countryCode: 'US',
                     currencyCode: 'USD',
+                    merchantCapabilities: ['supports3DS'],
                     total: {
                         label: 'Total Today',
                         amount: (currentPrice * 100).toString() // Convert to cents
