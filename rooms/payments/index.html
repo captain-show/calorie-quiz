@@ -322,6 +322,31 @@
             margin-top: 8px;
             display: none;
         }
+
+        /* Stripe Elements styling */
+        .StripeElement {
+            background-color: white;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .StripeElement--focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        .StripeElement--invalid {
+            border-color: #dc3545;
+        }
+
+        .StripeElement--complete {
+            border-color: #28a745;
+        }
     </style>
 </head>
 <body>
@@ -352,11 +377,13 @@
                         <div class="total-label">Total Today</div>
                         <div class="total-amount" id="applePayAmount">$4.99</div>
                     </div>
-                    <button class="apple-pay-button" id="applePayButton" disabled>
+                    <button class="apple-pay-button" id="applePayButton">
                         <span>Buy with</span>
                         <img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);">
                         <span>Pay</span>
                     </button>
+                    <div class="error-message" id="applePayError"></div>
+                    <div class="success-message" id="applePaySuccess"></div>
                     <div class="security-note">
                         Your payment information is secure with SSL/TLS encryption
                     </div>
@@ -379,23 +406,29 @@
                     </div>
                     <form id="paymentForm">
                         <div class="form-group">
-                            <label class="form-label" for="cardNumber">Card number</label>
-                            <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                            <div class="error-message" id="cardNumberError"></div>
+                            <label class="form-label">Card number</label>
+                            <div id="card-element" class="form-input">
+                                <!-- Stripe Elements will create form elements here -->
+                            </div>
+                            <div class="error-message" id="card-errors"></div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label class="form-label" for="expiry">Expiry (MM/YY)</label>
-                                <input type="text" class="form-input" id="expiry" placeholder="MM/YY" maxlength="5" required>
-                                <div class="error-message" id="expiryError"></div>
+                                <label class="form-label">Expiry (MM/YY)</label>
+                                <div id="expiry-element" class="form-input">
+                                    <!-- Stripe Elements will create form elements here -->
+                                </div>
+                                <div class="error-message" id="expiry-errors"></div>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="cvv">CVV</label>
-                                <input type="text" class="form-input" id="cvv" placeholder="123" maxlength="4" required>
-                                <div class="error-message" id="cvvError"></div>
+                                <label class="form-label">CVV</label>
+                                <div id="cvv-element" class="form-input">
+                                    <!-- Stripe Elements will create form elements here -->
+                                </div>
+                                <div class="error-message" id="cvv-errors"></div>
                             </div>
                         </div>
-                        <button type="submit" class="pay-button" id="payButton" disabled>
+                        <button type="submit" class="pay-button" id="payButton">
                             Pay
                         </button>
                         <div class="error-message" id="errorMessage"></div>
@@ -429,6 +462,10 @@
         
         let currentPrice = 0;
         let isApplePayAvailable = false;
+        let elements;
+        let cardElement;
+        let expiryElement;
+        let cvvElement;
 
         // Fetch price from backend
         async function fetchPrice() {
@@ -477,13 +514,110 @@
             }
         }
 
+        // Initialize Stripe Elements
+        function initializeStripeElements() {
+            elements = stripe.elements();
+            
+            // Create card number element
+            cardElement = elements.create('cardNumber', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#212529',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        '::placeholder': {
+                            color: '#6c757d',
+                        },
+                    },
+                },
+            });
+            cardElement.mount('#card-element');
+            
+            // Create expiry element
+            expiryElement = elements.create('cardExpiry', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#212529',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        '::placeholder': {
+                            color: '#6c757d',
+                        },
+                    },
+                },
+            });
+            expiryElement.mount('#expiry-element');
+            
+            // Create CVV element
+            cvvElement = elements.create('cardCvc', {
+                style: {
+                    base: {
+                        fontSize: '16px',
+                        color: '#212529',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                        '::placeholder': {
+                            color: '#6c757d',
+                        },
+                    },
+                },
+            });
+            cvvElement.mount('#cvv-element');
+            
+            // Handle real-time validation errors from the card Element
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                    displayError.style.display = 'block';
+                    cardComplete = false;
+                } else {
+                    displayError.textContent = '';
+                    displayError.style.display = 'none';
+                    cardComplete = event.complete;
+                }
+                checkFormCompletion();
+            });
+            
+            expiryElement.on('change', function(event) {
+                const displayError = document.getElementById('expiry-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                    displayError.style.display = 'block';
+                    expiryComplete = false;
+                } else {
+                    displayError.textContent = '';
+                    displayError.style.display = 'none';
+                    expiryComplete = event.complete;
+                }
+                checkFormCompletion();
+            });
+            
+            cvvElement.on('change', function(event) {
+                const displayError = document.getElementById('cvv-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                    displayError.style.display = 'block';
+                    cvvComplete = false;
+                } else {
+                    displayError.textContent = '';
+                    displayError.style.display = 'none';
+                    cvvComplete = event.complete;
+                }
+                checkFormCompletion();
+            });
+            
+            // Enable pay button after elements are mounted
+            checkFormCompletion();
+        }
+
         // Initialize Apple Pay
         function initializeApplePay() {
             if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
                 isApplePayAvailable = true;
-                document.getElementById('applePayButton').disabled = false;
+                console.log('Apple Pay is available');
             } else {
-                document.getElementById('applePayButton').style.display = 'none';
+                isApplePayAvailable = false;
+                console.log('Apple Pay is not available');
             }
         }
 
@@ -516,9 +650,27 @@
 
         // Apple Pay button click handler
         document.getElementById('applePayButton').addEventListener('click', async function() {
-            if (!isApplePayAvailable) return;
-            
             try {
+                // Check if Apple Pay is available
+                if (!window.ApplePaySession) {
+                    showApplePayError('Apple Pay is not supported in this browser. Please use credit card.');
+                    return;
+                }
+                
+                if (!ApplePaySession.canMakePayments()) {
+                    showApplePayError('Apple Pay is not set up on this device. Please use credit card.');
+                    return;
+                }
+                
+                // Check if we're in a secure context
+                const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                if (!isSecureContext) {
+                    showApplePayError('Apple Pay requires HTTPS. Please use credit card or access via HTTPS.');
+                    return;
+                }
+                
+                console.log('Starting Apple Pay session...');
+                
                 // Create payment request
                 const paymentRequest = {
                     countryCode: 'US',
@@ -533,43 +685,37 @@
                 
                 session.onvalidatemerchant = async function(event) {
                     try {
-                        console.log('Apple Pay validation not available - API is down');
-                        // Since API is not working, we'll simulate a successful validation
-                        // In a real implementation, you would need a working backend
-                        const mockMerchantSession = {
-                            merchantIdentifier: 'merchant.com.example',
-                            domainName: 'example.com',
-                            displayName: 'Test Merchant',
-                            initiative: 'web',
-                            initiativeContext: 'example.com'
-                        };
-                        session.completeMerchantValidation(mockMerchantSession);
+                        console.log('Validating Apple Pay merchant...');
+                        showApplePayError('Apple Pay validation failed - API not available. Please use credit card.');
+                        session.abort();
                     } catch (error) {
                         console.error('Apple Pay validation error:', error);
                         session.abort();
-                        showError('Apple Pay is not available. Please use credit card.');
+                        showApplePayError('Apple Pay validation failed. Please use credit card.');
                     }
                 };
                 
                 session.onpaymentauthorized = async function(event) {
                     try {
-                        console.log('Apple Pay payment processing not available - API is down');
-                        // Since API is not working, we'll simulate a successful payment
-                        // In a real implementation, you would need a working backend
-                        console.log('Simulating successful Apple Pay payment');
-                        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-                        showSuccess('Payment successful! (Demo mode - API not available)');
+                        console.log('Processing Apple Pay payment...');
+                        showApplePayError('Apple Pay payment failed - API not available. Please use credit card.');
+                        session.completePayment(ApplePaySession.STATUS_FAILURE);
                     } catch (error) {
                         console.error('Apple Pay processing error:', error);
                         session.completePayment(ApplePaySession.STATUS_FAILURE);
-                        showError('Payment failed. Please try again.');
+                        showApplePayError('Apple Pay payment failed. Please use credit card.');
                     }
+                };
+                
+                session.oncancel = function(event) {
+                    console.log('Apple Pay session cancelled');
+                    showApplePayError('Apple Pay payment was cancelled.');
                 };
                 
                 session.begin();
             } catch (error) {
                 console.error('Apple Pay error:', error);
-                showError('Apple Pay is not available. Please use credit card.');
+                showApplePayError('Apple Pay is not available. Please use credit card.');
             }
         });
 
@@ -577,39 +723,15 @@
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const cardNumber = document.getElementById('cardNumber').value;
-            const expiry = document.getElementById('expiry').value;
-            const cvv = document.getElementById('cvv').value;
-            
-            // Validate all fields
-            const isCardValid = validateCardNumber(cardNumber);
-            const isExpiryValid = validateExpiry(expiry);
-            const isCVVValid = validateCVV(cvv);
-            
-            if (!isCardValid || !isExpiryValid || !isCVVValid) {
-                showError('Please fix the errors above');
-                return;
-            }
-            
-            if (!cardNumber || !expiry || !cvv) {
-                showError('Please fill in all fields');
-                return;
-            }
-            
             // Enable pay button
             document.getElementById('payButton').disabled = true;
             document.getElementById('payButton').textContent = 'Processing...';
             
             try {
-                // Create payment method
+                // Create payment method using Stripe Elements
                 const {error, paymentMethod} = await stripe.createPaymentMethod({
                     type: 'card',
-                    card: {
-                        number: cardNumber.replace(/\s/g, ''),
-                        exp_month: expiry.split('/')[0],
-                        exp_year: '20' + expiry.split('/')[1],
-                        cvc: cvv,
-                    },
+                    card: cardElement,
                 });
                 
                 if (error) {
@@ -617,12 +739,9 @@
                     return;
                 }
                 
-                // Process payment (simulated since API is not available)
-                console.log('Credit card payment processing not available - API is down');
-                // Since API is not working, we'll simulate a successful payment
-                // In a real implementation, you would need a working backend
-                console.log('Simulating successful credit card payment');
-                showSuccess('Payment successful! (Demo mode - API not available)');
+                // Process payment
+                console.log('Processing credit card payment...');
+                showError('Payment processing failed - API not available. Please try again later.');
                 
             } catch (error) {
                 console.error('Payment error:', error);
@@ -633,148 +752,17 @@
             }
         });
 
-        // Input formatting and validation
-        document.getElementById('cardNumber').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
-            e.target.value = formattedValue;
-            
-            // Validate card number
-            validateCardNumber(value);
-            checkFormCompletion();
-        });
-
-        document.getElementById('expiry').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '/' + value.substring(2, 4);
-            }
-            e.target.value = value;
-            
-            // Validate expiry
-            validateExpiry(value);
-            checkFormCompletion();
-        });
-
-        document.getElementById('cvv').addEventListener('input', function(e) {
-            e.target.value = e.target.value.replace(/\D/g, '');
-            
-            // Validate CVV
-            validateCVV(e.target.value);
-            checkFormCompletion();
-        });
-
-        // Validation functions
-        function validateCardNumber(cardNumber) {
-            const errorDiv = document.getElementById('cardNumberError');
-            const cleanNumber = cardNumber.replace(/\s/g, '');
-            
-            if (cleanNumber.length === 0) {
-                errorDiv.textContent = '';
-                return false;
-            }
-            
-            if (cleanNumber.length < 13 || cleanNumber.length > 19) {
-                errorDiv.textContent = 'Card number must be 13-19 digits';
-                return false;
-            }
-            
-            // Luhn algorithm validation
-            if (!isValidLuhn(cleanNumber)) {
-                errorDiv.textContent = 'Invalid card number';
-                return false;
-            }
-            
-            errorDiv.textContent = '';
-            return true;
-        }
-
-        function validateExpiry(expiry) {
-            const errorDiv = document.getElementById('expiryError');
-            
-            if (expiry.length === 0) {
-                errorDiv.textContent = '';
-                return false;
-            }
-            
-            if (expiry.length !== 5) {
-                errorDiv.textContent = 'Enter MM/YY format';
-                return false;
-            }
-            
-            const [month, year] = expiry.split('/');
-            const monthNum = parseInt(month);
-            const yearNum = parseInt('20' + year);
-            const currentDate = new Date();
-            const currentYear = currentDate.getFullYear();
-            const currentMonth = currentDate.getMonth() + 1;
-            
-            if (monthNum < 1 || monthNum > 12) {
-                errorDiv.textContent = 'Invalid month';
-                return false;
-            }
-            
-            if (yearNum < currentYear || (yearNum === currentYear && monthNum < currentMonth)) {
-                errorDiv.textContent = 'Card has expired';
-                return false;
-            }
-            
-            errorDiv.textContent = '';
-            return true;
-        }
-
-        function validateCVV(cvv) {
-            const errorDiv = document.getElementById('cvvError');
-            
-            if (cvv.length === 0) {
-                errorDiv.textContent = '';
-                return false;
-            }
-            
-            if (cvv.length < 3 || cvv.length > 4) {
-                errorDiv.textContent = 'CVV must be 3-4 digits';
-                return false;
-            }
-            
-            errorDiv.textContent = '';
-            return true;
-        }
-
-        // Luhn algorithm for card validation
-        function isValidLuhn(cardNumber) {
-            let sum = 0;
-            let isEven = false;
-            
-            for (let i = cardNumber.length - 1; i >= 0; i--) {
-                let digit = parseInt(cardNumber.charAt(i));
-                
-                if (isEven) {
-                    digit *= 2;
-                    if (digit > 9) {
-                        digit -= 9;
-                    }
-                }
-                
-                sum += digit;
-                isEven = !isEven;
-            }
-            
-            return sum % 10 === 0;
-        }
-
+        // Check form completion for Stripe Elements
         function checkFormCompletion() {
-            const cardNumber = document.getElementById('cardNumber').value;
-            const expiry = document.getElementById('expiry').value;
-            const cvv = document.getElementById('cvv').value;
-            
-            const isCardValid = validateCardNumber(cardNumber);
-            const isExpiryValid = validateExpiry(expiry);
-            const isCVVValid = validateCVV(cvv);
-            
-            const isComplete = cardNumber.length >= 19 && expiry.length === 5 && cvv.length >= 3 && 
-                             isCardValid && isExpiryValid && isCVVValid;
+            // Enable button when all elements are complete and valid
+            const isComplete = cardComplete && expiryComplete && cvvComplete;
             document.getElementById('payButton').disabled = !isComplete;
         }
+        
+        // Track completion state of each element
+        let cardComplete = false;
+        let expiryComplete = false;
+        let cvvComplete = false;
 
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
@@ -788,6 +776,24 @@
         function showSuccess(message) {
             const errorDiv = document.getElementById('errorMessage');
             const successDiv = document.getElementById('successMessage');
+            
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+        }
+
+        function showApplePayError(message) {
+            const errorDiv = document.getElementById('applePayError');
+            const successDiv = document.getElementById('applePaySuccess');
+            
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
+        }
+
+        function showApplePaySuccess(message) {
+            const errorDiv = document.getElementById('applePayError');
+            const successDiv = document.getElementById('applePaySuccess');
             
             successDiv.textContent = message;
             successDiv.style.display = 'block';
@@ -810,6 +816,9 @@
                 warningDiv.innerHTML = '⚠️ For full payment functionality, please access this page via HTTPS or localhost';
                 document.querySelector('.payment-container').insertBefore(warningDiv, document.querySelector('.payment-methods'));
             }
+            
+            // Initialize Stripe Elements immediately
+            initializeStripeElements();
             
             // Initialize Apple Pay immediately
             if (isSecureContext) {
