@@ -730,11 +730,13 @@
             try {
                 // Check if Apple Pay is available
                 if (!window.ApplePaySession) {
+                    trackPaymentError('apple_pay', 'Apple Pay is not supported in this browser. Please use credit card.', 'not_supported');
                     showApplePayError('Apple Pay is not supported in this browser. Please use credit card.');
                     return;
                 }
                 
                 if (!ApplePaySession.canMakePayments()) {
+                    trackPaymentError('apple_pay', 'Apple Pay is not set up on this device. Please use credit card.', 'not_setup');
                     showApplePayError('Apple Pay is not set up on this device. Please use credit card.');
                     return;
                 }
@@ -742,6 +744,7 @@
                 // Check if we're in a secure context
                 const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
                 if (!isSecureContext) {
+                    trackPaymentError('apple_pay', 'Apple Pay requires HTTPS. Please use credit card or access via HTTPS.', 'insecure_context');
                     showApplePayError('Apple Pay requires HTTPS. Please use credit card or access via HTTPS.');
                     return;
                 }
@@ -765,10 +768,13 @@
                 session.onvalidatemerchant = async function(event) {
                     try {
                         console.log('Validating Apple Pay merchant...');
-                        showApplePayError('Apple Pay validation failed - API not available. Please use credit card.');
+                        const errorMessage = 'Apple Pay validation failed - API not available. Please use credit card.';
+                        trackPaymentError('apple_pay', errorMessage, 'validation_failed');
+                        showApplePayError(errorMessage);
                         session.abort();
                     } catch (error) {
                         console.error('Apple Pay validation error:', error);
+                        trackPaymentError('apple_pay', 'Apple Pay validation failed. Please use credit card.', 'validation_error');
                         session.abort();
                         showApplePayError('Apple Pay validation failed. Please use credit card.');
                     }
@@ -785,6 +791,7 @@
                         session.completePayment(ApplePaySession.STATUS_SUCCESS);
                     } catch (error) {
                         console.error('Apple Pay processing error:', error);
+                        trackPaymentError('apple_pay', 'Apple Pay payment failed. Please use credit card.', 'processing_error');
                         session.completePayment(ApplePaySession.STATUS_FAILURE);
                         showApplePayError('Apple Pay payment failed. Please use credit card.');
                     }
@@ -792,12 +799,14 @@
                 
                 session.oncancel = function(event) {
                     console.log('Apple Pay session cancelled');
+                    trackPaymentError('apple_pay', 'Apple Pay payment was cancelled.', 'user_cancelled');
                     showApplePayError('Apple Pay payment was cancelled.');
                 };
                 
                 session.begin();
             } catch (error) {
                 console.error('Apple Pay error:', error);
+                trackPaymentError('apple_pay', 'Apple Pay is not available. Please use credit card.', 'not_available');
                 showApplePayError('Apple Pay is not available. Please use credit card.');
             }
         });
@@ -818,6 +827,7 @@
                 });
                 
                 if (error) {
+                    trackPaymentError('credit_card', error.message, error.code || 'stripe_error');
                     showError(error.message);
                     return;
                 }
@@ -832,6 +842,7 @@
                 
             } catch (error) {
                 console.error('Payment error:', error);
+                trackPaymentError('credit_card', 'Payment failed. Please try again.', 'general_error');
                 showError('Payment failed. Please try again.');
             } finally {
                 document.getElementById('payButton').disabled = false;
@@ -909,6 +920,25 @@
                     content_type: 'subscription',
                     content_name: 'Room Design Quiz Subscription'
                 });
+            }
+        }
+        
+        function trackPaymentError(paymentMethod, errorMessage, errorCode) {
+            const eventData = {
+                payment_method: paymentMethod,
+                error_message: errorMessage,
+                error_code: errorCode,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Track in Mixpanel
+            if (typeof mixpanel !== 'undefined') {
+                mixpanel.track('payment_error', eventData);
+            }
+            
+            // Track in Facebook Pixel
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'payment_error', eventData);
             }
         }
 
