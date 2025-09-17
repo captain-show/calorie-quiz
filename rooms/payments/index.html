@@ -707,9 +707,9 @@
                     },
                 });
                 
-                const { applePay } = await paymentRequest.canMakePayment();
+                const canMakePayment = await paymentRequest.canMakePayment();
                 
-                if (applePay) {
+                if (canMakePayment && canMakePayment.applePay) {
                     isApplePayAvailable = true;
                     console.log('Apple Pay is available via Stripe');
                 } else {
@@ -786,9 +786,12 @@
                 });
                 
                 // Check if Apple Pay is available
-                const { applePay } = await paymentRequest.canMakePayment();
-                if (!applePay) {
-                    throw new Error('Apple Pay is not available');
+                const canMakePayment = await paymentRequest.canMakePayment();
+                console.log('Payment Request canMakePayment result:', canMakePayment);
+                
+                if (!canMakePayment || !canMakePayment.applePay) {
+                    console.log('Apple Pay not available. Available methods:', canMakePayment);
+                    throw new Error('Apple Pay is not available on this device or browser');
                 }
                 
                 // Handle payment method
