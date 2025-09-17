@@ -537,26 +537,23 @@
         // Initialize Stripe
         const stripe = Stripe('pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2Ue5CXYZBBgtBf2NRr300I4RzjW4h');
         
-        let currentPrice = 0;
+        let currentPrice = 4.99; // Weekly plan price
         let isApplePayAvailable = false;
         let elements;
         let cardElement;
         let expiryElement;
         let cvvElement;
+        let serverPublishableKey = null;
+        let serverPlans = null;
+
+        // API base URL - same as palmreader
+        const API_BASE_URL = 'https://ydtsxivmnq.us-east-1.awsapprunner.com';
 
         // Fetch price from backend
         async function fetchPrice() {
             try {
-                // Check if we're in a secure context (HTTPS or localhost)
-                const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-                
-                if (!isSecureContext) {
-                    console.warn('Not in secure context, using fallback price');
-                    throw new Error('Not in secure context');
-                }
-                
                 console.log('Attempting to fetch price from API...');
-                const response = await fetch('https://ydtsxivmnq.us-east-1.awsapprunner.com/api/products?weekly=prod_SyP5N4rFJXv4cL&monthly=prod_SyP5N4rFJXv4cL&yearly=prod_SyP5N4rFJXv4cL', {
+                const response = await fetch(`${API_BASE_URL}/api/products?weekly=prod_SyP5N4rFJXv4cL`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -570,8 +567,8 @@
                 }
                 
                 const data = await response.json();
-                // Use monthly plan price and convert from cents to dollars
-                currentPrice = (data.plans.monthly.unitAmount / 100);
+                // Use weekly plan price and convert from cents to dollars
+                currentPrice = (data.plans.weekly.unitAmount / 100);
                 console.log('Price fetched successfully:', currentPrice);
                 document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
@@ -690,30 +687,14 @@
         // Initialize Apple Pay
         function initializeApplePay() {
             console.log('🔍 Initializing Apple Pay...');
-            console.log('Browser info:', {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                vendor: navigator.vendor
-            });
-            console.log('window.ApplePaySession exists:', !!window.ApplePaySession);
             
-            if (window.ApplePaySession) {
-                console.log('✅ ApplePaySession is available');
-                console.log('ApplePaySession.canMakePayments():', ApplePaySession.canMakePayments());
-                
-                if (ApplePaySession.canMakePayments()) {
-                    isApplePayAvailable = true;
-                    console.log('✅ Apple Pay is available and ready');
-                } else {
-                    isApplePayAvailable = false;
-                    console.log('❌ Apple Pay is not set up on this device');
-                }
+            if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+                isApplePayAvailable = true;
+                console.log('✅ Apple Pay is available and ready');
             } else {
                 isApplePayAvailable = false;
-                console.log('❌ ApplePaySession is not supported in this browser');
+                console.log('❌ Apple Pay is not available');
             }
-            
-            console.log('Final Apple Pay availability:', isApplePayAvailable);
         }
 
         // Toggle payment method sections
@@ -750,121 +731,80 @@
             
             try {
                 // Check if Apple Pay is available
-                console.log('🔍 Checking Apple Pay availability...');
-                console.log('window.ApplePaySession exists:', !!window.ApplePaySession);
-                
                 if (!window.ApplePaySession) {
                     console.log('❌ Apple Pay is not supported in this browser');
-                    trackPaymentError('apple_pay', 'Apple Pay is not supported in this browser. Please use credit card.', 'not_supported');
                     showApplePayError('Apple Pay is not supported in this browser. Please use credit card.');
                     return;
                 }
                 
-                console.log('✅ ApplePaySession is available');
-                console.log('ApplePaySession.canMakePayments():', ApplePaySession.canMakePayments());
-                
                 if (!ApplePaySession.canMakePayments()) {
                     console.log('❌ Apple Pay is not set up on this device');
-                    trackPaymentError('apple_pay', 'Apple Pay is not set up on this device. Please use credit card.', 'not_setup');
                     showApplePayError('Apple Pay is not set up on this device. Please use credit card.');
                     return;
                 }
                 
-                console.log('✅ Apple Pay can make payments');
+                // Create payment request using Stripe's paymentRequest
+                const paymentRequest = stripe.paymentRequest({
+                    country: 'US',
+                    currency: 'usd',
+                    total: {
+                        label: 'Weekly Plan',
+                        amount: Math.round(currentPrice * 100), // Convert to cents
+                    },
+                    requestPayerName: true,
+                    requestPayerEmail: true,
+                });
                 
-                // Check if we're in a secure context
-                const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-                console.log('🔒 Security context check:');
-                console.log('  - window.isSecureContext:', window.isSecureContext);
-                console.log('  - location.hostname:', location.hostname);
-                console.log('  - isSecureContext:', isSecureContext);
-                
-                if (!isSecureContext) {
-                    console.log('❌ Not in secure context');
-                    trackPaymentError('apple_pay', 'Apple Pay requires HTTPS. Please use credit card or access via HTTPS.', 'insecure_context');
-                    showApplePayError('Apple Pay requires HTTPS. Please use credit card or access via HTTPS.');
+                // Check if Apple Pay is available
+                const canMakePayment = await paymentRequest.canMakePayment();
+                if (!canMakePayment || !canMakePayment.applePay) {
+                    console.log('❌ Apple Pay not available');
+                    showApplePayError('Apple Pay is not available. Please use credit card.');
                     return;
                 }
                 
-                console.log('✅ Secure context confirmed');
-                console.log('🚀 Starting Apple Pay session...');
-                
-                // Create payment request
-                const paymentRequest = {
-                    countryCode: 'US',
-                    currencyCode: 'USD',
-                    merchantCapabilities: ['supports3DS'],
-                    supportedNetworks: ['visa', 'masterCard', 'amex', 'discover'],
-                    total: {
-                        label: 'Total Today',
-                        amount: (currentPrice * 100).toString() // Convert to cents
-                    }
-                };
-                
-                console.log('📋 Payment request created:', paymentRequest);
-                
-                const session = new ApplePaySession(3, paymentRequest);
-                console.log('✅ Apple Pay session created');
-                
-                session.onvalidatemerchant = async function(event) {
-                    console.log('🔐 Apple Pay merchant validation started');
-                    console.log('Validation URL:', event.validationURL);
-                    console.log('Validation data:', event);
-                    
+                // Handle payment method
+                paymentRequest.on('paymentmethod', async (ev) => {
                     try {
-                        console.log('❌ Merchant validation failed - no backend API');
-                        const errorMessage = 'Apple Pay validation failed - API not available. Please use credit card.';
-                        trackPaymentError('apple_pay', errorMessage, 'validation_failed');
-                        showApplePayError(errorMessage);
-                        session.abort();
-                    } catch (error) {
-                        console.error('❌ Apple Pay validation error:', error);
-                        trackPaymentError('apple_pay', 'Apple Pay validation failed. Please use credit card.', 'validation_error');
-                        session.abort();
-                        showApplePayError('Apple Pay validation failed. Please use credit card.');
-                    }
-                };
-                
-                session.onpaymentauthorized = async function(event) {
-                    console.log('💳 Apple Pay payment authorized');
-                    console.log('Payment data:', event.payment);
-                    console.log('Payment method:', event.payment.paymentMethod);
-                    
-                    try {
-                        console.log('✅ Processing Apple Pay payment...');
-                        // Track successful purchase
-                        if (typeof trackPurchase === 'function') {
-                            trackPurchase('apple_pay', currentPrice);
+                        // Create subscription on server
+                        const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                priceId: 'price_weekly_plan', // Use weekly plan price ID
+                                email: ev.payerEmail || 'noemail@example.com',
+                                paymentMethodId: ev.paymentMethod.id,
+                            }),
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.error) {
+                            ev.complete('fail');
+                            throw new Error(result.error);
                         }
+                        
+                        // Confirm payment
+                        ev.complete('success');
+                        
+                        // Track analytics
+                        trackPurchase('apple_pay', currentPrice);
                         showApplePaySuccess('Payment successful! Thank you for your purchase.');
-                        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-                        console.log('✅ Payment completed successfully');
+                        
                     } catch (error) {
-                        console.error('❌ Apple Pay processing error:', error);
-                        trackPaymentError('apple_pay', 'Apple Pay payment failed. Please use credit card.', 'processing_error');
-                        session.completePayment(ApplePaySession.STATUS_FAILURE);
-                        showApplePayError('Apple Pay payment failed. Please use credit card.');
+                        console.error('Apple Pay payment failed:', error);
+                        ev.complete('fail');
+                        showApplePayError('Payment failed. Please try again.');
                     }
-                };
+                });
                 
-                session.oncancel = function(event) {
-                    console.log('❌ Apple Pay session cancelled by user');
-                    trackPaymentError('apple_pay', 'Apple Pay payment was cancelled.', 'user_cancelled');
-                    showApplePayError('Apple Pay payment was cancelled.');
-                };
-                
-                console.log('🎬 Starting Apple Pay session...');
-                session.begin();
-                console.log('✅ Apple Pay session started');
+                // Show Apple Pay sheet
+                paymentRequest.show();
                 
             } catch (error) {
                 console.error('❌ Apple Pay error:', error);
-                console.error('Error details:', {
-                    name: error.name,
-                    message: error.message,
-                    stack: error.stack
-                });
-                trackPaymentError('apple_pay', 'Apple Pay is not available. Please use credit card.', 'not_available');
                 showApplePayError('Apple Pay is not available. Please use credit card.');
             }
         });
@@ -885,22 +825,35 @@
                 });
                 
                 if (error) {
-                    trackPaymentError('credit_card', error.message, error.code || 'stripe_error');
                     showError(error.message);
                     return;
                 }
                 
-                // Process payment
-                console.log('Processing credit card payment...');
-                // Track successful purchase
-                if (typeof trackPurchase === 'function') {
-                    trackPurchase('credit_card', currentPrice);
+                // Create subscription on server
+                const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        priceId: 'price_weekly_plan', // Use weekly plan price ID
+                        email: 'noemail@example.com', // You can add email input if needed
+                        paymentMethodId: paymentMethod.id,
+                    }),
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error);
                 }
+                
+                // Track successful purchase
+                trackPurchase('credit_card', currentPrice);
                 showSuccess('Payment successful! Thank you for your purchase.');
                 
             } catch (error) {
                 console.error('Payment error:', error);
-                trackPaymentError('credit_card', 'Payment failed. Please try again.', 'general_error');
                 showError('Payment failed. Please try again.');
             } finally {
                 document.getElementById('payButton').disabled = false;
@@ -1005,25 +958,11 @@
             // Set initial price
             currentPrice = 4.99;
             
-            // Check if we're in a secure context
-            const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-            
-            if (!isSecureContext) {
-                console.warn('⚠️ Payment form requires HTTPS for full functionality');
-                // Show a warning to the user
-                const warningDiv = document.createElement('div');
-                warningDiv.style.cssText = 'background: #fff3cd; color: #856404; padding: 10px; margin: 10px 0; border: 1px solid #ffeaa7; border-radius: 4px; font-size: 14px;';
-                warningDiv.innerHTML = '⚠️ For full payment functionality, please access this page via HTTPS or localhost';
-                document.querySelector('.payment-container').insertBefore(warningDiv, document.querySelector('.payment-methods'));
-            }
-            
             // Initialize Stripe Elements immediately
             initializeStripeElements();
             
-            // Initialize Apple Pay immediately
-            if (isSecureContext) {
-                initializeApplePay();
-            }
+            // Initialize Apple Pay
+            initializeApplePay();
             
             // Fetch price in background and update if successful
             fetchPrice();
