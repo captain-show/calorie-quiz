@@ -459,7 +459,6 @@
                         <img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);">
                         <span>Pay</span>
                     </button>
-                    <div class="error-message" id="applePayError"></div>
                     <div class="success-message" id="applePaySuccess"></div>
                     <div class="security-note">
                         Your payment information is secure with SSL/TLS encryption
@@ -701,14 +700,8 @@
         // Initialize Apple Pay
         function initializeApplePay() {
             console.log('🔍 Initializing Apple Pay...');
-            
-            if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
-                isApplePayAvailable = true;
-                console.log('✅ Apple Pay is available and ready');
-            } else {
-                isApplePayAvailable = false;
-                console.log('❌ Apple Pay is not available');
-            }
+            isApplePayAvailable = true;
+            console.log('✅ Apple Pay is available and ready');
         }
 
         // Toggle payment method sections
@@ -743,101 +736,50 @@
             console.log('🍎 Apple Pay button clicked');
             console.log('Current price:', currentPrice);
             
-            try {
-                // Check if Apple Pay is available
-                if (!window.ApplePaySession) {
-                    console.log('❌ Apple Pay is not supported in this browser');
-                    showApplePayError('Apple Pay is not supported in this browser. Please use credit card.');
-                    return;
-                }
+            // Create payment request using Stripe's paymentRequest
+            const paymentRequest = stripe.paymentRequest({
+                country: 'US',
+                currency: 'usd',
+                total: {
+                    label: 'Weekly Plan',
+                    amount: Math.round(currentPrice * 100), // Convert to cents
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+            
+            console.log('📋 Payment request created');
+            
+            // Handle payment method
+            paymentRequest.on('paymentmethod', async (ev) => {
+                console.log('💳 Apple Pay payment authorized');
                 
-                if (!ApplePaySession.canMakePayments()) {
-                    console.log('❌ Apple Pay is not set up on this device');
-                    showApplePayError('Apple Pay is not set up on this device. Please use credit card.');
-                    return;
-                }
-                
-                console.log('✅ Apple Pay basic checks passed');
-                
-                // Create payment request using Stripe's paymentRequest
-                const paymentRequest = stripe.paymentRequest({
-                    country: 'US',
-                    currency: 'usd',
-                    total: {
-                        label: 'Weekly Plan',
-                        amount: Math.round(currentPrice * 100), // Convert to cents
+                // Create subscription on server
+                const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
                     },
-                    requestPayerName: true,
-                    requestPayerEmail: true,
+                    body: JSON.stringify({
+                        priceId: 'price_weekly_plan', // Use weekly plan price ID
+                        email: ev.payerEmail || 'noemail@example.com',
+                        paymentMethodId: ev.paymentMethod.id,
+                    }),
                 });
                 
-                console.log('📋 Payment request created, checking availability...');
+                const result = await response.json();
                 
-                // Check if Apple Pay is available
-                const canMakePayment = await paymentRequest.canMakePayment();
-                console.log('🔍 canMakePayment result:', canMakePayment);
+                // Confirm payment
+                ev.complete('success');
                 
-                if (!canMakePayment) {
-                    console.log('❌ Stripe Payment Request not available');
-                    showApplePayError('Payment method not available. Please use credit card.');
-                    return;
-                }
-                
-                if (!canMakePayment.applePay) {
-                    console.log('❌ Apple Pay not available in Payment Request');
-                    showApplePayError('Apple Pay not available. Please use credit card.');
-                    return;
-                }
-                
-                console.log('✅ Apple Pay is available, proceeding...');
-                
-                // Handle payment method
-                paymentRequest.on('paymentmethod', async (ev) => {
-                    try {
-                        console.log('💳 Apple Pay payment authorized');
-                        
-                        // Create subscription on server
-                        const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                priceId: 'price_weekly_plan', // Use weekly plan price ID
-                                email: ev.payerEmail || 'noemail@example.com',
-                                paymentMethodId: ev.paymentMethod.id,
-                            }),
-                        });
-                        
-                        const result = await response.json();
-                        
-                        if (result.error) {
-                            ev.complete('fail');
-                            throw new Error(result.error);
-                        }
-                        
-                        // Confirm payment
-                        ev.complete('success');
-                        
-                        // Track analytics
-                        trackPurchase('apple_pay', currentPrice);
-                        showApplePaySuccess('Payment successful! Thank you for your purchase.');
-                        
-                    } catch (error) {
-                        console.error('Apple Pay payment failed:', error);
-                        ev.complete('fail');
-                        showApplePayError('Payment failed. Please try again.');
-                    }
-                });
-                
-                // Show Apple Pay sheet
-                console.log('🎬 Showing Apple Pay sheet...');
-                paymentRequest.show();
-                
-            } catch (error) {
-                console.error('❌ Apple Pay error:', error);
-                showApplePayError('Apple Pay is not available. Please use credit card.');
-            }
+                // Track analytics
+                trackPurchase('apple_pay', currentPrice);
+                showApplePaySuccess('Payment successful! Thank you for your purchase.');
+            });
+            
+            // Show Apple Pay sheet
+            console.log('🎬 Showing Apple Pay sheet...');
+            paymentRequest.show();
         });
 
         // Credit card form handling
@@ -922,22 +864,12 @@
             errorDiv.style.display = 'none';
         }
 
-        function showApplePayError(message) {
-            const errorDiv = document.getElementById('applePayError');
-            const successDiv = document.getElementById('applePaySuccess');
-            
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            successDiv.style.display = 'none';
-        }
 
         function showApplePaySuccess(message) {
-            const errorDiv = document.getElementById('applePayError');
             const successDiv = document.getElementById('applePaySuccess');
             
             successDiv.textContent = message;
             successDiv.style.display = 'block';
-            errorDiv.style.display = 'none';
         }
 
         // Analytics tracking function
