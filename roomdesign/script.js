@@ -451,11 +451,13 @@ function showCompletionMessage() {
     processingDescription.innerHTML = `
         We've created a personalized room design based on your preferences.<br>
         <br>
-        <em>Our AI is now creating your custom room design application...</em>
+        <em>Redirecting to payment...</em>
     `;
     
-    // Show subscription section immediately
-    showSubscriptionSection();
+    // Redirect to payments page after a short delay
+    setTimeout(() => {
+        window.location.href = 'payments/index.html';
+    }, 2000);
 }
 
 // Show subscription section
