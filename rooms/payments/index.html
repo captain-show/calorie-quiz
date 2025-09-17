@@ -534,10 +534,9 @@
 
     <script>
         // Initialize Stripe
-        const stripe = Stripe('pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2Ue5CXYZBBgtBf2NRr300I4RzjW4h');
+        const stripe = Stripe('pk_test_51Qk1KmK2gOb0VfuWHEe7OQZtvhofHptdmgVuPKC1w0IrZSdvya7JTHX7U1WXsR05gNd2bveCRXWDMO2xXbKQIUin00wrmjMD2M');
         
         let currentPrice = 4.99; // Weekly plan price
-        let weeklyPriceId = null; // Real priceId from API
         let isApplePayAvailable = false;
         let elements;
         let cardElement;
@@ -583,9 +582,7 @@
                 const data = await response.json();
                 // Use weekly plan price and convert from cents to dollars
                 currentPrice = (data.plans.weekly.unitAmount / 100);
-                weeklyPriceId = data.plans.weekly.priceId; // Store real priceId
                 console.log('Price fetched successfully:', currentPrice);
-                console.log('Weekly priceId:', weeklyPriceId);
                 document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 
@@ -598,7 +595,6 @@
                 
                 // Fallback price
                 currentPrice = 4.99;
-                weeklyPriceId = 'price_weekly_plan'; // Fallback priceId
                 document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('loading').style.display = 'none';
@@ -765,7 +761,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        priceId: weeklyPriceId, // Use real priceId from API
+                        priceId: 'price_weekly_plan', // Use weekly plan price ID
                         email: ev.payerEmail || 'noemail@example.com',
                         paymentMethodId: ev.paymentMethod.id,
                     }),
@@ -816,7 +812,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        priceId: weeklyPriceId, // Use real priceId from API
+                        priceId: 'price_weekly_plan', // Use weekly plan price ID
                         email: 'noemail@example.com', // You can add email input if needed
                         paymentMethodId: paymentMethod.id,
                     }),
