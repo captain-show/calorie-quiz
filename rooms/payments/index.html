@@ -688,38 +688,32 @@
         }
 
         // Initialize Apple Pay
-        async function initializeApplePay() {
-            try {
-                // Check if Apple Pay is supported by browser
-                if (!window.ApplePaySession || !ApplePaySession.canMakePayments()) {
-                    isApplePayAvailable = false;
-                    console.log('Apple Pay is not available on this device');
-                    return;
-                }
+        function initializeApplePay() {
+            console.log('🔍 Initializing Apple Pay...');
+            console.log('Browser info:', {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                vendor: navigator.vendor
+            });
+            console.log('window.ApplePaySession exists:', !!window.ApplePaySession);
+            
+            if (window.ApplePaySession) {
+                console.log('✅ ApplePaySession is available');
+                console.log('ApplePaySession.canMakePayments():', ApplePaySession.canMakePayments());
                 
-                // Check if Stripe supports Apple Pay via Payment Request API
-                const paymentRequest = stripe.paymentRequest({
-                    country: 'US',
-                    currency: 'usd',
-                    total: {
-                        label: 'Test',
-                        amount: 100,
-                    },
-                });
-                
-                const canMakePayment = await paymentRequest.canMakePayment();
-                
-                if (canMakePayment && canMakePayment.applePay) {
+                if (ApplePaySession.canMakePayments()) {
                     isApplePayAvailable = true;
-                    console.log('Apple Pay is available via Stripe');
+                    console.log('✅ Apple Pay is available and ready');
                 } else {
                     isApplePayAvailable = false;
-                    console.log('Apple Pay is not available via Stripe');
+                    console.log('❌ Apple Pay is not set up on this device');
                 }
-            } catch (error) {
-                console.log('Apple Pay initialization error:', error);
+            } else {
                 isApplePayAvailable = false;
+                console.log('❌ ApplePaySession is not supported in this browser');
             }
+            
+            console.log('Final Apple Pay availability:', isApplePayAvailable);
         }
 
         // Toggle payment method sections
@@ -751,78 +745,127 @@
 
         // Apple Pay button click handler
         document.getElementById('applePayButton').addEventListener('click', async function() {
+            console.log('🍎 Apple Pay button clicked');
+            console.log('Current price:', currentPrice);
+            
             try {
                 // Check if Apple Pay is available
+                console.log('🔍 Checking Apple Pay availability...');
+                console.log('window.ApplePaySession exists:', !!window.ApplePaySession);
+                
                 if (!window.ApplePaySession) {
+                    console.log('❌ Apple Pay is not supported in this browser');
                     trackPaymentError('apple_pay', 'Apple Pay is not supported in this browser. Please use credit card.', 'not_supported');
                     showApplePayError('Apple Pay is not supported in this browser. Please use credit card.');
                     return;
                 }
                 
+                console.log('✅ ApplePaySession is available');
+                console.log('ApplePaySession.canMakePayments():', ApplePaySession.canMakePayments());
+                
                 if (!ApplePaySession.canMakePayments()) {
+                    console.log('❌ Apple Pay is not set up on this device');
                     trackPaymentError('apple_pay', 'Apple Pay is not set up on this device. Please use credit card.', 'not_setup');
                     showApplePayError('Apple Pay is not set up on this device. Please use credit card.');
                     return;
                 }
                 
+                console.log('✅ Apple Pay can make payments');
+                
                 // Check if we're in a secure context
                 const isSecureContext = window.isSecureContext || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                console.log('🔒 Security context check:');
+                console.log('  - window.isSecureContext:', window.isSecureContext);
+                console.log('  - location.hostname:', location.hostname);
+                console.log('  - isSecureContext:', isSecureContext);
+                
                 if (!isSecureContext) {
+                    console.log('❌ Not in secure context');
                     trackPaymentError('apple_pay', 'Apple Pay requires HTTPS. Please use credit card or access via HTTPS.', 'insecure_context');
                     showApplePayError('Apple Pay requires HTTPS. Please use credit card or access via HTTPS.');
                     return;
                 }
                 
-                console.log('Starting Apple Pay session...');
+                console.log('✅ Secure context confirmed');
+                console.log('🚀 Starting Apple Pay session...');
                 
-                // Create payment request using Stripe's Payment Request API
-                const paymentRequest = stripe.paymentRequest({
-                    country: 'US',
-                    currency: 'usd',
+                // Create payment request
+                const paymentRequest = {
+                    countryCode: 'US',
+                    currencyCode: 'USD',
+                    merchantCapabilities: ['supports3DS'],
+                    supportedNetworks: ['visa', 'masterCard', 'amex', 'discover'],
                     total: {
                         label: 'Total Today',
-                        amount: Math.round(currentPrice * 100), // Convert to cents
-                    },
-                });
+                        amount: (currentPrice * 100).toString() // Convert to cents
+                    }
+                };
                 
-                // Check if Apple Pay is available
-                const canMakePayment = await paymentRequest.canMakePayment();
-                console.log('Payment Request canMakePayment result:', canMakePayment);
+                console.log('📋 Payment request created:', paymentRequest);
                 
-                if (!canMakePayment || !canMakePayment.applePay) {
-                    console.log('Apple Pay not available. Available methods:', canMakePayment);
-                    throw new Error('Apple Pay is not available on this device or browser');
-                }
+                const session = new ApplePaySession(3, paymentRequest);
+                console.log('✅ Apple Pay session created');
                 
-                // Handle payment method
-                paymentRequest.on('paymentmethod', async (ev) => {
+                session.onvalidatemerchant = async function(event) {
+                    console.log('🔐 Apple Pay merchant validation started');
+                    console.log('Validation URL:', event.validationURL);
+                    console.log('Validation data:', event);
+                    
                     try {
-                        console.log('Processing Apple Pay payment...');
-                        
-                        // For now, just confirm the payment
-                        ev.complete('success');
-                        
+                        console.log('❌ Merchant validation failed - no backend API');
+                        const errorMessage = 'Apple Pay validation failed - API not available. Please use credit card.';
+                        trackPaymentError('apple_pay', errorMessage, 'validation_failed');
+                        showApplePayError(errorMessage);
+                        session.abort();
+                    } catch (error) {
+                        console.error('❌ Apple Pay validation error:', error);
+                        trackPaymentError('apple_pay', 'Apple Pay validation failed. Please use credit card.', 'validation_error');
+                        session.abort();
+                        showApplePayError('Apple Pay validation failed. Please use credit card.');
+                    }
+                };
+                
+                session.onpaymentauthorized = async function(event) {
+                    console.log('💳 Apple Pay payment authorized');
+                    console.log('Payment data:', event.payment);
+                    console.log('Payment method:', event.payment.paymentMethod);
+                    
+                    try {
+                        console.log('✅ Processing Apple Pay payment...');
                         // Track successful purchase
                         if (typeof trackPurchase === 'function') {
                             trackPurchase('apple_pay', currentPrice);
                         }
                         showApplePaySuccess('Payment successful! Thank you for your purchase.');
-                        
+                        session.completePayment(ApplePaySession.STATUS_SUCCESS);
+                        console.log('✅ Payment completed successfully');
                     } catch (error) {
-                        console.error('Apple Pay processing error:', error);
-                        ev.complete('fail');
+                        console.error('❌ Apple Pay processing error:', error);
                         trackPaymentError('apple_pay', 'Apple Pay payment failed. Please use credit card.', 'processing_error');
+                        session.completePayment(ApplePaySession.STATUS_FAILURE);
                         showApplePayError('Apple Pay payment failed. Please use credit card.');
                     }
-                });
+                };
                 
-                // Show Apple Pay sheet
-                paymentRequest.show();
+                session.oncancel = function(event) {
+                    console.log('❌ Apple Pay session cancelled by user');
+                    trackPaymentError('apple_pay', 'Apple Pay payment was cancelled.', 'user_cancelled');
+                    showApplePayError('Apple Pay payment was cancelled.');
+                };
+                
+                console.log('🎬 Starting Apple Pay session...');
+                session.begin();
+                console.log('✅ Apple Pay session started');
                 
             } catch (error) {
-                console.error('Apple Pay error:', error);
-                trackPaymentError('apple_pay', 'Apple Pay payment failed. Please use credit card.', 'general_error');
-                showApplePayError('Apple Pay payment failed. Please use credit card.');
+                console.error('❌ Apple Pay error:', error);
+                console.error('Error details:', {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                });
+                trackPaymentError('apple_pay', 'Apple Pay is not available. Please use credit card.', 'not_available');
+                showApplePayError('Apple Pay is not available. Please use credit card.');
             }
         });
 
@@ -979,7 +1022,7 @@
             
             // Initialize Apple Pay immediately
             if (isSecureContext) {
-                await initializeApplePay();
+                initializeApplePay();
             }
             
             // Fetch price in background and update if successful
