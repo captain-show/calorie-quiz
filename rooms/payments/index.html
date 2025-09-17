@@ -553,7 +553,21 @@
         async function fetchPrice() {
             try {
                 console.log('Attempting to fetch price from API...');
-                const response = await fetch(`${API_BASE_URL}/api/products?weekly=prod_SyP5N4rFJXv4cL`, {
+                
+                // Use the same format as palmreader
+                const productIds = {
+                    weekly: 'prod_SyP5N4rFJXv4cL',
+                    monthly: 'prod_SyP7WEDLWzxLUj',
+                    yearly: 'prod_SyP9pQnkLFXYw6'
+                };
+                
+                const queryParams = new URLSearchParams({
+                    weekly: productIds.weekly,
+                    monthly: productIds.monthly,
+                    yearly: productIds.yearly
+                });
+                
+                const response = await fetch(`${API_BASE_URL}/api/products?${queryParams}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
