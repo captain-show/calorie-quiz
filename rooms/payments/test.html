@@ -135,14 +135,26 @@
 
         function testApplePay() {
             try {
-                if (window.ApplePaySession) {
-                    if (ApplePaySession.canMakePayments()) {
-                        showResult('applePayResult', 'Apple Pay is available and ready!', true);
-                    } else {
-                        showResult('applePayResult', 'Apple Pay is not set up on this device', false);
-                    }
+                const diagnostics = {
+                    hasApplePaySession: !!window.ApplePaySession,
+                    canMakePayments: window.ApplePaySession ? ApplePaySession.canMakePayments() : false,
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform,
+                    isHTTPS: location.protocol === 'https:',
+                    hostname: location.hostname,
+                    isSecureContext: window.isSecureContext
+                };
+                
+                console.log('Apple Pay diagnostics:', diagnostics);
+                
+                if (!window.ApplePaySession) {
+                    showResult('applePayResult', 'Apple Pay is not supported in this browser. Use Safari on macOS/iOS.', false);
+                } else if (!ApplePaySession.canMakePayments()) {
+                    showResult('applePayResult', 'Apple Pay is not set up on this device. Check Wallet settings.', false);
+                } else if (!diagnostics.isHTTPS && !diagnostics.isSecureContext) {
+                    showResult('applePayResult', 'Apple Pay requires HTTPS. Access via https:// or localhost.', false);
                 } else {
-                    showResult('applePayResult', 'Apple Pay is not supported in this browser', false);
+                    showResult('applePayResult', 'Apple Pay is available and ready!', true);
                 }
             } catch (error) {
                 showResult('applePayResult', `Apple Pay Error: ${error.message}`, false);
@@ -153,11 +165,28 @@
             try {
                 showResult('paymentResult', 'Testing payment flow...', true);
                 
-                // Test creating a payment method (without actually charging)
-                const elements = stripe.elements();
-                const cardElement = elements.create('card');
+                // Test Stripe Payment Request (used for Apple Pay)
+                const paymentRequest = stripe.paymentRequest({
+                    country: 'US',
+                    currency: 'usd',
+                    total: {
+                        label: 'Test Payment',
+                        amount: 499, // $4.99 in cents
+                    },
+                    requestPayerName: true,
+                    requestPayerEmail: true,
+                });
                 
-                showResult('paymentResult', 'Payment flow test completed successfully!', true);
+                const canMakePayment = await paymentRequest.canMakePayment();
+                console.log('Payment Request canMakePayment:', canMakePayment);
+                
+                if (canMakePayment && canMakePayment.applePay) {
+                    showResult('paymentResult', 'Stripe Payment Request + Apple Pay: Available!', true);
+                } else if (canMakePayment) {
+                    showResult('paymentResult', 'Stripe Payment Request: Available (no Apple Pay)', true);
+                } else {
+                    showResult('paymentResult', 'Stripe Payment Request: Not available', false);
+                }
             } catch (error) {
                 showResult('paymentResult', `Payment Error: ${error.message}`, false);
             }
