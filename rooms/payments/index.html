@@ -777,9 +777,12 @@
                 showApplePaySuccess('Payment successful! Thank you for your purchase.');
             });
             
-            // Show Apple Pay sheet
-            console.log('🎬 Showing Apple Pay sheet...');
-            paymentRequest.show();
+            // Check availability before showing
+            const canMakePayment = await paymentRequest.canMakePayment();
+            if (canMakePayment) {
+                console.log('🎬 Showing Apple Pay sheet...');
+                paymentRequest.show();
+            }
         });
 
         // Credit card form handling
