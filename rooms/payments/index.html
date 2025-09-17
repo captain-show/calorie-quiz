@@ -757,6 +757,8 @@
                     return;
                 }
                 
+                console.log('✅ Apple Pay basic checks passed');
+                
                 // Create payment request using Stripe's paymentRequest
                 const paymentRequest = stripe.paymentRequest({
                     country: 'US',
@@ -769,17 +771,31 @@
                     requestPayerEmail: true,
                 });
                 
+                console.log('📋 Payment request created, checking availability...');
+                
                 // Check if Apple Pay is available
                 const canMakePayment = await paymentRequest.canMakePayment();
-                if (!canMakePayment || !canMakePayment.applePay) {
-                    console.log('❌ Apple Pay not available');
-                    showApplePayError('Apple Pay is not available. Please use credit card.');
+                console.log('🔍 canMakePayment result:', canMakePayment);
+                
+                if (!canMakePayment) {
+                    console.log('❌ Stripe Payment Request not available');
+                    showApplePayError('Payment method not available. Please use credit card.');
                     return;
                 }
+                
+                if (!canMakePayment.applePay) {
+                    console.log('❌ Apple Pay not available in Payment Request');
+                    showApplePayError('Apple Pay not available. Please use credit card.');
+                    return;
+                }
+                
+                console.log('✅ Apple Pay is available, proceeding...');
                 
                 // Handle payment method
                 paymentRequest.on('paymentmethod', async (ev) => {
                     try {
+                        console.log('💳 Apple Pay payment authorized');
+                        
                         // Create subscription on server
                         const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
                             method: 'POST',
@@ -815,6 +831,7 @@
                 });
                 
                 // Show Apple Pay sheet
+                console.log('🎬 Showing Apple Pay sheet...');
                 paymentRequest.show();
                 
             } catch (error) {
