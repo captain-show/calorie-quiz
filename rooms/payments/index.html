@@ -755,19 +755,31 @@
                 console.log('💳 Apple Pay payment authorized');
                 
                 // Create subscription on server
+                const requestData = {
+                    priceId: 'price_weekly_plan', // Use weekly plan price ID
+                    email: ev.payerEmail || 'noemail@example.com',
+                    paymentMethodId: ev.paymentMethod.id,
+                };
+                console.log('Apple Pay request data:', requestData);
+                
                 const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        priceId: 'price_weekly_plan', // Use weekly plan price ID
-                        email: ev.payerEmail || 'noemail@example.com',
-                        paymentMethodId: ev.paymentMethod.id,
-                    }),
+                    body: JSON.stringify(requestData),
                 });
                 
+                console.log('Apple Pay server response status:', response.status);
                 const result = await response.json();
+                console.log('Apple Pay server response:', result);
+                
+                if (result.error) {
+                    console.error('Apple Pay server error:', result.error);
+                    ev.complete('fail');
+                    showApplePayError('Payment failed: ' + (result.error.message || JSON.stringify(result.error)));
+                    return;
+                }
                 
                 // Confirm payment
                 ev.complete('success');
@@ -806,22 +818,28 @@
                 }
                 
                 // Create subscription on server
+                const requestData = {
+                    priceId: 'price_weekly_plan', // Use weekly plan price ID
+                    email: 'noemail@example.com', // You can add email input if needed
+                    paymentMethodId: paymentMethod.id,
+                };
+                console.log('Credit card request data:', requestData);
+                
                 const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        priceId: 'price_weekly_plan', // Use weekly plan price ID
-                        email: 'noemail@example.com', // You can add email input if needed
-                        paymentMethodId: paymentMethod.id,
-                    }),
+                    body: JSON.stringify(requestData),
                 });
                 
+                console.log('Server response status:', response.status);
                 const result = await response.json();
+                console.log('Server response:', result);
                 
                 if (result.error) {
-                    throw new Error(result.error);
+                    console.error('Server error:', result.error);
+                    throw new Error(result.error.message || JSON.stringify(result.error));
                 }
                 
                 // Track successful purchase
