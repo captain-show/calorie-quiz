@@ -862,6 +862,21 @@
                 
                 console.log('✅ Apple Pay payment initialized successfully');
                 
+                // Check availability after initialization
+                applePayPaymentRequest.canMakePayment().then(function(result) {
+                    console.log('🔍 Apple Pay canMakePayment result:', result);
+                    if (!result) {
+                        console.log('Apple Pay not available on this device');
+                        // Hide Apple Pay button if not available
+                        const applePayButton = document.getElementById('applePayButton');
+                        if (applePayButton) {
+                            applePayButton.style.display = 'none';
+                        }
+                    }
+                }).catch(function(error) {
+                    console.error('Apple Pay availability check error:', error);
+                });
+                
             } catch (error) {
                 console.error('Apple Pay setup error:', error);
                 alert('Apple Pay setup error: ' + error.message);
@@ -888,38 +903,15 @@
             isApplePayProcessing = true;
             
             try {
-                // Check availability and show
-                applePayPaymentRequest.canMakePayment().then(function(result) {
-                    console.log('🔍 Apple Pay canMakePayment result:', result);
-                    if (result) {
-                        console.log('🎬 Showing Apple Pay sheet...');
-                        try {
-                            applePayPaymentRequest.show();
-                            console.log('✅ Apple Pay sheet shown successfully');
-                            // Reset processing flag
-                            isApplePayProcessing = false;
-                        } catch (showError) {
-                            console.error('❌ Error showing Apple Pay:', showError);
-                            alert('Error showing Apple Pay: ' + showError.message);
-                            // Reset processing flag
-                            isApplePayProcessing = false;
-                        }
-                    } else {
-                        console.log('Apple Pay not available');
-                        alert('Apple Pay is not available on this device');
-                        // Reset processing flag
-                        isApplePayProcessing = false;
-                    }
-                }).catch(function(error) {
-                    console.error('Apple Pay error:', error);
-                    alert('Apple Pay error: ' + error.message);
-                    // Reset processing flag
-                    isApplePayProcessing = false;
-                });
-                
-            } catch (error) {
-                console.error('Apple Pay show error:', error);
-                alert('Apple Pay show error: ' + error.message);
+                console.log('🎬 Showing Apple Pay sheet...');
+                // Show Apple Pay immediately without canMakePayment check
+                applePayPaymentRequest.show();
+                console.log('✅ Apple Pay sheet shown successfully');
+                // Reset processing flag
+                isApplePayProcessing = false;
+            } catch (showError) {
+                console.error('❌ Error showing Apple Pay:', showError);
+                alert('Error showing Apple Pay: ' + showError.message);
                 // Reset processing flag
                 isApplePayProcessing = false;
             }
