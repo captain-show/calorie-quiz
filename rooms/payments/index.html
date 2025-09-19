@@ -455,7 +455,7 @@
                         <div class="total-amount" id="applePayAmount">$4.99</div>
                     </div>
                     <button class="apple-pay-button" id="applePayButton">
-                        <span>Buy with</span>
+                        <span>Pay with</span>
                         <img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);">
                         <span>Pay</span>
                     </button>
@@ -754,7 +754,8 @@
         // Apple Pay button click handler
         let isApplePayProcessing = false;
         
-        document.getElementById('applePayButton').addEventListener('click', async function() {
+        // Function to handle Apple Pay click
+        async function handleApplePayClick() {
             console.log('🍎 Apple Pay button clicked');
             console.log('Current price:', currentPrice);
             
@@ -781,7 +782,7 @@
             // Disable button during processing
             const applePayButton = document.getElementById('applePayButton');
             applePayButton.disabled = true;
-            applePayButton.textContent = 'Processing...';
+            applePayButton.innerHTML = 'Processing...';
             
             try {
                 // Create payment request using Stripe's paymentRequest
@@ -845,7 +846,10 @@
                         // Restore button
                         const applePayButton = document.getElementById('applePayButton');
                         applePayButton.disabled = false;
-                        applePayButton.textContent = 'Pay with Apple Pay';
+                        applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+                        // Re-attach event listener
+                        applePayButton.removeEventListener('click', handleApplePayClick);
+                        applePayButton.addEventListener('click', handleApplePayClick);
                     }
                 });
                 
@@ -881,9 +885,15 @@
                 // Restore button
                 const applePayButton = document.getElementById('applePayButton');
                 applePayButton.disabled = false;
-                applePayButton.textContent = 'Pay with Apple Pay';
+                applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+                // Re-attach event listener
+                applePayButton.removeEventListener('click', handleApplePayClick);
+                applePayButton.addEventListener('click', handleApplePayClick);
             }
-        });
+        }
+        
+        // Add event listener to Apple Pay button
+        document.getElementById('applePayButton').addEventListener('click', handleApplePayClick);
 
         // Credit card form handling
         document.getElementById('paymentForm').addEventListener('submit', async function(e) {
