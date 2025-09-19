@@ -749,24 +749,25 @@
             content.classList.toggle('active');
             radio.classList.toggle('active');
             methodElement.classList.toggle('active');
+            
+            // Initialize Apple Pay when Apple Pay section is clicked
+            if (method === 'applePay') {
+                console.log('🍎 Apple Pay section clicked - initializing...');
+                initializeApplePayPayment();
+            }
         }
 
         // Apple Pay variables
         let isApplePayProcessing = false;
+        let applePayPaymentRequest = null;
         
-        // Function to handle Apple Pay click
-        function handleApplePayClick() {
-            console.log('🍎 Apple Pay button clicked');
+        // Function to initialize Apple Pay when section is clicked
+        function initializeApplePayPayment() {
+            console.log('🔧 Initializing Apple Pay payment...');
             console.log('Current price:', currentPrice);
             console.log('Current protocol:', window.location.protocol);
             console.log('Current hostname:', window.location.hostname);
             console.log('User agent:', navigator.userAgent);
-            
-            // Prevent multiple clicks
-            if (isApplePayProcessing) {
-                console.log('Apple Pay already processing...');
-                return;
-            }
             
             // Check if we're on HTTPS or localhost
             if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
@@ -789,14 +790,9 @@
                 return;
             }
             
-            isApplePayProcessing = true;
-            
-            // Keep button active - no processing state
-            const applePayButton = document.getElementById('applePayButton');
-            
             try {
                 // Create payment request
-                const paymentRequest = stripe.paymentRequest({
+                applePayPaymentRequest = stripe.paymentRequest({
                     country: 'US',
                     currency: 'usd',
                     total: {
@@ -810,14 +806,14 @@
                 console.log('📋 Payment request created');
                 
                 // Handle Apple Pay events
-                paymentRequest.on('cancel', () => {
+                applePayPaymentRequest.on('cancel', () => {
                     console.log('🚫 Apple Pay cancelled');
                     // Reset processing flag
                     isApplePayProcessing = false;
                 });
                 
                 // Handle payment method
-                paymentRequest.on('paymentmethod', async (ev) => {
+                applePayPaymentRequest.on('paymentmethod', async (ev) => {
                     console.log('💳 Apple Pay payment authorized');
                     
                     try {
@@ -864,13 +860,41 @@
                     }
                 });
                 
+                console.log('✅ Apple Pay payment initialized successfully');
+                
+            } catch (error) {
+                console.error('Apple Pay setup error:', error);
+                alert('Apple Pay setup error: ' + error.message);
+            }
+        }
+        
+        // Function to handle Apple Pay button click (just show the window)
+        function handleApplePayClick() {
+            console.log('🍎 Apple Pay button clicked');
+            
+            // Prevent multiple clicks
+            if (isApplePayProcessing) {
+                console.log('Apple Pay already processing...');
+                return;
+            }
+            
+            // Check if payment request is initialized
+            if (!applePayPaymentRequest) {
+                console.error('Apple Pay not initialized');
+                alert('Apple Pay not initialized. Please click on the Apple Pay section first.');
+                return;
+            }
+            
+            isApplePayProcessing = true;
+            
+            try {
                 // Check availability and show
-                paymentRequest.canMakePayment().then(function(result) {
+                applePayPaymentRequest.canMakePayment().then(function(result) {
                     console.log('🔍 Apple Pay canMakePayment result:', result);
                     if (result) {
                         console.log('🎬 Showing Apple Pay sheet...');
                         try {
-                            paymentRequest.show();
+                            applePayPaymentRequest.show();
                             console.log('✅ Apple Pay sheet shown successfully');
                             // Reset processing flag
                             isApplePayProcessing = false;
@@ -894,8 +918,8 @@
                 });
                 
             } catch (error) {
-                console.error('Apple Pay setup error:', error);
-                alert('Apple Pay setup error: ' + error.message);
+                console.error('Apple Pay show error:', error);
+                alert('Apple Pay show error: ' + error.message);
                 // Reset processing flag
                 isApplePayProcessing = false;
             }
