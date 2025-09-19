@@ -549,25 +549,40 @@
         // API base URL - same as palmreader
         const API_BASE_URL = 'https://ydtsxivmnq.us-east-1.awsapprunner.com';
 
-        // Fetch price from backend
+        // Fetch price from backend using product ID
         async function fetchPrice() {
             try {
-                console.log('Using static price for testing...');
+                console.log('Fetching price for product prod_SyP5N4rFJXv4cL...');
                 
-                // Use $0 price if product not found
-                currentPrice = 0.00;
-                currentPriceId = null; // No price ID if product not found
+                // Get products using the real product ID
+                const productsResponse = await fetch(`${API_BASE_URL}/api/products?weekly=prod_SyP5N4rFJXv4cL&monthly=prod_SyP5N4rFJXv4cL&yearly=prod_SyP5N4rFJXv4cL`);
                 
-                console.log('Price set:', currentPrice);
-                console.log('Price ID set:', currentPriceId);
-                document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
-                document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
-                
-                // Disable payment buttons if price is $0
-                if (currentPrice === 0) {
-                    document.getElementById('applePayButton').disabled = true;
-                    document.getElementById('payButton').disabled = true;
-                    console.log('Payment buttons disabled - no product found');
+                if (productsResponse.ok) {
+                    const productsData = await productsResponse.json();
+                    console.log('Products loaded:', productsData);
+                    
+                    if (productsData.plans && productsData.plans.weekly) {
+                        const weeklyPlan = productsData.plans.weekly;
+                        currentPrice = weeklyPlan.unitAmount / 100; // Convert from cents
+                        currentPriceId = weeklyPlan.priceId;
+                        
+                        console.log('Price set from server:', currentPrice);
+                        console.log('Price ID set from server:', currentPriceId);
+                        document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
+                        document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
+                        
+                        // Enable payment buttons if price > 0
+                        if (currentPrice > 0) {
+                            document.getElementById('applePayButton').disabled = false;
+                            document.getElementById('payButton').disabled = false;
+                        }
+                    } else {
+                        throw new Error('No weekly plan found in response');
+                    }
+                } else {
+                    const errorData = await productsResponse.json();
+                    console.error('API error:', errorData);
+                    throw new Error(`API error: ${errorData.error?.message || 'Unknown error'}`);
                 }
                 
                 // Hide loading spinner
@@ -932,18 +947,21 @@
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', async function() {
-            // Set initial price
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+            
+            // Set initial fallback price
             currentPrice = 0.00;
             currentPriceId = null; // Will be set when product is loaded
             
-            // Initialize Stripe Elements immediately
+            // Fetch price from product first
+            await fetchPrice();
+            
+            // Initialize Stripe Elements after price is loaded
             initializeStripeElements();
             
             // Initialize Apple Pay
             initializeApplePay();
-            
-            // Fetch price in background and update if successful
-            fetchPrice();
         });
     </script>
 </body>
