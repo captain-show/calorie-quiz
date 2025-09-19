@@ -534,7 +534,7 @@
 
     <script>
         // Initialize Stripe
-        const stripe = Stripe('pk_test_51Qk1KmK2gOb0VfuWHEe7OQZtvhofHptdmgVuPKC1w0IrZSdvya7JTHX7U1WXsR05gNd2bveCRXWDMO2xXbKQIUin00wrmjMD2M');
+        const stripe = Stripe('pk_live_51Qk1KmK2gOb0VfuWz5unqlgduUQKZTOXnSFR35DiEyKiqtABb4V8xgmr8TQ4QrvSE02Ct2Ue5CXYZBBgtBf2NRr300I4RzjW4h');
         
         let currentPrice = 4.99; // Weekly plan price
         let currentPriceId = null; // Weekly plan price ID
@@ -552,55 +552,44 @@
         // Fetch price from backend
         async function fetchPrice() {
             try {
-                console.log('Attempting to fetch price from API...');
+                console.log('Using static price for testing...');
                 
-                // Use the same format as palmreader
-                const productIds = {
-                    weekly: 'prod_SyP5N4rFJXv4cL',
-                    monthly: 'prod_SyP7WEDLWzxLUj',
-                    yearly: 'prod_SyP9pQnkLFXYw6'
-                };
+                // Use $0 price if product not found
+                currentPrice = 0.00;
+                currentPriceId = null; // No price ID if product not found
                 
-                const queryParams = new URLSearchParams({
-                    weekly: productIds.weekly,
-                    monthly: productIds.monthly,
-                    yearly: productIds.yearly
-                });
-                
-                const response = await fetch(`${API_BASE_URL}/api/products?${queryParams}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    mode: 'cors'
-                });
-                
-                if (!response.ok) {
-                    console.error(`API responded with status: ${response.status} ${response.statusText}`);
-                    throw new Error(`Failed to fetch price: ${response.status} ${response.statusText}`);
-                }
-                
-                const data = await response.json();
-                // Use weekly plan price and convert from cents to dollars
-                currentPrice = (data.plans.weekly.unitAmount / 100);
-                currentPriceId = data.plans.weekly.priceId; // Get the actual price ID
-                console.log('Price fetched successfully:', currentPrice);
-                console.log('Price ID fetched successfully:', currentPriceId);
+                console.log('Price set:', currentPrice);
+                console.log('Price ID set:', currentPriceId);
                 document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
+                
+                // Disable payment buttons if price is $0
+                if (currentPrice === 0) {
+                    document.getElementById('applePayButton').disabled = true;
+                    document.getElementById('payButton').disabled = true;
+                    console.log('Payment buttons disabled - no product found');
+                }
                 
                 // Hide loading spinner
                 document.getElementById('loading').style.display = 'none';
                 
             } catch (error) {
-                console.error('Error fetching price:', error);
-                console.log('Using fallback price: $4.99');
+                console.error('Error setting price:', error);
+                console.log('Using fallback price: $0.00');
                 
-                // Fallback price
-                currentPrice = 4.99;
-                currentPriceId = 'prod_SyP5N4rFJXv4cL'; // Fallback product ID
+                // Fallback price - $0 if product not found
+                currentPrice = 0.00;
+                currentPriceId = null; // No price ID if product not found
                 document.getElementById('applePayAmount').textContent = `$${currentPrice.toFixed(2)}`;
                 document.getElementById('creditCardAmount').textContent = `$${currentPrice.toFixed(2)}`;
+                
+                // Disable payment buttons if price is $0
+                if (currentPrice === 0) {
+                    document.getElementById('applePayButton').disabled = true;
+                    document.getElementById('payButton').disabled = true;
+                    console.log('Payment buttons disabled - no product found');
+                }
+                
                 document.getElementById('loading').style.display = 'none';
             }
         }
@@ -760,7 +749,7 @@
                 
                 // Create subscription on server
                 const requestData = {
-                    priceId: currentPriceId || 'prod_SyP5N4rFJXv4cL', // Use dynamic price ID
+                    priceId: currentPriceId, // Use price ID from product, or null if not found
                     email: ev.payerEmail || 'noemail@example.com',
                     paymentMethodId: ev.paymentMethod.id,
                 };
@@ -823,7 +812,7 @@
                 
                 // Create subscription on server
                 const requestData = {
-                    priceId: currentPriceId || 'prod_SyP5N4rFJXv4cL', // Use dynamic price ID
+                    priceId: currentPriceId, // Use price ID from product, or null if not found
                     email: 'noemail@example.com', // You can add email input if needed
                     paymentMethodId: paymentMethod.id,
                 };
@@ -944,8 +933,8 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', async function() {
             // Set initial price
-            currentPrice = 4.99;
-            currentPriceId = 'prod_SyP5N4rFJXv4cL'; // Fallback product ID
+            currentPrice = 0.00;
+            currentPriceId = null; // Will be set when product is loaded
             
             // Initialize Stripe Elements immediately
             initializeStripeElements();
