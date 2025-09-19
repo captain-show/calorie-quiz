@@ -752,9 +752,17 @@
         }
 
         // Apple Pay button click handler
+        let isApplePayProcessing = false;
+        
         document.getElementById('applePayButton').addEventListener('click', async function() {
             console.log('🍎 Apple Pay button clicked');
             console.log('Current price:', currentPrice);
+            
+            // Prevent multiple clicks
+            if (isApplePayProcessing) {
+                console.log('Apple Pay already processing...');
+                return;
+            }
             
             // Check if price is valid
             if (!currentPrice || currentPrice <= 0) {
@@ -767,6 +775,8 @@
                 console.error('No price ID available for Apple Pay');
                 return;
             }
+            
+            isApplePayProcessing = true;
             
             try {
                 // Create payment request using Stripe's paymentRequest
@@ -825,6 +835,8 @@
                         console.error('Apple Pay payment error:', error);
                         ev.complete('fail');
                         showApplePayError('Payment failed: ' + error.message);
+                    } finally {
+                        isApplePayProcessing = false;
                     }
                 });
                 
@@ -832,12 +844,21 @@
                 const canMakePayment = await paymentRequest.canMakePayment();
                 if (canMakePayment) {
                     console.log('🎬 Showing Apple Pay sheet...');
-                    paymentRequest.show();
+                    // Add small delay to ensure everything is ready
+                    setTimeout(() => {
+                        try {
+                            paymentRequest.show();
+                        } catch (error) {
+                            console.error('Error showing Apple Pay:', error);
+                        }
+                    }, 100);
                 } else {
                     console.log('Apple Pay not available');
                 }
             } catch (error) {
                 console.error('Apple Pay setup error:', error);
+            } finally {
+                isApplePayProcessing = false;
             }
         });
 
