@@ -708,8 +708,20 @@
         // Initialize Apple Pay
         function initializeApplePay() {
             console.log('🔍 Initializing Apple Pay...');
-            isApplePayAvailable = true;
-            console.log('✅ Apple Pay is available and ready');
+            
+            // Check if Apple Pay is available
+            if (window.ApplePaySession && ApplePaySession.canMakePayments()) {
+                isApplePayAvailable = true;
+                console.log('✅ Apple Pay is available and ready');
+            } else {
+                isApplePayAvailable = false;
+                console.log('❌ Apple Pay is not available');
+                // Hide Apple Pay button if not available
+                const applePayButton = document.getElementById('applePayButton');
+                if (applePayButton) {
+                    applePayButton.style.display = 'none';
+                }
+            }
         }
 
         // Toggle payment method sections
@@ -744,64 +756,88 @@
             console.log('🍎 Apple Pay button clicked');
             console.log('Current price:', currentPrice);
             
-            // Create payment request using Stripe's paymentRequest
-            const paymentRequest = stripe.paymentRequest({
-                country: 'US',
-                currency: 'usd',
-                total: {
-                    label: 'Weekly Plan',
-                    amount: Math.round(currentPrice * 100), // Convert to cents
-                },
-                requestPayerName: true,
-                requestPayerEmail: true,
-            });
+            // Check if price is valid
+            if (!currentPrice || currentPrice <= 0) {
+                console.error('Invalid price for Apple Pay:', currentPrice);
+                return;
+            }
             
-            console.log('📋 Payment request created');
+            // Check if priceId is available
+            if (!currentPriceId) {
+                console.error('No price ID available for Apple Pay');
+                return;
+            }
             
-            // Handle payment method
-            paymentRequest.on('paymentmethod', async (ev) => {
-                console.log('💳 Apple Pay payment authorized');
-                
-                // Create subscription on server
-                const requestData = {
-                    priceId: currentPriceId, // Use price ID from product, or null if not found
-                    email: ev.payerEmail || 'noemail@example.com',
-                    paymentMethodId: ev.paymentMethod.id,
-                };
-                console.log('Apple Pay request data:', requestData);
-                
-                const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+            try {
+                // Create payment request using Stripe's paymentRequest
+                const paymentRequest = stripe.paymentRequest({
+                    country: 'US',
+                    currency: 'usd',
+                    total: {
+                        label: 'Weekly Plan',
+                        amount: Math.round(currentPrice * 100), // Convert to cents
                     },
-                    body: JSON.stringify(requestData),
+                    requestPayerName: true,
+                    requestPayerEmail: true,
                 });
                 
-                console.log('Apple Pay server response status:', response.status);
-                const result = await response.json();
-                console.log('Apple Pay server response:', result);
+                console.log('📋 Payment request created');
                 
-                if (result.error) {
-                    console.error('Apple Pay server error:', result.error);
-                    ev.complete('fail');
-                    showApplePayError('Payment failed: ' + (result.error.message || JSON.stringify(result.error)));
-                    return;
+                // Handle payment method
+                paymentRequest.on('paymentmethod', async (ev) => {
+                    console.log('💳 Apple Pay payment authorized');
+                    
+                    try {
+                        // Create subscription on server
+                        const requestData = {
+                            priceId: currentPriceId, // Use price ID from product, or null if not found
+                            email: ev.payerEmail || 'noemail@example.com',
+                            paymentMethodId: ev.paymentMethod.id,
+                        };
+                        console.log('Apple Pay request data:', requestData);
+                        
+                        const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(requestData),
+                        });
+                        
+                        console.log('Apple Pay server response status:', response.status);
+                        const result = await response.json();
+                        console.log('Apple Pay server response:', result);
+                        
+                        if (result.error) {
+                            console.error('Apple Pay server error:', result.error);
+                            ev.complete('fail');
+                            showApplePayError('Payment failed: ' + (result.error.message || JSON.stringify(result.error)));
+                            return;
+                        }
+                        
+                        // Confirm payment
+                        ev.complete('success');
+                        
+                        // Track analytics
+                        trackPurchase('apple_pay', currentPrice);
+                        showApplePaySuccess('Payment successful! Thank you for your purchase.');
+                    } catch (error) {
+                        console.error('Apple Pay payment error:', error);
+                        ev.complete('fail');
+                        showApplePayError('Payment failed: ' + error.message);
+                    }
+                });
+                
+                // Check availability before showing
+                const canMakePayment = await paymentRequest.canMakePayment();
+                if (canMakePayment) {
+                    console.log('🎬 Showing Apple Pay sheet...');
+                    paymentRequest.show();
+                } else {
+                    console.log('Apple Pay not available');
                 }
-                
-                // Confirm payment
-                ev.complete('success');
-                
-                // Track analytics
-                trackPurchase('apple_pay', currentPrice);
-                showApplePaySuccess('Payment successful! Thank you for your purchase.');
-            });
-            
-            // Check availability before showing
-            const canMakePayment = await paymentRequest.canMakePayment();
-            if (canMakePayment) {
-                console.log('🎬 Showing Apple Pay sheet...');
-                paymentRequest.show();
+            } catch (error) {
+                console.error('Apple Pay setup error:', error);
             }
         });
 
@@ -899,6 +935,14 @@
             
             successDiv.textContent = message;
             successDiv.style.display = 'block';
+        }
+
+        function showApplePayError(message) {
+            const errorDiv = document.getElementById('applePaySuccess');
+            
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            errorDiv.style.color = '#dc3545';
         }
 
         // Analytics tracking function
