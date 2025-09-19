@@ -836,6 +836,22 @@
             return paymentRequest;
         }
         
+        // Function to update Apple Pay payment request
+        function updateApplePayRequest() {
+            if (applePayPaymentRequest) {
+                // Update the existing payment request
+                applePayPaymentRequest.update({
+                    total: {
+                        label: 'Weekly Plan',
+                        amount: Math.round(currentPrice * 100),
+                    }
+                });
+            } else {
+                // Create new payment request
+                applePayPaymentRequest = createApplePayRequest();
+            }
+        }
+        
         // Function to handle Apple Pay click
         async function handleApplePayClick() {
             console.log('🍎 Apple Pay button clicked');
@@ -867,14 +883,14 @@
             applePayButton.innerHTML = 'Processing...';
             
             try {
-                // Create or update payment request
-                applePayPaymentRequest = createApplePayRequest();
+                // Update or create payment request
+                updateApplePayRequest();
                 
                 if (!applePayPaymentRequest) {
                     throw new Error('Failed to create Apple Pay request');
                 }
                 
-                console.log('📋 Payment request created');
+                console.log('📋 Payment request ready');
                 
                 // Check availability before showing
                 const canMakePayment = await applePayPaymentRequest.canMakePayment();
@@ -1065,6 +1081,11 @@
             
             // Initialize Apple Pay
             initializeApplePay();
+            
+            // Create Apple Pay payment request after price is loaded
+            if (currentPrice > 0 && currentPriceId) {
+                updateApplePayRequest();
+            }
         });
     </script>
 </body>
