@@ -796,6 +796,16 @@
             applePayButton.disabled = true;
             applePayButton.innerHTML = 'Processing...';
             
+            // Add timeout to restore button after 5 seconds
+            setTimeout(() => {
+                if (isApplePayProcessing) {
+                    console.log('⏰ Apple Pay timeout - restoring button');
+                    isApplePayProcessing = false;
+                    applePayButton.disabled = false;
+                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+                }
+            }, 5000);
+            
             try {
                 // Create payment request
                 const paymentRequest = stripe.paymentRequest({
@@ -878,6 +888,10 @@
                         try {
                             paymentRequest.show();
                             console.log('✅ Apple Pay sheet shown successfully');
+                            // Restore button immediately after showing
+                            isApplePayProcessing = false;
+                            applePayButton.disabled = false;
+                            applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                         } catch (showError) {
                             console.error('❌ Error showing Apple Pay:', showError);
                             alert('Error showing Apple Pay: ' + showError.message);

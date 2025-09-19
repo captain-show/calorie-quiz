@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Pay Test</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Apple Pay Test</h1>
+    <button id="testButton">Test Apple Pay</button>
+    <div id="result"></div>
+
+    <script>
+        const stripe = Stripe('pk_test_51Qk1KmK2gOb0VfuWHEe7OQZtvhofHptdmgVuPKC1w0IrZSdvya7JTHX7U1WXsR05gNd2bveCRXWDMO2xXbKQIUin00wrmjMD2M');
+        
+        document.getElementById('testButton').addEventListener('click', function() {
+            console.log('Testing Apple Pay...');
+            console.log('Protocol:', window.location.protocol);
+            console.log('Hostname:', window.location.hostname);
+            console.log('User Agent:', navigator.userAgent);
+            
+            const paymentRequest = stripe.paymentRequest({
+                country: 'US',
+                currency: 'usd',
+                total: {
+                    label: 'Test Payment',
+                    amount: 499, // $4.99
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+            
+            paymentRequest.canMakePayment().then(function(result) {
+                console.log('Can make payment:', result);
+                document.getElementById('result').innerHTML = 'Can make payment: ' + JSON.stringify(result);
+                
+                if (result) {
+                    console.log('Showing Apple Pay...');
+                    paymentRequest.show();
+                } else {
+                    console.log('Apple Pay not available');
+                    document.getElementById('result').innerHTML += '<br>Apple Pay not available';
+                }
+            }).catch(function(error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            });
+        });
+    </script>
+</body>
+</html>
