@@ -751,8 +751,90 @@
             methodElement.classList.toggle('active');
         }
 
-        // Apple Pay button click handler
+        // Apple Pay variables
         let isApplePayProcessing = false;
+        let applePayPaymentRequest = null;
+        
+        // Function to create Apple Pay payment request
+        function createApplePayRequest() {
+            if (!stripe || !currentPrice || currentPrice <= 0 || !currentPriceId) {
+                return null;
+            }
+            
+            const paymentRequest = stripe.paymentRequest({
+                country: 'US',
+                currency: 'usd',
+                total: {
+                    label: 'Weekly Plan',
+                    amount: Math.round(currentPrice * 100), // Convert to cents
+                },
+                requestPayerName: true,
+                requestPayerEmail: true,
+            });
+            
+            // Handle Apple Pay events
+            paymentRequest.on('cancel', () => {
+                console.log('🚫 Apple Pay cancelled');
+                // Restore button when cancelled
+                isApplePayProcessing = false;
+                const applePayButton = document.getElementById('applePayButton');
+                applePayButton.disabled = false;
+                applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+            });
+            
+            // Handle payment method
+            paymentRequest.on('paymentmethod', async (ev) => {
+                console.log('💳 Apple Pay payment authorized');
+                
+                try {
+                    // Create subscription on server
+                    const requestData = {
+                        priceId: currentPriceId,
+                        email: ev.payerEmail || 'noemail@example.com',
+                        paymentMethodId: ev.paymentMethod.id,
+                    };
+                    console.log('Apple Pay request data:', requestData);
+                    
+                    const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData),
+                    });
+                    
+                    console.log('Apple Pay server response status:', response.status);
+                    const result = await response.json();
+                    console.log('Apple Pay server response:', result);
+                    
+                    if (result.error) {
+                        console.error('Apple Pay server error:', result.error);
+                        ev.complete('fail');
+                        showApplePayError('Payment failed: ' + (result.error.message || JSON.stringify(result.error)));
+                        return;
+                    }
+                    
+                    // Confirm payment
+                    ev.complete('success');
+                    
+                    // Track analytics
+                    trackPurchase('apple_pay', currentPrice);
+                    showApplePaySuccess('Payment successful! Thank you for your purchase.');
+                } catch (error) {
+                    console.error('Apple Pay payment error:', error);
+                    ev.complete('fail');
+                    showApplePayError('Payment failed: ' + error.message);
+                } finally {
+                    // Restore button after payment attempt
+                    isApplePayProcessing = false;
+                    const applePayButton = document.getElementById('applePayButton');
+                    applePayButton.disabled = false;
+                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+                }
+            });
+            
+            return paymentRequest;
+        }
         
         // Function to handle Apple Pay click
         async function handleApplePayClick() {
@@ -785,121 +867,25 @@
             applePayButton.innerHTML = 'Processing...';
             
             try {
-                // Create payment request using Stripe's paymentRequest
-                const paymentRequest = stripe.paymentRequest({
-                    country: 'US',
-                    currency: 'usd',
-                    total: {
-                        label: 'Weekly Plan',
-                        amount: Math.round(currentPrice * 100), // Convert to cents
-                    },
-                    requestPayerName: true,
-                    requestPayerEmail: true,
-                });
+                // Create or update payment request
+                applePayPaymentRequest = createApplePayRequest();
+                
+                if (!applePayPaymentRequest) {
+                    throw new Error('Failed to create Apple Pay request');
+                }
                 
                 console.log('📋 Payment request created');
                 
-                // Handle Apple Pay events
-                paymentRequest.on('cancel', () => {
-                    console.log('🚫 Apple Pay cancelled');
-                    // Restore button when cancelled
-                    isApplePayProcessing = false;
-                    const applePayButton = document.getElementById('applePayButton');
-                    applePayButton.disabled = false;
-                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                    applePayButton.removeEventListener('click', handleApplePayClick);
-                    applePayButton.addEventListener('click', handleApplePayClick);
-                });
-                
-                // Handle payment method
-                paymentRequest.on('paymentmethod', async (ev) => {
-                    console.log('💳 Apple Pay payment authorized');
-                    
-                    try {
-                        // Create subscription on server
-                        const requestData = {
-                            priceId: currentPriceId, // Use price ID from product, or null if not found
-                            email: ev.payerEmail || 'noemail@example.com',
-                            paymentMethodId: ev.paymentMethod.id,
-                        };
-                        console.log('Apple Pay request data:', requestData);
-                        
-                        const response = await fetch(`${API_BASE_URL}/api/create-subscription`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(requestData),
-                        });
-                        
-                        console.log('Apple Pay server response status:', response.status);
-                        const result = await response.json();
-                        console.log('Apple Pay server response:', result);
-                        
-                        if (result.error) {
-                            console.error('Apple Pay server error:', result.error);
-                            ev.complete('fail');
-                            showApplePayError('Payment failed: ' + (result.error.message || JSON.stringify(result.error)));
-                            return;
-                        }
-                        
-                        // Confirm payment
-                        ev.complete('success');
-                        
-                        // Track analytics
-                        trackPurchase('apple_pay', currentPrice);
-                        showApplePaySuccess('Payment successful! Thank you for your purchase.');
-                    } catch (error) {
-                        console.error('Apple Pay payment error:', error);
-                        ev.complete('fail');
-                        showApplePayError('Payment failed: ' + error.message);
-                    } finally {
-                        // Restore button after payment attempt
-                        isApplePayProcessing = false;
-                        const applePayButton = document.getElementById('applePayButton');
-                        applePayButton.disabled = false;
-                        applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                        applePayButton.removeEventListener('click', handleApplePayClick);
-                        applePayButton.addEventListener('click', handleApplePayClick);
-                    }
-                });
-                
                 // Check availability before showing
-                const canMakePayment = await paymentRequest.canMakePayment();
+                const canMakePayment = await applePayPaymentRequest.canMakePayment();
                 if (canMakePayment) {
                     console.log('🎬 Showing Apple Pay sheet...');
-                    // Show Apple Pay immediately without delay
-                    try {
-                        paymentRequest.show();
-                        console.log('✅ Apple Pay sheet shown successfully');
-                    } catch (error) {
-                        console.error('Error showing Apple Pay:', error);
-                        // If first attempt fails, try again
-                        setTimeout(() => {
-                            try {
-                                paymentRequest.show();
-                                console.log('✅ Apple Pay sheet shown on retry');
-                            } catch (retryError) {
-                                console.error('Apple Pay retry failed:', retryError);
-                                // Restore button on failure
-                                isApplePayProcessing = false;
-                                const applePayButton = document.getElementById('applePayButton');
-                                applePayButton.disabled = false;
-                                applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                                applePayButton.removeEventListener('click', handleApplePayClick);
-                                applePayButton.addEventListener('click', handleApplePayClick);
-                            }
-                        }, 100);
-                    }
+                    // Show Apple Pay immediately
+                    applePayPaymentRequest.show();
+                    console.log('✅ Apple Pay sheet shown successfully');
                 } else {
                     console.log('Apple Pay not available');
-                    // Restore button if not available
-                    isApplePayProcessing = false;
-                    const applePayButton = document.getElementById('applePayButton');
-                    applePayButton.disabled = false;
-                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                    applePayButton.removeEventListener('click', handleApplePayClick);
-                    applePayButton.addEventListener('click', handleApplePayClick);
+                    throw new Error('Apple Pay not available');
                 }
             } catch (error) {
                 console.error('Apple Pay setup error:', error);
@@ -908,8 +894,6 @@
                 const applePayButton = document.getElementById('applePayButton');
                 applePayButton.disabled = false;
                 applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                applePayButton.removeEventListener('click', handleApplePayClick);
-                applePayButton.addEventListener('click', handleApplePayClick);
             }
         }
         
