@@ -758,10 +758,20 @@
         function handleApplePayClick() {
             console.log('🍎 Apple Pay button clicked');
             console.log('Current price:', currentPrice);
+            console.log('Current protocol:', window.location.protocol);
+            console.log('Current hostname:', window.location.hostname);
+            console.log('User agent:', navigator.userAgent);
             
             // Prevent multiple clicks
             if (isApplePayProcessing) {
                 console.log('Apple Pay already processing...');
+                return;
+            }
+            
+            // Check if we're on HTTPS or localhost
+            if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                console.error('Apple Pay requires HTTPS or localhost');
+                alert('Apple Pay requires HTTPS or localhost. Current protocol: ' + window.location.protocol);
                 return;
             }
             
@@ -862,10 +872,20 @@
                 
                 // Check availability and show
                 paymentRequest.canMakePayment().then(function(result) {
+                    console.log('🔍 Apple Pay canMakePayment result:', result);
                     if (result) {
                         console.log('🎬 Showing Apple Pay sheet...');
-                        paymentRequest.show();
-                        console.log('✅ Apple Pay sheet shown successfully');
+                        try {
+                            paymentRequest.show();
+                            console.log('✅ Apple Pay sheet shown successfully');
+                        } catch (showError) {
+                            console.error('❌ Error showing Apple Pay:', showError);
+                            alert('Error showing Apple Pay: ' + showError.message);
+                            // Restore button
+                            isApplePayProcessing = false;
+                            applePayButton.disabled = false;
+                            applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
+                        }
                     } else {
                         console.log('Apple Pay not available');
                         alert('Apple Pay is not available on this device');
