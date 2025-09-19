@@ -791,20 +791,8 @@
             
             isApplePayProcessing = true;
             
-            // Disable button during processing
+            // Keep button active - no processing state
             const applePayButton = document.getElementById('applePayButton');
-            applePayButton.disabled = true;
-            applePayButton.innerHTML = 'Processing...';
-            
-            // Add timeout to restore button after 5 seconds
-            setTimeout(() => {
-                if (isApplePayProcessing) {
-                    console.log('⏰ Apple Pay timeout - restoring button');
-                    isApplePayProcessing = false;
-                    applePayButton.disabled = false;
-                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                }
-            }, 5000);
             
             try {
                 // Create payment request
@@ -824,10 +812,8 @@
                 // Handle Apple Pay events
                 paymentRequest.on('cancel', () => {
                     console.log('🚫 Apple Pay cancelled');
-                    // Restore button when cancelled
+                    // Reset processing flag
                     isApplePayProcessing = false;
-                    applePayButton.disabled = false;
-                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                 });
                 
                 // Handle payment method
@@ -873,10 +859,8 @@
                         ev.complete('fail');
                         showApplePayError('Payment failed: ' + error.message);
                     } finally {
-                        // Restore button after payment attempt
+                        // Reset processing flag
                         isApplePayProcessing = false;
-                        applePayButton.disabled = false;
-                        applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                     }
                 });
                 
@@ -888,42 +872,32 @@
                         try {
                             paymentRequest.show();
                             console.log('✅ Apple Pay sheet shown successfully');
-                            // Restore button immediately after showing
+                            // Reset processing flag
                             isApplePayProcessing = false;
-                            applePayButton.disabled = false;
-                            applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                         } catch (showError) {
                             console.error('❌ Error showing Apple Pay:', showError);
                             alert('Error showing Apple Pay: ' + showError.message);
-                            // Restore button
+                            // Reset processing flag
                             isApplePayProcessing = false;
-                            applePayButton.disabled = false;
-                            applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                         }
                     } else {
                         console.log('Apple Pay not available');
                         alert('Apple Pay is not available on this device');
-                        // Restore button
+                        // Reset processing flag
                         isApplePayProcessing = false;
-                        applePayButton.disabled = false;
-                        applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                     }
                 }).catch(function(error) {
                     console.error('Apple Pay error:', error);
                     alert('Apple Pay error: ' + error.message);
-                    // Restore button
+                    // Reset processing flag
                     isApplePayProcessing = false;
-                    applePayButton.disabled = false;
-                    applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
                 });
                 
             } catch (error) {
                 console.error('Apple Pay setup error:', error);
                 alert('Apple Pay setup error: ' + error.message);
-                // Restore button on error
+                // Reset processing flag
                 isApplePayProcessing = false;
-                applePayButton.disabled = false;
-                applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
             }
         }
         
