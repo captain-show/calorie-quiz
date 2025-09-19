@@ -842,12 +842,11 @@
                         ev.complete('fail');
                         showApplePayError('Payment failed: ' + error.message);
                     } finally {
+                        // Restore button after payment attempt
                         isApplePayProcessing = false;
-                        // Restore button
                         const applePayButton = document.getElementById('applePayButton');
                         applePayButton.disabled = false;
                         applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                        // Re-attach event listener
                         applePayButton.removeEventListener('click', handleApplePayClick);
                         applePayButton.addEventListener('click', handleApplePayClick);
                     }
@@ -880,13 +879,11 @@
                 }
             } catch (error) {
                 console.error('Apple Pay setup error:', error);
-            } finally {
+                // Restore button on error
                 isApplePayProcessing = false;
-                // Restore button
                 const applePayButton = document.getElementById('applePayButton');
                 applePayButton.disabled = false;
                 applePayButton.innerHTML = '<span>Pay with</span><img src="img/icons8-apple-inc-90.png" alt="Apple" style="width: 16px; height: 16px; margin: 0 -2px 0 0; filter: brightness(0) invert(1);"><span>Pay</span>';
-                // Re-attach event listener
                 applePayButton.removeEventListener('click', handleApplePayClick);
                 applePayButton.addEventListener('click', handleApplePayClick);
             }
